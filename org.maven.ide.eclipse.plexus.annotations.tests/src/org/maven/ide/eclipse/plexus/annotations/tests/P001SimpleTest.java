@@ -83,7 +83,7 @@ public class P001SimpleTest extends AsbtractMavenProjectTestCase {
     project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
 
     ComponentSetDescriptor set = readComponentSet(metadata);
-    List<ComponentDescriptor> components = set.getComponents();
+    List<ComponentDescriptor<?>> components = set.getComponents();
     ComponentDescriptor comp = components.get(0);
     List<ComponentRequirement> requirements = comp.getRequirements();
     ComponentRequirement requirement = requirements.get(0);
@@ -158,7 +158,7 @@ public class P001SimpleTest extends AsbtractMavenProjectTestCase {
   }
 
   private ComponentDescriptor getComponentDescriptor(ComponentSetDescriptor set, String impl) {
-    List<ComponentDescriptor> components = set.getComponents();
+    List<ComponentDescriptor<?>> components = set.getComponents();
     for (ComponentDescriptor component : components) {
       if (impl.equals(component.getImplementation())) {
         return component;
@@ -171,7 +171,7 @@ public class P001SimpleTest extends AsbtractMavenProjectTestCase {
     assertTrue(metadata.exists());
 
     ComponentSetDescriptor set = readComponentSet(metadata);
-    List<ComponentDescriptor> components = set.getComponents();
+    List<ComponentDescriptor<?>> components = set.getComponents();
     assertEquals(1, components.size());
 
     ComponentDescriptor comp = components.get(0);

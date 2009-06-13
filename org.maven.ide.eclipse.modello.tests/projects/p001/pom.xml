@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.maven.ide.eclipse.modello.tests
+  </groupId>
+  <artifactId>p001</artifactId>
+  <name></name>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.maven.ide.eclipse</groupId>
+        <artifactId>lifecycle-mapping</artifactId>
+        <version>0.9.9-SNAPSHOT</version>
+        <configuration>
+          <mappingId>customizable</mappingId>
+          <configurators>
+            <configurator>org.maven.ide.eclipse.jdt.javaConfigurator</configurator>
+            <configurator>org.maven.ide.eclipse.modello.modelloConfigurator</configurator>
+            <configurator>org.maven.ide.eclipse.plexus.annotations.plexusConfigurator</configurator>
+          </configurators>
+          <mojoExecutions>
+            <mojoExecution>org.apache.maven.plugins:maven-resources-plugin::</mojoExecution>
+          </mojoExecutions>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.modello</groupId>
+        <artifactId>modello-maven-plugin
+        </artifactId>
+        <version>1.0.1</version>
+        <configuration>
+          <version>4.0.0</version>
+          <models>
+            <model>src/main/mdo/model.mdo</model>
+          </models>
+        </configuration>
+        <executions>
+          <execution>
+            <id>standard</id>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

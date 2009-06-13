@@ -5,7 +5,9 @@
          point="org.maven.ide.eclipse.projectConfigurators">
       <configurator
             class="org.maven.ide.eclipse.plexus.annotations.internal.PlexusProjectConfigurator"
-            id="org.maven.ide.eclipse.plexus.annotations.plexusConfigurator">
+            generic="false"
+            id="org.maven.ide.eclipse.plexus.annotations.plexusConfigurator"
+            name="Plexus Metadata Generation">
       </configurator>
    </extension>
 

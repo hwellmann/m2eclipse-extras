@@ -77,17 +77,17 @@ public class DefaultComponentDescriptorWriter
 
     }
 
-    private void writeComponents( XMLWriter w, List<ComponentDescriptor> componentDescriptors )
+    private void writeComponents( XMLWriter w, List<ComponentDescriptor<?>> list )
         throws ComponentDescriptorWriteException, PlexusConfigurationException
     {
-        if ( componentDescriptors == null )
+        if ( list == null )
         {
             return;
         }
 
         w.startElement( "components" );
 
-        for ( ComponentDescriptor cd : componentDescriptors )
+        for ( ComponentDescriptor cd : list )
         {
             w.startElement( "component" );
 

@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Copyright (c) 2008 Sonatype, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 
 package org.maven.ide.eclipse.plexus.annotations.internal;
 
@@ -121,7 +128,7 @@ public class PlexusMetadata {
   public Set<IProject> writeMetadata(IProject project, boolean testMetadata) throws CoreException {
     Set<IProject> dependencies = new HashSet<IProject>();
 
-    ArrayList<ComponentDescriptor> descriptors = new ArrayList<ComponentDescriptor>();
+    List<ComponentDescriptor<?>> descriptors = new ArrayList<ComponentDescriptor<?>>();
 
     Map<IResource, Record> projectRecords = projects.get(project);
     if (projectRecords == null) {
@@ -161,7 +168,7 @@ public class PlexusMetadata {
     return dependencies;
   }
 
-  private void writeDescriptor(IProject project, final ArrayList<ComponentDescriptor> descriptors, boolean testDescriptor)
+  private void writeDescriptor(IProject project, final List<ComponentDescriptor<?>> descriptors, boolean testDescriptor)
       throws CoreException {
     ComponentSetDescriptor set = new ComponentSetDescriptor();
     set.setComponents(descriptors);
@@ -256,7 +263,7 @@ public class PlexusMetadata {
     projects.remove(project);
   }
 
-  private void addDescriptors(List<ComponentDescriptor> componentDescriptors, IFile file) {
+  private void addDescriptors(List<ComponentDescriptor<?>> descriptors, IFile file) {
 
     PlexusConfiguration componentDescriptorConfiguration;
     String source = file.getLocation().toOSString();
@@ -291,7 +298,7 @@ public class PlexusMetadata {
 
       componentDescriptor.setComponentType("plexus");
 
-      componentDescriptors.add(componentDescriptor);
+      descriptors.add(componentDescriptor);
     }
   }
 

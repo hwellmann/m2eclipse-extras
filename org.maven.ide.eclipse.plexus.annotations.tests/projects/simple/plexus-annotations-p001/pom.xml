@@ -41,6 +41,20 @@
           <target>1.5</target>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.maven.ide.eclipse</groupId>
+        <artifactId>lifecycle-mapping</artifactId>
+        <version>0.9.9-SNAPSHOT</version>
+        <configuration>
+          <mappingId>customizable</mappingId>
+          <configurators>
+            <configurator>org.maven.ide.eclipse.jdt.javaConfigurator</configurator>
+            <configurator>org.maven.ide.eclipse.plexus.annotations.plexusConfigurator</configurator>
+          </configurators>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 
