@@ -1,31 +1,27 @@
 package org.maven.ide.eclipse.modello.internal;
 
 import java.io.File;
-import java.util.Map;
 
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.plugin.MojoExecution;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jdt.core.IClasspathAttribute;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.maven.ide.eclipse.jdt.AbstractJavaProjectConfigurator;
+import org.maven.ide.eclipse.jdt.IClasspathDescriptor;
+import org.maven.ide.eclipse.jdt.IJavaProjectConfigurator;
 import org.maven.ide.eclipse.project.IMavenProjectFacade;
 import org.maven.ide.eclipse.project.MavenProjectUtils;
 import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 import org.maven.ide.eclipse.project.configurator.MojoExecutionBuildParticipant;
 import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
-import org.maven.ide.eclipse.util.Util;
 
 public class ModelloProjectConfigurator
     extends AbstractJavaProjectConfigurator
+    implements IJavaProjectConfigurator
 {
     private static final String MODELLO_GROUP_ID = "org.codehaus.modello";
 
@@ -37,14 +33,14 @@ public class ModelloProjectConfigurator
     public void configure( ProjectConfigurationRequest request, IProgressMonitor monitor )
         throws CoreException
     {
-        IProject project = request.getProject();
+        // nothing to do
+    }
+
+    public void configureRawClasspath( ProjectConfigurationRequest request, IClasspathDescriptor classpath,
+                                       IProgressMonitor monitor )
+        throws CoreException
+    {
         IMavenProjectFacade facade = request.getMavenProjectFacade();
-
-        assertHasNature( project, JavaCore.NATURE_ID );
-
-        IJavaProject javaProject = JavaCore.create( project );
-
-        Map<IPath, IClasspathEntry> cp = getRawClasspath( javaProject );
 
         for ( MojoExecution mojoExecution : facade.getExecutionPlan( monitor ).getExecutions() )
         {
@@ -54,26 +50,13 @@ public class ModelloProjectConfigurator
                     getParameterValue( request.getMavenSession(), mojoExecution, "outputDirectory", File.class );
                 IPath gensrctPath = getFullPath( facade, gensrcFolder );
 
-                if ( gensrctPath != null && !cp.containsKey( gensrctPath ) )
+                if ( gensrctPath != null && !classpath.containsPath( gensrctPath ) )
                 {
-                    IWorkspaceRoot workspaceRoot = project.getWorkspace().getRoot();
-
-                    Util.createFolder( workspaceRoot.getFolder( gensrctPath ), true );
-
-                    IClasspathAttribute[] attrs =
-                        new IClasspathAttribute[] { JavaCore.newClasspathAttribute( IClasspathAttribute.OPTIONAL,
-                                                                                    "true" ) };
-
-                    cp.put( gensrctPath, JavaCore.newSourceEntry(
-                                                                  gensrctPath, //
-                                                                  new IPath[0] /* inclusion */,
-                                                                  new IPath[0] /* exclusion */,
-                                                                  facade.getOutputLocation(), attrs ) );
+                    classpath.addSourceEntry( gensrctPath, facade.getOutputLocation(), true );
                 }
             }
         }
 
-        setRawClasspath( javaProject, cp, monitor );
     }
 
     private IPath getFullPath( IMavenProjectFacade facade, File file )
@@ -130,5 +113,11 @@ public class ModelloProjectConfigurator
         }
 
         return null;
+    }
+
+    public void configureClasspath( IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor )
+        throws CoreException
+    {
+        // do nothing
     }
 }
