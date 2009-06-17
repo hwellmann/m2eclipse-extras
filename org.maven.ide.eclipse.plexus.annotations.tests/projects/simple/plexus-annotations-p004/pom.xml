@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.maven.ide.eclipse.plexus.annotations.tests</groupId>
-  <artifactId>plexus-annotations-p003</artifactId>
+  <artifactId>plexus-annotations-p004</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
@@ -10,12 +10,6 @@
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>org.maven.ide.eclipse.plexus.annotations.tests</groupId>
-      <artifactId>plexus-annotations-p002</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-component-annotations</artifactId>

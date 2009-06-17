@@ -146,6 +146,21 @@ public class P001SimpleTest extends AsbtractMavenProjectTestCase {
     
   }
 
+  public void testCustomMetadataMerge() throws Exception {
+      IProject project04 = createExisting("plexus-annotations-p004", "projects/simple/plexus-annotations-p004");
+      waitForJobsToComplete();
+
+      workspace.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
+      workspace.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+
+      assertNoErrors( project04 );
+
+      IFile metadata = project04.getFile("target/classes/META-INF/plexus/components.xml");
+      ComponentSetDescriptor componentSet = readComponentSet(metadata);
+
+      assertEquals(2, componentSet.getComponents().size());
+  }
+
   private void assertRequirement(ComponentDescriptor comp, String fieldName, String roleHint) {
     List<ComponentRequirement> requirements = comp.getRequirements();
     for (ComponentRequirement requirement : requirements) {

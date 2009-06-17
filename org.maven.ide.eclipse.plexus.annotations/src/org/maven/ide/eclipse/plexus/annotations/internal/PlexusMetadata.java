@@ -170,10 +170,6 @@ public class PlexusMetadata {
 
   private void writeDescriptor(IProject project, final List<ComponentDescriptor<?>> descriptors, boolean testDescriptor)
       throws CoreException {
-    ComponentSetDescriptor set = new ComponentSetDescriptor();
-    set.setComponents(descriptors);
-    set.setDependencies(Collections.EMPTY_LIST);
-
     MavenProjectManager projectManager = MavenPlugin.getDefault().getMavenProjectManager();
     NullProgressMonitor monitor = new NullProgressMonitor();
     IMavenProjectFacade facade = projectManager.create(project, monitor);
@@ -209,6 +205,10 @@ public class PlexusMetadata {
       Util.createFolder(outputFolder, true);
 
       ComponentDescriptorWriter writer = new DefaultComponentDescriptorWriter();
+
+      ComponentSetDescriptor set = new ComponentSetDescriptor();
+      set.setComponents(descriptors);
+      set.setDependencies(Collections.EMPTY_LIST);
 
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       try {

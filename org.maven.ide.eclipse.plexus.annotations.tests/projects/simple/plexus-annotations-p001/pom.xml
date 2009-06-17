@@ -49,8 +49,8 @@
         <configuration>
           <mappingId>customizable</mappingId>
           <configurators>
-            <configurator>org.maven.ide.eclipse.jdt.javaConfigurator</configurator>
-            <configurator>org.maven.ide.eclipse.plexus.annotations.plexusConfigurator</configurator>
+            <configurator id='org.maven.ide.eclipse.jdt.javaConfigurator'/>
+            <configurator id='org.maven.ide.eclipse.plexus.annotations.plexusConfigurator'/>
           </configurators>
         </configuration>
       </plugin>
