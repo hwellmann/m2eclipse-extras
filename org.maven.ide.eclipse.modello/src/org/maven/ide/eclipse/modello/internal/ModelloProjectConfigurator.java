@@ -10,17 +10,17 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.maven.ide.eclipse.jdt.AbstractJavaProjectConfigurator;
 import org.maven.ide.eclipse.jdt.IClasspathDescriptor;
 import org.maven.ide.eclipse.jdt.IJavaProjectConfigurator;
 import org.maven.ide.eclipse.project.IMavenProjectFacade;
 import org.maven.ide.eclipse.project.MavenProjectUtils;
 import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
+import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 import org.maven.ide.eclipse.project.configurator.MojoExecutionBuildParticipant;
 import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
 
 public class ModelloProjectConfigurator
-    extends AbstractJavaProjectConfigurator
+    extends AbstractProjectConfigurator
     implements IJavaProjectConfigurator
 {
     private static final String MODELLO_GROUP_ID = "org.codehaus.modello";
