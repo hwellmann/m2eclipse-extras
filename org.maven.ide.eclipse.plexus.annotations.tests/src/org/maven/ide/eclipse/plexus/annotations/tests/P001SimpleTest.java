@@ -161,6 +161,36 @@ public class P001SimpleTest extends AsbtractMavenProjectTestCase {
       assertEquals(2, componentSet.getComponents().size());
   }
 
+  public void testConstantFieldValues() throws Exception {
+      IProject project05 = createExisting("plexus-annotations-p005", "projects/simple/plexus-annotations-p005");
+      waitForJobsToComplete();
+
+      workspace.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
+      workspace.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+
+      assertNoErrors( project05 );
+
+      IFile metadata = project05.getFile("target/classes/META-INF/plexus/components.xml");
+      ComponentDescriptor comp = getComponentDescriptor(readComponentSet(metadata), "simple.p005.P005SimpleImpl");
+      
+      assertEquals("fooled", comp.getRoleHint());
+  }
+
+  public void testDeepInheritance() throws Exception {
+      IProject project06 = createExisting("plexus-annotations-p006", "projects/simple/plexus-annotations-p006");
+      waitForJobsToComplete();
+
+      workspace.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
+      workspace.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+
+      assertNoErrors( project06 );
+
+      IFile metadata = project06.getFile("target/classes/META-INF/plexus/components.xml");
+      ComponentDescriptor comp = getComponentDescriptor(readComponentSet(metadata), "simple.p006.s1.s2.P006S2");
+
+      assertEquals("simple.p006.s1.s2.P006S2", comp.getRole());
+  }
+
   private void assertRequirement(ComponentDescriptor comp, String fieldName, String roleHint) {
     List<ComponentRequirement> requirements = comp.getRequirements();
     for (ComponentRequirement requirement : requirements) {

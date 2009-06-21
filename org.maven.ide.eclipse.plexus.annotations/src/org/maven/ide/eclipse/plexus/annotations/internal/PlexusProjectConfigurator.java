@@ -11,6 +11,7 @@ package org.maven.ide.eclipse.plexus.annotations.internal;
 import org.apache.maven.plugin.MojoExecution;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.maven.ide.eclipse.project.MavenProjectChangedEvent;
 import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
@@ -51,5 +52,17 @@ public class PlexusProjectConfigurator
         throws CoreException
     {
         // nothing to do
+    }
+
+    @Override
+    protected void mavenProjectChanged( MavenProjectChangedEvent event, IProgressMonitor monitor )
+        throws CoreException
+    {
+        if ( MavenProjectChangedEvent.KIND_REMOVED == event.getKind() )
+        {
+            PlexusMetadata metadata = PlexusBuildParticipant.getPlexusMetadata();
+
+            metadata.clean( event.getOldMavenProject().getProject() );
+        }
     }
 }

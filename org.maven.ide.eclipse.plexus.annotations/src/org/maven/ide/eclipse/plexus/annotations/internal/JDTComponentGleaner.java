@@ -28,6 +28,10 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.StringLiteral;
 
 
 public class JDTComponentGleaner {
@@ -49,18 +53,18 @@ public class JDTComponentGleaner {
     String[][] role = type.resolveType((String) roleMember.getValue());
     component.setRole(Signature.toQualifiedName(role[0]));
 
-    component.setRoleHint(getStringValue(annMembers.get("hint")));
+    component.setRoleHint(getStringValue(type, annMembers.get("hint")));
     component.setImplementation(type.getFullyQualifiedName());
-    component.setVersion(getStringValue(annMembers.get("version")));
-    component.setComponentType(getStringValue(annMembers.get("type")));
-    component.setInstantiationStrategy(getStringValue(annMembers.get("instantiationStrategy")));
-    component.setLifecycleHandler(getStringValue(annMembers.get("lifecycleHandler")));
-    component.setComponentProfile(getStringValue(annMembers.get("profile")));
-    component.setComponentComposer(getStringValue(annMembers.get("composer")));
-    component.setComponentConfigurator(getStringValue(annMembers.get("configurator")));
-    component.setComponentFactory(getStringValue(annMembers.get("factory")));
-    component.setDescription(getStringValue(annMembers.get("description")));
-    component.setAlias(getStringValue(annMembers.get("alias")));
+    component.setVersion(getStringValue(type, annMembers.get("version")));
+    component.setComponentType(getStringValue(type, annMembers.get("type")));
+    component.setInstantiationStrategy(getStringValue(type, annMembers.get("instantiationStrategy")));
+    component.setLifecycleHandler(getStringValue(type, annMembers.get("lifecycleHandler")));
+    component.setComponentProfile(getStringValue(type, annMembers.get("profile")));
+    component.setComponentComposer(getStringValue(type, annMembers.get("composer")));
+    component.setComponentConfigurator(getStringValue(type, annMembers.get("configurator")));
+    component.setComponentFactory(getStringValue(type, annMembers.get("factory")));
+    component.setDescription(getStringValue(type, annMembers.get("description")));
+    component.setAlias(getStringValue(type, annMembers.get("alias")));
     component.setIsolatedRealm(getBooleanValue(annMembers.get("isolatedRealm")));
 
     for(IField field : getFields(type, monitor)) {
@@ -165,7 +169,7 @@ public class JDTComponentGleaner {
     } else {
       requirement = new ComponentRequirement();
 
-      requirement.setRoleHint(getStringValue(annMembers.get("hint")));
+      requirement.setRoleHint(getStringValue(declaringType, annMembers.get("hint")));
     }
 
     String role = null;
@@ -197,12 +201,34 @@ public class JDTComponentGleaner {
     return ((Boolean) member.getValue()).booleanValue();
   }
 
-  private String getStringValue(IMemberValuePair member) {
-    if(member == null || member.getValueKind() != IMemberValuePair.K_STRING) {
+  private String getStringValue(IType type, IMemberValuePair member) throws JavaModelException {
+    if(member == null) {
       return null;
     }
-    String value = (String) member.getValue();
-    return "".equals(value) ? null : value;
+    if (member.getValueKind() == IMemberValuePair.K_STRING) {
+        String value = (String) member.getValue();
+        return "".equals(value) ? null : value;
+    } else if (member.getValueKind() == IMemberValuePair.K_QUALIFIED_NAME) {
+        String qname = (String) member.getValue();
+
+        int dot = qname.lastIndexOf( '.' );
+        String fieldTypeName = qname.substring( 0, dot );
+        String fieldName = qname.substring( dot + 1 );
+
+        IType fieldType = resolve( type, fieldTypeName );
+        IField field = fieldType.getField( fieldName );
+
+        String constant = (String) field.getConstant();
+
+        // TODO is there an easier way?
+        ASTParser parser = ASTParser.newParser(AST.JLS3);
+        parser.setSource(constant.toCharArray());
+        parser.setKind( ASTParser.K_EXPRESSION );
+        StringLiteral literal = (StringLiteral) parser.createAST(null);
+
+        return literal.getLiteralValue();
+    }
+    return null;
   }
 
   private Map<String, IMemberValuePair> getMembersMap(IAnnotation ann) throws JavaModelException {
@@ -226,7 +252,7 @@ public class JDTComponentGleaner {
         return ann;
       } else if (annName.equals(name)) {
         String[][] resolved = type.resolveType(ann.getElementName());
-        if(resolved.length > 0 && ANN_PACKAGE_NAME.equals(resolved[0][0])) {
+        if(resolved != null && resolved.length > 0 && ANN_PACKAGE_NAME.equals(resolved[0][0])) {
           return ann;
         }
       }

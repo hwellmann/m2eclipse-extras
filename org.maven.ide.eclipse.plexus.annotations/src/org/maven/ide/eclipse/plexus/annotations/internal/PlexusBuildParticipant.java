@@ -8,6 +8,7 @@
 
 package org.maven.ide.eclipse.plexus.annotations.internal;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -69,6 +70,8 @@ public class PlexusBuildParticipant extends AbstractBuildParticipant {
     boolean changed = false;
 
     final PlexusMetadata metadata = getPlexusMetadata();
+    
+    final Set<IResource> processed = new HashSet<IResource>();
 
     for(IClasspathEntry cpe : javaProject.getRawClasspath()) {
       if(cpe.getEntryKind() == IClasspathEntry.CPE_SOURCE && isTestEntry(cpe) == testMetadata) {
@@ -85,7 +88,7 @@ public class PlexusBuildParticipant extends AbstractBuildParticipant {
             public boolean visit(IResource resource) throws CoreException {
               if(resource instanceof IFile) {
                 IFile file = (IFile) resource;
-                processAnnotations(metadata, javaProject, file, monitor);
+                processAnnotations(metadata, javaProject, file, processed, monitor);
               }
               return true; // keep visiting
             }
@@ -105,7 +108,7 @@ public class PlexusBuildParticipant extends AbstractBuildParticipant {
               if(resource instanceof IFile && isInteresting(delta)) {
                 IFile file = (IFile) resource;
                 if(file.isAccessible()) {
-                  processAnnotations(metadata, javaProject, file, monitor);
+                  processAnnotations(metadata, javaProject, file, processed, monitor);
                 } else {
                   metadata.remove(file);
                 }
@@ -116,15 +119,20 @@ public class PlexusBuildParticipant extends AbstractBuildParticipant {
         }
       }
     }
-    
+
     List<IResource> staleResources = metadata.getStaleResources(project, testMetadata);
     changed |= !staleResources.isEmpty();
 
-    for (IResource resource : staleResources) {
-      if (resource instanceof IFile) {
-        processAnnotations(metadata, javaProject, (IFile) resource, monitor);
-      }
-    }
+    do {
+        for (IResource resource : staleResources) {
+          if (resource instanceof IFile) {
+            processAnnotations(metadata, javaProject, (IFile) resource, processed, monitor);
+          }
+        }
+        staleResources = metadata.getStaleResources(project, testMetadata);
+        // this is actually a bug, but we report it later
+        staleResources.removeAll(processed);
+    } while (!staleResources.isEmpty());
 
     if(changed) {
       Set<IProject> dependencies = metadata.writeMetadata(project, testMetadata);
@@ -136,7 +144,7 @@ public class PlexusBuildParticipant extends AbstractBuildParticipant {
 
   private static PlexusMetadata metadata;
   
-  private synchronized PlexusMetadata getPlexusMetadata() {
+  static synchronized PlexusMetadata getPlexusMetadata() {
     if (metadata == null) {
       metadata = new PlexusMetadata();
     }
@@ -160,7 +168,16 @@ public class PlexusBuildParticipant extends AbstractBuildParticipant {
   }
 
   protected void processAnnotations(PlexusMetadata metadata, IJavaProject javaProject, IFile file,
-      IProgressMonitor monitor) throws JavaModelException {
+      Set<IResource> processed, IProgressMonitor monitor) throws JavaModelException {
+      
+    if (processed.contains(file)) {
+        return;
+    }
+
+    if (!javaProject.getProject().equals(file.getProject())) {
+        throw new IllegalArgumentException();
+    }
+
     ICompilationUnit cu = null;
     try {
       cu = JavaCore.createCompilationUnitFrom(file);
@@ -169,7 +186,7 @@ public class PlexusBuildParticipant extends AbstractBuildParticipant {
       // apparently in violation of API spec...
     }
     if(cu != null) {
-      metadata.invalidateMetadata(file);
+      metadata.invalidateMetadata(new HashSet<IResource>(processed), file);
 
       for(IType type : cu.getTypes()) {
         if(Flags.isPublic(type.getFlags())) {
@@ -182,6 +199,8 @@ public class PlexusBuildParticipant extends AbstractBuildParticipant {
         }
       }
     }
+
+    processed.add(file);
   }
 
   private Set<IResource> getResources(IType type) throws JavaModelException {

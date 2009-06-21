@@ -86,11 +86,7 @@ public class PlexusMetadata {
     projectRecords.put(resource, record);
   }
 
-  public void invalidateMetadata(IResource resource) {
-    invalidateMetadata(new HashSet<IResource>(), resource);
-  }
-
-  private void invalidateMetadata(Set<IResource> invalidated, IResource resource) {
+  public void invalidateMetadata(Set<IResource> invalidated, IResource resource) {
     if(!invalidated.add(resource)) {
       return;
     }
@@ -132,7 +128,7 @@ public class PlexusMetadata {
 
     Map<IResource, Record> projectRecords = projects.get(project);
     if (projectRecords == null) {
-      System.err.println(project.toString() + "  WTF?");
+      // plexus-annotations mojo is configured but there are no components in the project
       return dependencies;
     }
     
@@ -153,7 +149,7 @@ public class PlexusMetadata {
       }
 
       if(!record.isValid()) {
-        throw new IllegalStateException("Inconsistent plexus metadata state");
+        MavenLogger.log("Plexus metadata was not generated properly for " + record.resource, null);
       }
 
       for(IResource dependency : record.resources) {
