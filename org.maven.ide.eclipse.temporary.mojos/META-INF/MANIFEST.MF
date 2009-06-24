@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Collection of project configurators (temporary)
+Bundle-SymbolicName: org.maven.ide.eclipse.temporary.mojos;singleton:=true
+Bundle-Version: 0.9.9.qualifier
+Bundle-Vendor: Sonatype, Inc.
+Bundle-RequiredExecutionEnvironment: J2SE-1.5,
+ JavaSE-1.6
+Require-Bundle: org.maven.ide.eclipse.jdt;bundle-version="0.9.8",
+ org.maven.ide.eclipse;bundle-version="0.9.8",
+ org.eclipse.equinox.common;bundle-version="3.4.0",
+ org.eclipse.core.resources;bundle-version="3.4.2",
+ org.maven.ide.components.maven_embedder;bundle-version="3.0.0",
+ org.eclipse.jdt.core;bundle-version="3.4.4",
+ org.eclipse.core.runtime;bundle-version="3.4.0"
