@@ -8,11 +8,8 @@
 
 package org.maven.ide.eclipse.modello.tests;
 
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.runtime.CoreException;
 import org.maven.ide.eclipse.MavenPlugin;
 import org.maven.ide.eclipse.project.IProjectConfigurationManager;
 import org.maven.ide.eclipse.project.MavenProjectManager;
@@ -55,11 +52,6 @@ public class ModelloGenerationTest
         assertNoErrors( project1 );
     }
     
-    private void assertNoErrors( IProject project ) throws CoreException
-    {
-        int severity = project.findMaxProblemSeverity( IMarker.PROBLEM, true, IResource.DEPTH_INFINITE );
-        IMarker[] markers = project.findMarkers(null, true, IResource.DEPTH_INFINITE);
-        assertTrue( "Unexpected error markers " + toString( markers ), severity < IMarker.SEVERITY_ERROR );
-    }
+  
 
 }
