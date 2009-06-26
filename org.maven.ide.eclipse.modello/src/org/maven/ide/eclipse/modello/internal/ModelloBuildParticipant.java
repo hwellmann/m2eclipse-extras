@@ -11,7 +11,7 @@ public class ModelloBuildParticipant
 
     public ModelloBuildParticipant( MojoExecution execution )
     {
-        super( execution );
+        super( execution, true, true);
     }
 
     @Override
