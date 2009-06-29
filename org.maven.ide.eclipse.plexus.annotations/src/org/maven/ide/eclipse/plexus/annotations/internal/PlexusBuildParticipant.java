@@ -86,6 +86,9 @@ public class PlexusBuildParticipant extends AbstractBuildParticipant {
           }
           folder.accept(new IResourceVisitor() {
             public boolean visit(IResource resource) throws CoreException {
+              if(!javaProject.isOnClasspath(resource)) {
+                return false;
+              }
               if(resource instanceof IFile) {
                 IFile file = (IFile) resource;
                 processAnnotations(metadata, javaProject, file, processed, monitor);
@@ -105,6 +108,9 @@ public class PlexusBuildParticipant extends AbstractBuildParticipant {
           delta.accept(new IResourceDeltaVisitor() {
             public boolean visit(IResourceDelta delta) throws CoreException {
               IResource resource = delta.getResource();
+              if(!javaProject.isOnClasspath(resource)) {
+                return false;
+              }
               if(resource instanceof IFile && isInteresting(delta)) {
                 IFile file = (IFile) resource;
                 if(file.isAccessible()) {

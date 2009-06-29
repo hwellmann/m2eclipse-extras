@@ -29,7 +29,6 @@ import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.StringLiteral;
 
@@ -51,7 +50,10 @@ public class JDTComponentGleaner {
 
     IMemberValuePair roleMember = annMembers.get("role");
     String[][] role = type.resolveType((String) roleMember.getValue());
-    component.setRole(Signature.toQualifiedName(role[0]));
+    if (role!=null) {
+      // JDT model is out of sync?
+      component.setRole(Signature.toQualifiedName(role[0]));
+    }
 
     component.setRoleHint(getStringValue(type, annMembers.get("hint")));
     component.setImplementation(type.getFullyQualifiedName());
@@ -262,7 +264,7 @@ public class JDTComponentGleaner {
 
   private IType resolve(IType type, String typeName) throws JavaModelException {
     String[][] resolved = type.resolveType(typeName);
-    if(resolved.length <= 0) {
+    if(resolved == null || resolved.length <= 0) {
       return null;
     }
     return type.getJavaProject().findType(Signature.toQualifiedName(resolved[0]));
