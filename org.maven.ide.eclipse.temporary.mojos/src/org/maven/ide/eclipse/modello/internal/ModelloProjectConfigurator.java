@@ -109,7 +109,7 @@ public class ModelloProjectConfigurator
     {
         if ( isModelloExecution( execution ) )
         {
-            return new MojoExecutionBuildParticipant( execution, true, true );
+            return new MojoExecutionBuildParticipant( execution, true );
         }
 
         return null;
