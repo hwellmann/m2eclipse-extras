@@ -149,6 +149,11 @@ public class JDTComponentGleaner {
     Map<String, IMemberValuePair> annMembers = getMembersMap(anno);
 
     IType fieldType = resolve(declaringType, Signature.toString(field.getTypeSignature()));
+    
+    if (fieldType == null) {
+      // XXX why is this?
+      return null; 
+    }
 
     ComponentRequirement requirement;
 
