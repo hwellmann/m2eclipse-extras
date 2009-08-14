@@ -30,6 +30,12 @@
             id="org.maven.ide.eclipse.modello.modelloConfigurator"
             name="Modello Project Configurator">
       </configurator>
+      <configurator
+            class="org.maven.ide.eclipse.antlr.internal.AntlrProjectConfigurator"
+            generic="false"
+            id="org.maven.ide.eclipse.antlr.antlrConfigurator"
+            name="ANTLR Project Configurator">
+      </configurator>
 
    </extension>
 

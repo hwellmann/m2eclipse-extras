@@ -6,28 +6,28 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.maven.ide.eclipse.buildhelper;
-
-import java.io.File;
+package org.maven.ide.eclipse.antlr.internal;
 
 import org.apache.maven.plugin.MojoExecution;
-import org.eclipse.core.runtime.CoreException;
 import org.maven.ide.eclipse.mojos.internal.AbstractJavaProjectConfigurator;
-import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
+import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 
-public class BuildhelperProjectConfigurator
+public class AntlrProjectConfigurator
     extends AbstractJavaProjectConfigurator
 {
+
+    private static final MojoExecutionKey EXECUTION_KEY = new MojoExecutionKey( "org.codehaus.mojo", "antlr-maven-plugin", "[2.1,)", "generate" );
+
     @Override
     protected MojoExecutionKey getMojoExecutionKey()
     {
-        return new MojoExecutionKey( "org.codehaus.mojo", "build-helper-maven-plugin", "[1.0,)", "add-source,add-test-source" );
+        return EXECUTION_KEY;
     }
 
     @Override
-    protected File[] getSourceFolders( ProjectConfigurationRequest request, MojoExecution mojoExecution )
-        throws CoreException
+    public AbstractBuildParticipant doGetBuildParticipant( MojoExecution execution )
     {
-        return getParameterValue( request.getMavenSession(), mojoExecution, "sources", File[].class );
+        return new AntlrBuildParticipant( execution );
     }
+
 }

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.maven.ide.eclipse.modello.tests
-  </groupId>
-  <artifactId>p001</artifactId>
+  <groupId>org.maven.ide.eclipse.modello.tests</groupId>
+  <artifactId>modello-p001</artifactId>
   <name></name>
   <version>0.0.1-SNAPSHOT</version>
 
@@ -17,13 +16,9 @@
         <configuration>
           <mappingId>customizable</mappingId>
           <configurators>
-            <configurator>org.maven.ide.eclipse.jdt.javaConfigurator</configurator>
-            <configurator>org.maven.ide.eclipse.modello.modelloConfigurator</configurator>
-            <configurator>org.maven.ide.eclipse.plexus.annotations.plexusConfigurator</configurator>
+            <configurator id='org.maven.ide.eclipse.jdt.javaConfigurator'/>
+            <configurator id='org.maven.ide.eclipse.modello.modelloConfigurator'/>
           </configurators>
-          <mojoExecutions>
-            <mojoExecution>org.apache.maven.plugins:maven-resources-plugin::</mojoExecution>
-          </mojoExecutions>
         </configuration>
       </plugin>
 
