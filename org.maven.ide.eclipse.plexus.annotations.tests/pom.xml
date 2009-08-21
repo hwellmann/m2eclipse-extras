@@ -22,4 +22,16 @@
 
   <name>Maven plexus metadata generation incremental build support tests</name>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.tycho</groupId>
+        <artifactId>maven-osgi-test-plugin</artifactId>
+        <configuration>
+          <skip>${org.maven.ide.eclipse.tests.skip}</skip>
+        </configuration>
+      </plugin>
+    </plugins>    
+  </build>
+
 </project>
