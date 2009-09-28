@@ -10,19 +10,7 @@
             name="build-helper-maven-plugin">
       </configurator>
 
-      <configurator
-            class="org.maven.ide.eclipse.project.configurator.MavenProjectConfigurator:org.apache.maven.plugins:maven-eclipse-plugin|eclipse:m2eclipse"
-            generic="true"
-            id="org.maven.ide.eclipse.configurator.mavenEclipsePlugin"
-            name="maven-eclipse-plugin"
-            priority="5"/>
 
-      <configurator
-            class="org.maven.ide.eclipse.project.configurator.MavenProjectConfigurator:org.codehaus.mojo:sysdeo-tomcat-maven-plugin|sysdeo-tomcat:m2eclipse"
-            generic="true"
-            id="org.maven.ide.eclipse.configurator.mavenSysdeoTomcatPlugin"
-            name="sysdeo-tomcat-maven-plugin"
-            priority="50"/>
 
       <configurator
             class="org.maven.ide.eclipse.modello.internal.ModelloProjectConfigurator"
