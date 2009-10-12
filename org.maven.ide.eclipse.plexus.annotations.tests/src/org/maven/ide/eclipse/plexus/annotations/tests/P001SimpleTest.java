@@ -209,6 +209,21 @@ public class P001SimpleTest extends AsbtractMavenProjectTestCase {
       assertTrue(requirements.get(0).isOptional());
   }
 
+  public void testConstantHint() throws Exception {
+      IProject project = importProject("projects/MNGECLIPSE-1776/pom.xml", new ResolverConfiguration());
+      waitForJobsToComplete();
+
+      workspace.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
+      workspace.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+
+      assertNoErrors( project );
+
+      IFile metadata = project.getFile("target/classes/META-INF/plexus/components.xml");
+      ComponentDescriptor comp = getComponentDescriptor(readComponentSet(metadata), "c.C");
+      
+      assertEquals("I", comp.getRoleHint());
+  }
+
   private void assertRequirement(ComponentDescriptor comp, String fieldName, String roleHint) {
     List<ComponentRequirement> requirements = comp.getRequirements();
     for (ComponentRequirement requirement : requirements) {

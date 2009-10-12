@@ -55,18 +55,18 @@ public class JDTComponentGleaner {
       component.setRole(Signature.toQualifiedName(role[0]));
     }
 
-    component.setRoleHint(getStringValue(type, annMembers.get("hint")));
+    component.setRoleHint(getStringValue(type, annMembers.get("hint"), monitor));
     component.setImplementation(type.getFullyQualifiedName());
-    component.setVersion(getStringValue(type, annMembers.get("version")));
-    component.setComponentType(getStringValue(type, annMembers.get("type")));
-    component.setInstantiationStrategy(getStringValue(type, annMembers.get("instantiationStrategy")));
-    component.setLifecycleHandler(getStringValue(type, annMembers.get("lifecycleHandler")));
-    component.setComponentProfile(getStringValue(type, annMembers.get("profile")));
-    component.setComponentComposer(getStringValue(type, annMembers.get("composer")));
-    component.setComponentConfigurator(getStringValue(type, annMembers.get("configurator")));
-    component.setComponentFactory(getStringValue(type, annMembers.get("factory")));
-    component.setDescription(getStringValue(type, annMembers.get("description")));
-    component.setAlias(getStringValue(type, annMembers.get("alias")));
+    component.setVersion(getStringValue(type, annMembers.get("version"), monitor));
+    component.setComponentType(getStringValue(type, annMembers.get("type"), monitor));
+    component.setInstantiationStrategy(getStringValue(type, annMembers.get("instantiationStrategy"), monitor));
+    component.setLifecycleHandler(getStringValue(type, annMembers.get("lifecycleHandler"), monitor));
+    component.setComponentProfile(getStringValue(type, annMembers.get("profile"), monitor));
+    component.setComponentComposer(getStringValue(type, annMembers.get("composer"), monitor));
+    component.setComponentConfigurator(getStringValue(type, annMembers.get("configurator"), monitor));
+    component.setComponentFactory(getStringValue(type, annMembers.get("factory"), monitor));
+    component.setDescription(getStringValue(type, annMembers.get("description"), monitor));
+    component.setAlias(getStringValue(type, annMembers.get("alias"), monitor));
     component.setIsolatedRealm(getBooleanValue(annMembers.get("isolatedRealm")));
 
     for(IField field : getFields(type, monitor)) {
@@ -176,7 +176,7 @@ public class JDTComponentGleaner {
     } else {
       requirement = new ComponentRequirement();
 
-      requirement.setRoleHint(getStringValue(declaringType, annMembers.get("hint")));
+      requirement.setRoleHint(getStringValue(declaringType, annMembers.get("hint"), monitor));
     }
 
     String role = null;
@@ -213,7 +213,7 @@ public class JDTComponentGleaner {
     return ((Boolean) member.getValue()).booleanValue();
   }
 
-  private String getStringValue(IType type, IMemberValuePair member) throws JavaModelException {
+  private String getStringValue(IType type, IMemberValuePair member, IProgressMonitor monitor) throws JavaModelException {
     if(member == null) {
       return null;
     }
@@ -228,9 +228,15 @@ public class JDTComponentGleaner {
         String fieldName = qname.substring( dot + 1 );
 
         IType fieldType = resolve( type, fieldTypeName );
-        IField field = fieldType.getField( fieldName );
+        IField field = getFieldFromHierarchy(fieldType, fieldName, monitor);
+        if (field == null) {
+          return null;
+        }
 
         String constant = (String) field.getConstant();
+        if (constant == null) {
+          return null;
+        }
 
         // TODO is there an easier way?
         ASTParser parser = ASTParser.newParser(AST.JLS3);
@@ -239,6 +245,29 @@ public class JDTComponentGleaner {
         StringLiteral literal = (StringLiteral) parser.createAST(null);
 
         return literal.getLiteralValue();
+    }
+    return null;
+  }
+
+  private IField getFieldFromHierarchy(IType type, String fieldName, IProgressMonitor monitor) throws JavaModelException {
+    ITypeHierarchy hierarchy = type.newSupertypeHierarchy(monitor);
+    IType curr = type;
+    while(curr != null) {
+      IField field = type.getField( fieldName );
+      if (field.exists()) {
+        return field;
+      }
+      curr = hierarchy.getSuperclass(curr);
+    }
+    // TODO not sure if superinterfaces should be considered before or after superclasses
+    for (String ifaceName : type.getSuperInterfaceNames()) {
+      IType iface = resolve(type, ifaceName);
+      if (iface != null) {
+        IField field = getFieldFromHierarchy(iface, fieldName, monitor);
+        if (field.exists()) {
+          return field;
+        }
+      }
     }
     return null;
   }
