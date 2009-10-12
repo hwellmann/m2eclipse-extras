@@ -77,22 +77,22 @@ public class DefaultComponentDescriptorWriter
 
     }
 
-    private void writeComponents( XMLWriter w, List<ComponentDescriptor<?>> list )
+    private void writeComponents( XMLWriter w, List<ComponentDescriptor<?>> componentDescriptors )
         throws ComponentDescriptorWriteException, PlexusConfigurationException
     {
-        if ( list == null )
+        if ( componentDescriptors == null )
         {
             return;
         }
 
         w.startElement( "components" );
 
-        for ( ComponentDescriptor cd : list )
+        for ( ComponentDescriptor<?> cd : componentDescriptors )
         {
             w.startElement( "component" );
 
             element( w, "role", cd.getRole() );
-
+            
             element( w, "role-hint", cd.getRoleHint() );
 
             element( w, "implementation", cd.getImplementation() );
@@ -180,7 +180,7 @@ public class DefaultComponentDescriptorWriter
         }
 
         w.startElement( "requirements" );
-
+        
         for ( ComponentRequirement cr : requirements )
         {
             w.startElement( "requirement" );
@@ -213,6 +213,8 @@ public class DefaultComponentDescriptorWriter
             }
 
             element( w, "field-name", cr.getFieldName() );
+
+            element( w, "optional", cr.isOptional() ? Boolean.TRUE.toString() : null );
 
             w.endElement();
         }

@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
+import org.maven.ide.eclipse.project.ResolverConfiguration;
 import org.maven.ide.eclipse.tests.AsbtractMavenProjectTestCase;
 
 public class P001SimpleTest extends AsbtractMavenProjectTestCase {
@@ -189,6 +190,23 @@ public class P001SimpleTest extends AsbtractMavenProjectTestCase {
       ComponentDescriptor comp = getComponentDescriptor(readComponentSet(metadata), "simple.p006.s1.s2.P006S2");
 
       assertEquals("simple.p006.s1.s2.P006S2", comp.getRole());
+  }
+
+  public void testOptionalRequirement() throws Exception {
+      IProject project = importProject("projects/optionaldeps/pom.xml", new ResolverConfiguration());
+      waitForJobsToComplete();
+
+      workspace.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
+      workspace.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+
+      assertNoErrors( project );
+
+      IFile metadata = project.getFile("target/classes/META-INF/plexus/components.xml");
+      ComponentDescriptor comp = getComponentDescriptor(readComponentSet(metadata), "optionaldeps.ComponentA");
+
+      List<ComponentRequirement> requirements = comp.getRequirements();
+      assertEquals("optionaldeps.ComponentB", requirements.get(0).getRole());
+      assertTrue(requirements.get(0).isOptional());
   }
 
   private void assertRequirement(ComponentDescriptor comp, String fieldName, String roleHint) {

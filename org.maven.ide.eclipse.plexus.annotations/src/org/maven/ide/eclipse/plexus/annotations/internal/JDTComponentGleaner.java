@@ -197,6 +197,11 @@ public class JDTComponentGleaner {
     requirement.setFieldName(field.getElementName());
 
     requirement.setFieldMappingType(fieldType.getFullyQualifiedName());
+    
+    IMemberValuePair optionalMember = annMembers.get("optional");
+    if (optionalMember != null) {
+        requirement.setOptional(getBooleanValue(optionalMember));
+    }
 
     return requirement;
   }
