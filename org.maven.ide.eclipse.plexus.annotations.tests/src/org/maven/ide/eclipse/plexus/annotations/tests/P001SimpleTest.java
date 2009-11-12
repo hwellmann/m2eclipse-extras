@@ -101,10 +101,10 @@ public class P001SimpleTest extends AsbtractMavenProjectTestCase {
 
     IFile metadata = project.getFile("target/classes/META-INF/plexus/components.xml");
     ComponentDescriptor comp02 = getComponentDescriptor(readComponentSet(metadata), "simple.p002.P002Simple02Impl");
-    assertRequirement(comp02, "r01", "default");
+    assertRequirement(comp02, "r01", "");
     IFile testMetadata = project.getFile("target/test-classes/META-INF/plexus/components.xml");
     ComponentDescriptor compTest = getComponentDescriptor(readComponentSet(testMetadata), "simple.p002.test.P002SimpleTestImpl");
-    assertRequirement(compTest, "r01", "default");
+    assertRequirement(compTest, "r01", "");
 
     // change parent class, check changes are reflected in subclass components
     copyContent(project, "src/main/java/simple/p002/P002Simple01Impl.java-changed", "src/main/java/simple/p002/P002Simple01Impl.java");
@@ -129,10 +129,10 @@ public class P001SimpleTest extends AsbtractMavenProjectTestCase {
 
     IFile metadata = project03.getFile("target/classes/META-INF/plexus/components.xml");
     ComponentDescriptor comp02 = getComponentDescriptor(readComponentSet(metadata), "simple.p003.P003Simple01Impl");
-    assertRequirement(comp02, "r01", "default");
+    assertRequirement(comp02, "r01", "");
     IFile testMetadata = project03.getFile("target/test-classes/META-INF/plexus/components.xml");
     ComponentDescriptor compTest = getComponentDescriptor(readComponentSet(testMetadata), "simple.p003.test.P003SimpleTestImpl");
-    assertRequirement(compTest, "r01", "default");
+    assertRequirement(compTest, "r01", "");
 
     // change parent class, check changes are reflected in subclass components
     copyContent(project02, "src/main/java/simple/p002/P002Simple01Impl.java-changed", "src/main/java/simple/p002/P002Simple01Impl.java");
@@ -261,7 +261,7 @@ public class P001SimpleTest extends AsbtractMavenProjectTestCase {
     
     ComponentRequirement requirement = requirements.get(0);
     assertEquals("simple.p001.P001Simple", requirement.getRole());
-    assertEquals("default", requirement.getRoleHint());
+    assertEquals("", requirement.getRoleHint());
   }
 
   private ComponentSetDescriptor readComponentSet(IFile metadata) throws IOException, CoreException, PlexusConfigurationException {
