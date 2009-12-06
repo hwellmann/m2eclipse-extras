@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.maven.ide.eclipse.modello.tests</groupId>
+  <artifactId>pomproperties-p001</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.maven.ide.eclipse</groupId>
+        <artifactId>lifecycle-mapping</artifactId>
+        <version>0.9.9-SNAPSHOT</version>
+        <configuration>
+          <mappingId>customizable</mappingId>
+          <configurators>
+            <configurator id='org.maven.ide.eclipse.jdt.javaConfigurator'/>
+            <configurator id='org.maven.ide.eclipse.mavenarchiver.pomProperties'/>
+          </configurators>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
