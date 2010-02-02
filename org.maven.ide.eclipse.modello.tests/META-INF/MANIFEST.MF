@@ -4,7 +4,7 @@ Bundle-Name: Tests Plug-in
 Bundle-SymbolicName: org.maven.ide.eclipse.modello.tests
 Bundle-Version: 0.9.9.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Require-Bundle: org.maven.ide.eclipse.tests,
+Require-Bundle: org.maven.ide.eclipse.tests.common,
  org.junit;bundle-version="3.8.2",
  org.maven.ide.eclipse,
  org.eclipse.core.resources;bundle-version="3.4.2",

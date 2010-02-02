@@ -11,10 +11,10 @@ import org.eclipse.core.runtime.IPath;
 import org.maven.ide.eclipse.embedder.ArtifactKey;
 import org.maven.ide.eclipse.project.IMavenProjectFacade;
 import org.maven.ide.eclipse.project.ResolverConfiguration;
-import org.maven.ide.eclipse.tests.AsbtractMavenProjectTestCase;
+import org.maven.ide.eclipse.tests.common.AbstractMavenProjectTestCase;
 
 public class PomPropertiesTest
-    extends AsbtractMavenProjectTestCase
+    extends AbstractMavenProjectTestCase
 {
 
     public void test001_pomProperties()

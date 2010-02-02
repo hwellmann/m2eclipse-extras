@@ -17,9 +17,9 @@ import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.maven.ide.eclipse.project.ResolverConfiguration;
-import org.maven.ide.eclipse.tests.AsbtractMavenProjectTestCase;
+import org.maven.ide.eclipse.tests.common.AbstractMavenProjectTestCase;
 
-public class P001SimpleTest extends AsbtractMavenProjectTestCase {
+public class P001SimpleTest extends AbstractMavenProjectTestCase {
 
   @Override
   protected void setUp() throws Exception {

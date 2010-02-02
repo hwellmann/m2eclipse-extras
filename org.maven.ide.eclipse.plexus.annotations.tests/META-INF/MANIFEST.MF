@@ -4,7 +4,7 @@ Bundle-Name: Tests Plug-in
 Bundle-SymbolicName: org.maven.ide.eclipse.plexus.annotations.tests
 Bundle-Version: 0.9.9.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Require-Bundle: org.maven.ide.eclipse.tests,
+Require-Bundle: org.maven.ide.eclipse.tests.common,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.maven.ide.eclipse,

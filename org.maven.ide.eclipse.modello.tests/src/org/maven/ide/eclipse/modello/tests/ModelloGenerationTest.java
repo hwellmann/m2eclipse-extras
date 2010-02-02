@@ -16,10 +16,10 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.maven.ide.eclipse.project.ResolverConfiguration;
-import org.maven.ide.eclipse.tests.AsbtractMavenProjectTestCase;
+import org.maven.ide.eclipse.tests.common.AbstractMavenProjectTestCase;
 
 public class ModelloGenerationTest
-    extends AsbtractMavenProjectTestCase
+    extends AbstractMavenProjectTestCase
 {
 
     public void test_p001_simple()
