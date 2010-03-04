@@ -184,13 +184,11 @@ public abstract class AbstractJavaProjectConfigurator
         return supported;
     }
 
-    protected File[] getSourceFolders( ProjectConfigurationRequest request, MojoExecution mojoExecution ) throws CoreException
+    protected File[] getSourceFolders( ProjectConfigurationRequest request, MojoExecution mojoExecution )
+        throws CoreException
     {
-        PluginExecution execution = new PluginExecution();
-        execution.setConfiguration( mojoExecution.getConfiguration() );
-        return new File[] { maven.getMojoParameterValue( getOutputFolderParameterName(), File.class,
-                                                         request.getMavenSession(), mojoExecution.getPlugin(),
-                                                         execution, mojoExecution.getGoal() ) };
+        return new File[] { getParameterValue( getOutputFolderParameterName(), File.class, request.getMavenSession(),
+                                               mojoExecution ) };
     }
 
     protected String getOutputFolderParameterName()

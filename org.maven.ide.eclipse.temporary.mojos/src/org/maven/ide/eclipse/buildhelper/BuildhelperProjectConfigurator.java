@@ -28,6 +28,6 @@ public class BuildhelperProjectConfigurator
     protected File[] getSourceFolders( ProjectConfigurationRequest request, MojoExecution mojoExecution )
         throws CoreException
     {
-        return getParameterValue( request.getMavenSession(), mojoExecution, "sources", File[].class );
+        return getParameterValue( "sources", File[].class, request.getMavenSession(), mojoExecution );
     }
 }
