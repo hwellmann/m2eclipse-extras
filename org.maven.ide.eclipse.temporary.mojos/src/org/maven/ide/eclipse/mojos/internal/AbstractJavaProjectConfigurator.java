@@ -18,6 +18,7 @@ import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
 import org.apache.maven.plugin.MojoExecution;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -124,6 +125,7 @@ public abstract class AbstractJavaProjectConfigurator
                 for ( String goal : execution.getGoals() )
                 {
                     MojoExecution exec = new MojoExecution( plugin, goal, execution.getId() );
+                    exec.setConfiguration( (Xpp3Dom) execution.getConfiguration() );
                     executions.add( exec );
                 }
             }
@@ -184,7 +186,11 @@ public abstract class AbstractJavaProjectConfigurator
 
     protected File[] getSourceFolders( ProjectConfigurationRequest request, MojoExecution mojoExecution ) throws CoreException
     {
-        return new File[] {getParameterValue( request.getMavenSession(), mojoExecution, getOutputFolderParameterName(), File.class )};
+        PluginExecution execution = new PluginExecution();
+        execution.setConfiguration( mojoExecution.getConfiguration() );
+        return new File[] { maven.getMojoParameterValue( getOutputFolderParameterName(), File.class,
+                                                         request.getMavenSession(), mojoExecution.getPlugin(),
+                                                         execution, mojoExecution.getGoal() ) };
     }
 
     protected String getOutputFolderParameterName()
