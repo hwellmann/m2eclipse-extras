@@ -36,6 +36,12 @@ public class ModelloProjectConfigurator
             return true;
         }
 
+        if ( !"org.sonatype.plugins".equals( mojoExecution.getGroupId() )
+            || !"modello-plugin-upgrade".equals( mojoExecution.getArtifactId() ) )
+        {
+            return false;
+        }
+
         VersionRange range;
         try
         {
@@ -48,9 +54,7 @@ public class ModelloProjectConfigurator
 
         DefaultArtifactVersion version = new DefaultArtifactVersion( mojoExecution.getVersion() );
 
-        return "org.sonatype.plugins".equals( mojoExecution.getGroupId() ) //
-            && "modello-plugin-upgrade".equals( mojoExecution.getArtifactId() ) //
-            && range.containsVersion( version );
+        return range.containsVersion( version );
     }
 
     @Override
