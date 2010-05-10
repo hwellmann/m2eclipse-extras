@@ -2,7 +2,7 @@
 <feature
       id="org.maven.ide.eclipse.temporary.mojos.feature"
       label="Project configurators for commonly used maven plugins (temporary)"
-      version="0.10.1.20100506-1407"
+      version="0.10.1.20100510-1546"
       provider-name="Sonatype, Inc."
       plugin="org.maven.ide.eclipse">
 
