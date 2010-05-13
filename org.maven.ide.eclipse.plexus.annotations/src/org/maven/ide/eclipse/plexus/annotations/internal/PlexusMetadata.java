@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -60,7 +61,7 @@ public class PlexusMetadata {
 
     Set<IResource> resources;
 
-    ComponentDescriptor descriptor;
+    ComponentDescriptor<?> descriptor;
 
     boolean isValid() {
       return descriptor != null;
@@ -69,7 +70,7 @@ public class PlexusMetadata {
 
   private Map<IProject, Map<IResource, Record>> projects = new HashMap<IProject, Map<IResource, Record>>();
 
-  public void addDescriptor(IResource resource, Set<IResource> resources, ComponentDescriptor decriptor, boolean testMetadata)
+  public void addDescriptor(IResource resource, Set<IResource> resources, ComponentDescriptor<?> decriptor, boolean testMetadata)
       throws JavaModelException {
     Record record = new Record();
     record.testMetadata = testMetadata;
@@ -124,7 +125,7 @@ public class PlexusMetadata {
   public Set<IProject> writeMetadata(IProject project, boolean testMetadata) throws CoreException {
     Set<IProject> dependencies = new HashSet<IProject>();
 
-    List<ComponentDescriptor<?>> descriptors = new ArrayList<ComponentDescriptor<?>>();
+    Map<String, ComponentDescriptor<?>> descriptors = new LinkedHashMap<String, ComponentDescriptor<?>>();
 
     Map<IResource, Record> projectRecords = projects.get(project);
     if (projectRecords == null) {
@@ -156,7 +157,7 @@ public class PlexusMetadata {
         dependencies.add(dependency.getProject());
       }
 
-      descriptors.add(record.descriptor);
+      descriptors.put(getComponentKey(record.descriptor), record.descriptor);
     }
 
     writeDescriptor(project, descriptors, testMetadata);
@@ -164,7 +165,18 @@ public class PlexusMetadata {
     return dependencies;
   }
 
-  private void writeDescriptor(IProject project, final List<ComponentDescriptor<?>> descriptors, boolean testDescriptor)
+  private String getComponentKey( ComponentDescriptor<?> descriptor ) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(descriptor.getRole());
+    if (descriptor.getRoleHint() != null) {
+      sb.append(descriptor.getRoleHint());
+    }
+    sb.append(":");
+    sb.append(descriptor.getImplementationClass());
+    return sb.toString();
+  }
+
+  private void writeDescriptor(IProject project, final Map<String, ComponentDescriptor<?>> descriptors, boolean testDescriptor)
       throws CoreException {
     MavenProjectManager projectManager = MavenPlugin.getDefault().getMavenProjectManager();
     NullProgressMonitor monitor = new NullProgressMonitor();
@@ -174,7 +186,6 @@ public class PlexusMetadata {
       return;
     }
 
-    // XXX this may or may not properly merge handwritten descriptor
     // XXX use mojo configuration!
     IFolder staticMetadataFolder = project.getFolder(testDescriptor ? "src/test/resources/META-INF/plexus"
         : "src/main/resources/META-INF/plexus");
@@ -203,7 +214,7 @@ public class PlexusMetadata {
       ComponentDescriptorWriter writer = new DefaultComponentDescriptorWriter();
 
       ComponentSetDescriptor set = new ComponentSetDescriptor();
-      set.setComponents(descriptors);
+      set.setComponents(new ArrayList<ComponentDescriptor<?>>(descriptors.values()));
       set.setDependencies(Collections.EMPTY_LIST);
 
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -259,7 +270,7 @@ public class PlexusMetadata {
     projects.remove(project);
   }
 
-  private void addDescriptors(List<ComponentDescriptor<?>> descriptors, IFile file) {
+  private void addDescriptors(Map<String, ComponentDescriptor<?>> descriptors, IFile file) {
 
     PlexusConfiguration componentDescriptorConfiguration;
     String source = file.getLocation().toOSString();
@@ -281,7 +292,7 @@ public class PlexusMetadata {
     for(int i = 0; i < componentConfigurations.length; i++ ) {
       PlexusConfiguration componentConfiguration = componentConfigurations[i];
 
-      ComponentDescriptor componentDescriptor;
+      ComponentDescriptor<?> componentDescriptor;
 
       try {
         componentDescriptor = PlexusTools.buildComponentDescriptor(componentConfiguration);
@@ -294,7 +305,7 @@ public class PlexusMetadata {
 
       componentDescriptor.setComponentType("plexus");
 
-      descriptors.add(componentDescriptor);
+      descriptors.put(getComponentKey(componentDescriptor), componentDescriptor);
     }
   }
 

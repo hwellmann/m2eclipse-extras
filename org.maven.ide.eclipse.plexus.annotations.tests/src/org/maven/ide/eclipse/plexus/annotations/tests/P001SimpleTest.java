@@ -224,6 +224,22 @@ public class P001SimpleTest extends AbstractMavenProjectTestCase {
       assertEquals("I", comp.getRoleHint());
   }
 
+  public void testOverrideMetadata() throws Exception {
+      IProject project = importProject("projects/override-metadata/pom.xml", new ResolverConfiguration());
+      waitForJobsToComplete();
+
+      workspace.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
+      workspace.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+
+      assertNoErrors( project );
+
+      IFile metadata = project.getFile("target/classes/META-INF/plexus/components.xml");
+      ComponentSetDescriptor componentSet = readComponentSet(metadata);
+
+      assertEquals(1, componentSet.getComponents().size());
+      assertEquals(0, componentSet.getComponents().get(0).getRequirements().size());
+  }
+
   private void assertRequirement(ComponentDescriptor comp, String fieldName, String roleHint) {
     List<ComponentRequirement> requirements = comp.getRequirements();
     for (ComponentRequirement requirement : requirements) {
