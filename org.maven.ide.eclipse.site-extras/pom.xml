@@ -74,7 +74,7 @@
                   <file>${project.build.directory}/${project.artifactId}-${project.version}-site.zip</file>
 
                   <serverId>forge-releases</serverId>
-                  <repositoryUrl>${m2e.site-compressed}</repositoryUrl>
+                  <repositoryUrl>${site-compressed}</repositoryUrl>
                   <repositoryPath>m2e-extras/${unqualifiedVersion}/N/${buildQualifier}</repositoryPath>
                 </configuration>
               </execution>
