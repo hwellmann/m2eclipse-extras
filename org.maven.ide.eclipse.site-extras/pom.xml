@@ -75,7 +75,7 @@
 
                   <serverId>forge-releases</serverId>
                   <repositoryUrl>${site-compressed}</repositoryUrl>
-                  <repositoryPath>m2e-extras/${unqualifiedVersion}/N/${buildQualifier}</repositoryPath>
+                  <repositoryPath>m2e-extras/${unqualifiedVersion}/N/${unqualifiedVersion}.${buildQualifier}</repositoryPath>
                 </configuration>
               </execution>
             </executions>
