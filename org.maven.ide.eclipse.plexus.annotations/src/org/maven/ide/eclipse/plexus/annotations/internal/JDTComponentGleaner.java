@@ -29,7 +29,9 @@ import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.StringLiteral;
 
 
@@ -218,34 +220,44 @@ public class JDTComponentGleaner {
       return null;
     }
     if (member.getValueKind() == IMemberValuePair.K_STRING) {
-        String value = (String) member.getValue();
-        return "".equals(value) ? null : value;
+      String value = (String) member.getValue();
+      return "".equals(value) ? null : value;
     } else if (member.getValueKind() == IMemberValuePair.K_QUALIFIED_NAME) {
-        String qname = (String) member.getValue();
-
-        int dot = qname.lastIndexOf( '.' );
-        String fieldTypeName = qname.substring( 0, dot );
-        String fieldName = qname.substring( dot + 1 );
-
-        IType fieldType = resolve( type, fieldTypeName );
-        IField field = getFieldFromHierarchy(fieldType, fieldName, monitor);
-        if (field == null) {
-          return null;
-        }
-
-        String constant = (String) field.getConstant();
-        if (constant == null) {
-          return null;
-        }
-
-        // TODO is there an easier way?
-        ASTParser parser = ASTParser.newParser(AST.JLS3);
-        parser.setSource(constant.toCharArray());
-        parser.setKind( ASTParser.K_EXPRESSION );
-        StringLiteral literal = (StringLiteral) parser.createAST(null);
-
-        return literal.getLiteralValue();
+      String qname = (String) member.getValue();
+      return getStringValue( type, qname, monitor );
     }
+    return null;
+  }
+
+  private String getStringValue(IType type, String qname, IProgressMonitor monitor) throws JavaModelException  {
+    int dot = qname.lastIndexOf( '.' );
+    String fieldTypeName = qname.substring( 0, dot );
+    String fieldName = qname.substring( dot + 1 );
+
+    IType fieldType = resolve( type, fieldTypeName );
+    IField field = getFieldFromHierarchy(fieldType, fieldName, monitor);
+    if (field == null) {
+      return null;
+    }
+
+    String constant = (String) field.getConstant();
+    if (constant == null) {
+      return null;
+    }
+
+    ASTParser parser = ASTParser.newParser(AST.JLS3);
+    parser.setSource(constant.toCharArray());
+    parser.setKind( ASTParser.K_EXPRESSION );
+    ASTNode ast = parser.createAST(null);
+    if (ast instanceof StringLiteral) {
+      StringLiteral stringLiteral = (StringLiteral) ast;
+      return stringLiteral.getLiteralValue();
+    } else if (ast instanceof QualifiedName) {
+      QualifiedName qualifiedName = (QualifiedName) ast;
+      return getStringValue(fieldType, qualifiedName.getFullyQualifiedName(), monitor);
+    }
+
+    // can't really happen for annotation attributes
     return null;
   }
 

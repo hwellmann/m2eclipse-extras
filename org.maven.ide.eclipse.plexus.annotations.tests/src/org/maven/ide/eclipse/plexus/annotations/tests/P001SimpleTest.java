@@ -210,7 +210,7 @@ public class P001SimpleTest extends AbstractMavenProjectTestCase {
   }
 
   public void testConstantHint() throws Exception {
-      IProject project = importProject("projects/MNGECLIPSE-1776/pom.xml", new ResolverConfiguration());
+      IProject project = importProject("projects/MNGECLIPSE-1776_constantHint/pom.xml", new ResolverConfiguration());
       waitForJobsToComplete();
 
       workspace.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
@@ -222,6 +222,21 @@ public class P001SimpleTest extends AbstractMavenProjectTestCase {
       ComponentDescriptor comp = getComponentDescriptor(readComponentSet(metadata), "c.C");
       
       assertEquals("I", comp.getRoleHint());
+  }
+
+  public void testIndirectConstantHint() throws Exception {
+      IProject project = importProject("projects/MNGECLIPSE-2287_indirectConstantHint/pom.xml", new ResolverConfiguration());
+      waitForJobsToComplete();
+
+      workspace.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
+      workspace.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+
+      assertNoErrors( project );
+
+      IFile metadata = project.getFile("target/classes/META-INF/plexus/components.xml");
+      ComponentDescriptor comp = getComponentDescriptor(readComponentSet(metadata), "c.C");
+      
+      assertEquals("I1-I2", comp.getRoleHint());
   }
 
   public void testOverrideMetadata() throws Exception {
