@@ -11,3 +11,4 @@ Require-Bundle: org.maven.ide.eclipse.tests.common,
  org.junit;bundle-version="3.8.2",
  org.maven.ide.eclipse.maven_embedder,
  org.maven.ide.eclipse.plexus.annotations
+Bundle-Vendor: Sonatype, Inc.
