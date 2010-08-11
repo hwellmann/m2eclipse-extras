@@ -12,7 +12,7 @@
   <parent>
     <groupId>org.maven.ide.eclipse.extras</groupId>
     <artifactId>m2eclipse-extras</artifactId>
-    <version>0.10.3-SNAPSHOT</version>
+    <version>0.10.3.20100811-1647</version>
   </parent>
 
   <artifactId>org.maven.ide.eclipse.temporary.mojos</artifactId>
