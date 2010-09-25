@@ -6,7 +6,6 @@ import java.util.List;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
-import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.util.ReaderFactory;
@@ -16,6 +15,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
+import org.maven.ide.eclipse.plexus.annotations.io.DefaultComponentDescriptorReader;
 import org.maven.ide.eclipse.project.ResolverConfiguration;
 import org.maven.ide.eclipse.tests.common.AbstractMavenProjectTestCase;
 
@@ -298,8 +298,8 @@ public class P001SimpleTest extends AbstractMavenProjectTestCase {
   private ComponentSetDescriptor readComponentSet(IFile metadata) throws IOException, CoreException, PlexusConfigurationException {
     XmlStreamReader reader = ReaderFactory.newXmlReader(metadata.getContents());
     try {
-      PlexusConfiguration plexusConfiguration = PlexusTools.buildConfiguration("test resource", reader);
-      return PlexusTools.buildComponentSet( plexusConfiguration );
+      PlexusConfiguration plexusConfiguration = DefaultComponentDescriptorReader.buildConfiguration("test resource", reader);
+      return DefaultComponentDescriptorReader.buildComponentSet( plexusConfiguration );
     } finally {
       reader.close();
     }

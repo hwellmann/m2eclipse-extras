@@ -37,7 +37,7 @@ public class ModelloGenerationTest
         IJavaProject javaProject1 = JavaCore.create( project1 );
         IClasspathEntry[] cp1 = javaProject1.getRawClasspath();
 
-        assertEquals( new Path( "/modello-p001/target/generated-sources/modello" ), cp1[1].getPath() );
+        assertEquals( new Path( "/modello-p001/target/generated-sources/modello" ), cp1[3].getPath() );
 
         assertTrue( project1.getFile( "target/generated-sources/modello/generated/test/GeneratedTest.java" ).isSynchronized( IResource.DEPTH_ZERO ) );
         assertTrue( project1.getFile( "target/generated-sources/modello/generated/test/GeneratedTest.java" ).isAccessible() );

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package org.codehaus.plexus.metadata;
+package org.maven.ide.eclipse.plexus.annotations.io;
 
 import java.io.IOException;
 import java.io.Writer;

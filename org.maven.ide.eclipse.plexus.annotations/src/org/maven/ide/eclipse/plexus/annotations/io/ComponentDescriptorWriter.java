@@ -1,9 +1,7 @@
-package org.codehaus.plexus.metadata;
-
 /*
  * The MIT License
  *
- * Copyright (c) 2004, The Codehaus
+ * Copyright (c) 2007, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,25 +22,18 @@ package org.codehaus.plexus.metadata;
  * SOFTWARE.
  */
 
+package org.maven.ide.eclipse.plexus.annotations.io;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
+
 /**
- * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id: ComponentDescriptorWriteException.java 7688 2008-08-23 02:56:25Z jvanzyl $
+ * @author <a href="mailto:kenney@neonics.com">Kenney Westerhof</a>
  */
-public class ComponentDescriptorWriteException
-    extends Exception
+public interface ComponentDescriptorWriter
 {
-    public ComponentDescriptorWriteException( String message )
-    {
-        super( message );
-    }
-
-    public ComponentDescriptorWriteException( String message, Throwable cause )
-    {
-        super( message, cause );
-    }
-
-    public ComponentDescriptorWriteException( Throwable cause )
-    {
-        super( cause );
-    }
+    void writeDescriptorSet( Writer writer, ComponentSetDescriptor componentSetDescriptor, boolean containerDescriptor )
+        throws ComponentDescriptorWriteException, IOException;
 }

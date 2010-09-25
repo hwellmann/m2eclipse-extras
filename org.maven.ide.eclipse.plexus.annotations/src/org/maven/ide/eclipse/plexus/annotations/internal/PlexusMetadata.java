@@ -26,11 +26,8 @@ import java.util.Map.Entry;
 
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
-import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
-import org.codehaus.plexus.metadata.ComponentDescriptorWriter;
-import org.codehaus.plexus.metadata.DefaultComponentDescriptorWriter;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.eclipse.core.resources.IFile;
@@ -47,6 +44,9 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.maven.ide.eclipse.MavenPlugin;
 import org.maven.ide.eclipse.core.MavenLogger;
 import org.maven.ide.eclipse.plexus.annotations.PlexusAnnotationsCore;
+import org.maven.ide.eclipse.plexus.annotations.io.ComponentDescriptorWriter;
+import org.maven.ide.eclipse.plexus.annotations.io.DefaultComponentDescriptorWriter;
+import org.maven.ide.eclipse.plexus.annotations.io.DefaultComponentDescriptorReader;
 import org.maven.ide.eclipse.project.IMavenProjectFacade;
 import org.maven.ide.eclipse.project.MavenProjectManager;
 import org.maven.ide.eclipse.util.Util;
@@ -277,7 +277,7 @@ public class PlexusMetadata {
     try {
       Reader componentDescriptorReader = ReaderFactory.newXmlReader(file.getContents());
       try {
-        componentDescriptorConfiguration = PlexusTools.buildConfiguration(source, componentDescriptorReader);
+        componentDescriptorConfiguration = DefaultComponentDescriptorReader.buildConfiguration(source, componentDescriptorReader);
       } finally {
         IOUtil.close(componentDescriptorReader);
       }
@@ -295,13 +295,11 @@ public class PlexusMetadata {
       ComponentDescriptor<?> componentDescriptor;
 
       try {
-        componentDescriptor = PlexusTools.buildComponentDescriptor(componentConfiguration);
+        componentDescriptor = DefaultComponentDescriptorReader.buildComponentDescriptor(componentConfiguration);
       } catch(PlexusConfigurationException e) {
         MavenLogger.log("Could not process " + source, e);
         return;
       }
-
-      componentDescriptor.setSource(source);
 
       componentDescriptor.setComponentType("plexus");
 
