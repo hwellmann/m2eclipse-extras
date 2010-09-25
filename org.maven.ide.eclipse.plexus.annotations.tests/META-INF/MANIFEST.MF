@@ -1,8 +1,7 @@
-Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tests Plug-in
 Bundle-SymbolicName: org.maven.ide.eclipse.plexus.annotations.tests
-Bundle-Version: 0.10.4.qualifier
+Bundle-Version: 0.12.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.maven.ide.eclipse.tests.common,
  org.eclipse.core.runtime,
