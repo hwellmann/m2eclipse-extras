@@ -160,6 +160,11 @@ public abstract class AbstractJavaProjectConfigurator
     {
         MojoExecutionKey executionKey = getMojoExecutionKey();
 
+        return isSupportedExecution( mojoExecution, executionKey );
+    }
+
+    protected boolean isSupportedExecution( MojoExecution mojoExecution, MojoExecutionKey executionKey )
+    {
         if ( !executionKey.groupId.equals( mojoExecution.getGroupId() )
             || !executionKey.artifactId.equals( mojoExecution.getArtifactId() ) )
         {
