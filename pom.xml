@@ -22,7 +22,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <tycho-version>0.9.0</tycho-version>
+    <tycho-version>0.10.0</tycho-version>
 
     <m2eclipse-core.version>0.12.0/N/0.12.0.201009250112</m2eclipse-core.version>
 
