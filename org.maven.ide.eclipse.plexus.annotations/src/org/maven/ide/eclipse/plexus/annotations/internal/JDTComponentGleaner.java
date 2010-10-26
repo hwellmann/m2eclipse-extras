@@ -34,6 +34,7 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.StringLiteral;
 
+import com.ibm.icu.lang.UCharacter;
 
 public class JDTComponentGleaner {
   private static final String ANN_PACKAGE_NAME = "org.codehaus.plexus.component.annotations";
@@ -327,7 +328,8 @@ public class JDTComponentGleaner {
     StringBuffer buff = new StringBuffer();
 
     for (int i = 0; i < string.length(); i++) {
-        if (i != 0 && Character.isUpperCase(string.charAt(i))) {
+            if ( i != 0 && UCharacter.isUpperCase( string.charAt( i ) ) )
+            {
             buff.append('-');
         }
 
