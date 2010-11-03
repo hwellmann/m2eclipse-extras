@@ -18,7 +18,7 @@
 
   <groupId>org.maven.ide.eclipse.extras</groupId>
   <artifactId>m2eclipse-extras</artifactId>
-  <version>0.12.0-SNAPSHOT</version>
+  <version>0.12.0.20101103-1500</version>
   <packaging>pom</packaging>
 
   <properties>
