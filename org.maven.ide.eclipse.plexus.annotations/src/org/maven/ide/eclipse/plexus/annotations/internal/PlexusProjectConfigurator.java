@@ -55,7 +55,7 @@ public class PlexusProjectConfigurator
     }
 
     @Override
-    protected void mavenProjectChanged( MavenProjectChangedEvent event, IProgressMonitor monitor )
+    public void mavenProjectChanged( MavenProjectChangedEvent event, IProgressMonitor monitor )
         throws CoreException
     {
         if ( MavenProjectChangedEvent.KIND_REMOVED == event.getKind() )
