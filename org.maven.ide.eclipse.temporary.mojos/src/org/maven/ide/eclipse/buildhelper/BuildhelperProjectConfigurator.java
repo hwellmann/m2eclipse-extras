@@ -12,8 +12,8 @@ import java.io.File;
 
 import org.apache.maven.plugin.MojoExecution;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
 import org.maven.ide.eclipse.mojos.internal.AbstractJavaProjectConfigurator;
-import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
 
 public class BuildhelperProjectConfigurator
     extends AbstractJavaProjectConfigurator

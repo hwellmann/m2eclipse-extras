@@ -21,8 +21,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
@@ -41,15 +41,15 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaModelException;
-import org.maven.ide.eclipse.MavenPlugin;
-import org.maven.ide.eclipse.core.MavenLogger;
+import org.eclipse.m2e.core.MavenPlugin;
+import org.eclipse.m2e.core.core.MavenLogger;
+import org.eclipse.m2e.core.project.IMavenProjectFacade;
+import org.eclipse.m2e.core.project.MavenProjectManager;
+import org.eclipse.m2e.core.util.Util;
 import org.maven.ide.eclipse.plexus.annotations.PlexusAnnotationsCore;
 import org.maven.ide.eclipse.plexus.annotations.io.ComponentDescriptorWriter;
-import org.maven.ide.eclipse.plexus.annotations.io.DefaultComponentDescriptorWriter;
 import org.maven.ide.eclipse.plexus.annotations.io.DefaultComponentDescriptorReader;
-import org.maven.ide.eclipse.project.IMavenProjectFacade;
-import org.maven.ide.eclipse.project.MavenProjectManager;
-import org.maven.ide.eclipse.util.Util;
+import org.maven.ide.eclipse.plexus.annotations.io.DefaultComponentDescriptorWriter;
 
 
 public class PlexusMetadata {

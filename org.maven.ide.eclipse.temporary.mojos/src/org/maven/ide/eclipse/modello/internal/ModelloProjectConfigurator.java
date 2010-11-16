@@ -12,9 +12,9 @@ import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.plugin.MojoExecution;
+import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
+import org.eclipse.m2e.core.project.configurator.MojoExecutionBuildParticipant;
 import org.maven.ide.eclipse.mojos.internal.AbstractJavaProjectConfigurator;
-import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
-import org.maven.ide.eclipse.project.configurator.MojoExecutionBuildParticipant;
 
 public class ModelloProjectConfigurator
     extends AbstractJavaProjectConfigurator

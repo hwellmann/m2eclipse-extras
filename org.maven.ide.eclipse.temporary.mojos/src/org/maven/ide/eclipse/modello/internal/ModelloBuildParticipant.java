@@ -11,7 +11,7 @@ package org.maven.ide.eclipse.modello.internal;
 import org.apache.maven.plugin.MojoExecution;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.maven.ide.eclipse.project.configurator.MojoExecutionBuildParticipant;
+import org.eclipse.m2e.core.project.configurator.MojoExecutionBuildParticipant;
 
 public class ModelloBuildParticipant
     extends MojoExecutionBuildParticipant

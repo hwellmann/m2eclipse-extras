@@ -9,8 +9,8 @@
 package org.maven.ide.eclipse.antlr.internal;
 
 import org.apache.maven.plugin.MojoExecution;
+import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.maven.ide.eclipse.mojos.internal.AbstractJavaProjectConfigurator;
-import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 
 public class AntlrProjectConfigurator
     extends AbstractJavaProjectConfigurator

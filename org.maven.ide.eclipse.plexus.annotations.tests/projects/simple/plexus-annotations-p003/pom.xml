@@ -61,13 +61,13 @@
       </plugin>
 
       <plugin>
-        <groupId>org.maven.ide.eclipse</groupId>
+        <groupId>org.eclipse.m2e</groupId>
         <artifactId>lifecycle-mapping</artifactId>
         <version>0.10.0</version>
         <configuration>
           <mappingId>customizable</mappingId>
           <configurators>
-            <configurator id='org.maven.ide.eclipse.jdt.javaConfigurator'/>
+            <configurator id='org.eclipse.m2e.jdt.javaConfigurator'/>
             <configurator id='org.maven.ide.eclipse.plexus.annotations.plexusConfigurator'/>
           </configurators>
         </configuration>

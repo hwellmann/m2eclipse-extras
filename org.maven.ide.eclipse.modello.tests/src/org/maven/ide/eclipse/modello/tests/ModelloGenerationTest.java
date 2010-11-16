@@ -15,8 +15,8 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.maven.ide.eclipse.project.ResolverConfiguration;
-import org.maven.ide.eclipse.tests.common.AbstractMavenProjectTestCase;
+import org.eclipse.m2e.core.project.ResolverConfiguration;
+import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
 
 public class ModelloGenerationTest
     extends AbstractMavenProjectTestCase

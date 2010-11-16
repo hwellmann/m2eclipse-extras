@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.maven.ide.eclipse.projectConfigurators">
+         point="org.eclipse.m2e.core.projectConfigurators">
       <configurator
             class="org.maven.ide.eclipse.buildhelper.BuildhelperProjectConfigurator"
             generic="false"

@@ -15,9 +15,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.m2e.core.project.ResolverConfiguration;
+import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
 import org.maven.ide.eclipse.plexus.annotations.io.DefaultComponentDescriptorReader;
-import org.maven.ide.eclipse.project.ResolverConfiguration;
-import org.maven.ide.eclipse.tests.common.AbstractMavenProjectTestCase;
 
 public class P001SimpleTest extends AbstractMavenProjectTestCase {
 
