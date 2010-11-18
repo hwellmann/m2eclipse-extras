@@ -156,7 +156,7 @@ public abstract class AbstractJavaProjectConfigurator
         return project.getFullPath().append( path );
     }
 
-    protected boolean isSupportedExecution( MojoExecution mojoExecution )
+    public boolean isSupportedExecution( MojoExecution mojoExecution )
     {
         MojoExecutionKey executionKey = getMojoExecutionKey();
 

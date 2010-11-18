@@ -27,7 +27,7 @@ public class ModelloProjectConfigurator
     }
 
     @Override
-    protected boolean isSupportedExecution( MojoExecution mojoExecution )
+    public boolean isSupportedExecution( MojoExecution mojoExecution )
     {
         boolean supported = super.isSupportedExecution( mojoExecution );
 

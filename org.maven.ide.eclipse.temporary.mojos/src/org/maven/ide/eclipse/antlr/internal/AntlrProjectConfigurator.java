@@ -30,7 +30,7 @@ public class AntlrProjectConfigurator
     }
 
     @Override
-    protected boolean isSupportedExecution( MojoExecution mojoExecution )
+    public boolean isSupportedExecution( MojoExecution mojoExecution )
     {
         return isSupportedExecution( mojoExecution, EXECUTION_KEY )
             || isSupportedExecution( mojoExecution, EXECUTION_KEY_V3 );
