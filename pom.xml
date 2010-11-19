@@ -24,7 +24,7 @@
   <properties>
     <tycho-version>0.10.0</tycho-version>
 
-    <m2eclipse-core.version>0.13.0/N/0.13.0.201011190643</m2eclipse-core.version>
+    <m2eclipse-core.version>0.13.0/N/0.13.0.201011191357</m2eclipse-core.version>
 
     <site-compressed>http://repository.sonatype.org/service/local/repositories/forge-sites/content-compressed/</site-compressed>
   </properties>
