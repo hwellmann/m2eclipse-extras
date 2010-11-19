@@ -19,7 +19,6 @@ public class PomPropertiesTest
     public void test001_pomProperties()
         throws Exception
     {
-        deleteProject( "resourcefiltering-p001" );
         IProject project =
             importProject( "projects/pomproperties/pomproperties-p001/pom.xml", new ResolverConfiguration() );
         waitForJobsToComplete();
