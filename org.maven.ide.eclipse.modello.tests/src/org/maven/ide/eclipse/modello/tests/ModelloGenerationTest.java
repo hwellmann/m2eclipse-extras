@@ -29,6 +29,7 @@ public class ModelloGenerationTest
         waitForJobsToComplete();
 
         project1.build( IncrementalProjectBuilder.FULL_BUILD, monitor );
+        project1.build( IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor );
         waitForJobsToComplete();
 
         assertNoErrors( project1 );
