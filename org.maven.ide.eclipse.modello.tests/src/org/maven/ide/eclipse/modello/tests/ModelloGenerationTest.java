@@ -8,9 +8,6 @@
 
 package org.maven.ide.eclipse.modello.tests;
 
-import java.util.List;
-
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -20,12 +17,10 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
-import org.eclipse.m2e.tests.common.WorkspaceHelpers;
 
 public class ModelloGenerationTest
     extends AbstractMavenProjectTestCase
 {
-
     public void test_p001_simple()
         throws Exception
     {
@@ -45,22 +40,5 @@ public class ModelloGenerationTest
 
         assertTrue( project1.getFile( "target/generated-sources/modello/generated/test/GeneratedTest.java" ).isSynchronized( IResource.DEPTH_ZERO ) );
         assertTrue( project1.getFile( "target/generated-sources/modello/generated/test/GeneratedTest.java" ).isAccessible() );
-    }
-
-    public void test_p002_NoModelloConfigurator()
-        throws Exception
-    {
-        ResolverConfiguration configuration = new ResolverConfiguration();
-        IProject project1 = importProject( "projects/modello/modello-p002/pom.xml", configuration );
-        waitForJobsToComplete();
-
-        project1.build( IncrementalProjectBuilder.FULL_BUILD, monitor );
-        waitForJobsToComplete();
-
-        List<IMarker> errorMarkers = WorkspaceHelpers.findErrorMarkers( project1 );
-        assertNotNull( errorMarkers );
-        assertEquals( WorkspaceHelpers.toString( errorMarkers ), 1, errorMarkers.size() );
-        assertEquals( "Mojo execution not covered by lifecycle configuration: org.codehaus.modello:modello-maven-plugin:1.0.1:java {execution: standard}",
-                      errorMarkers.get( 0 ).getAttribute( IMarker.MESSAGE ) );
     }
 }
