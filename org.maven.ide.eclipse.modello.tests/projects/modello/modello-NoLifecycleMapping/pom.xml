@@ -2,12 +2,13 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.maven.ide.eclipse.modello.tests</groupId>
-  <artifactId>modello-p001</artifactId>
+  <artifactId>modello-NoLifecycleMapping</artifactId>
   <name></name>
   <version>0.0.1-SNAPSHOT</version>
 
   <build>
     <plugins>
+    <!-- 
       <plugin>
         <groupId>org.eclipse.m2e</groupId>
         <artifactId>lifecycle-mapping</artifactId>
@@ -20,7 +21,7 @@
           </configurators>
         </configuration>
       </plugin>
-
+-->
       <plugin>
         <groupId>org.codehaus.modello</groupId>
         <artifactId>modello-maven-plugin</artifactId>
@@ -59,5 +60,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>

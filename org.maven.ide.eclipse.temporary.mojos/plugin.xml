@@ -13,7 +13,8 @@
             class="org.maven.ide.eclipse.modello.internal.ModelloProjectConfigurator"
             generic="false"
             id="org.maven.ide.eclipse.modello.modelloConfigurator"
-            name="Modello Project Configurator">
+            name="Modello Project Configurator"
+            requiresExplicitEnablement="false">
       </configurator>
       <configurator
             class="org.maven.ide.eclipse.antlr.internal.AntlrProjectConfigurator"

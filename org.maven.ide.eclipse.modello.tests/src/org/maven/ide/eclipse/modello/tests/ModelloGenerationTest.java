@@ -47,6 +47,28 @@ public class ModelloGenerationTest
         assertTrue( project1.getFile( "target/generated-sources/modello/generated/test/GeneratedTest.java" ).isAccessible() );
     }
 
+    public void test_NoLifecycleMapping()
+        throws Exception
+    {
+        ResolverConfiguration configuration = new ResolverConfiguration();
+        IProject project1 = importProject( "projects/modello/modello-NoLifecycleMapping/pom.xml", configuration );
+        waitForJobsToComplete();
+
+        project1.build( IncrementalProjectBuilder.FULL_BUILD, monitor );
+        project1.build( IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor );
+        waitForJobsToComplete();
+
+        assertNoErrors( project1 );
+
+        IJavaProject javaProject1 = JavaCore.create( project1 );
+        IClasspathEntry[] cp1 = javaProject1.getRawClasspath();
+
+        assertEquals( new Path( "/modello-NoLifecycleMapping/target/generated-sources/modello" ), cp1[3].getPath() );
+
+        assertTrue( project1.getFile( "target/generated-sources/modello/generated/test/GeneratedTest.java" ).isSynchronized( IResource.DEPTH_ZERO ) );
+        assertTrue( project1.getFile( "target/generated-sources/modello/generated/test/GeneratedTest.java" ).isAccessible() );
+    }
+
     public void test_IncompleteConfiguration()
         throws Exception
     {
