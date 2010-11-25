@@ -82,7 +82,7 @@ public class ModelloGenerationTest
         List<IMarker> errorMarkers = WorkspaceHelpers.findErrorMarkers( project1 );
         assertNotNull( errorMarkers );
         assertEquals( WorkspaceHelpers.toString( errorMarkers ), 3, errorMarkers.size() );
-        assertEquals( "Mojo execution not covered by lifecycle configuration: org.sonatype.plugins:modello-plugin-upgrade:0.0.1:upgrade {execution: standard}",
+        assertEquals( "Mojo execution not covered by lifecycle configuration: org.sonatype.plugins:modello-plugin-upgrade:0.0.1:upgrade {execution: standard} (maven lifecycle phase: generate-sources)",
                       errorMarkers.get( 2 ).getAttribute( IMarker.MESSAGE ) );
     }
 }
