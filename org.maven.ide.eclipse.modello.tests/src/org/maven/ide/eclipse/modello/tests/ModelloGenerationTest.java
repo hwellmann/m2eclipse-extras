@@ -8,9 +8,6 @@
 
 package org.maven.ide.eclipse.modello.tests;
 
-import java.util.List;
-
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -18,6 +15,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.m2e.core.core.IMavenConstants;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
 import org.eclipse.m2e.tests.common.WorkspaceHelpers;
@@ -31,11 +29,11 @@ public class ModelloGenerationTest
         ResolverConfiguration configuration = new ResolverConfiguration();
         IProject project1 = importProject( "projects/modello/modello-p001/pom.xml", configuration );
         waitForJobsToComplete();
+        assertNoErrors( project1 );
 
         project1.build( IncrementalProjectBuilder.FULL_BUILD, monitor );
         project1.build( IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor );
         waitForJobsToComplete();
-
         assertNoErrors( project1 );
 
         IJavaProject javaProject1 = JavaCore.create( project1 );
@@ -53,11 +51,11 @@ public class ModelloGenerationTest
         ResolverConfiguration configuration = new ResolverConfiguration();
         IProject project1 = importProject( "projects/modello/modello-NoLifecycleMapping/pom.xml", configuration );
         waitForJobsToComplete();
+        assertNoErrors( project1 );
 
         project1.build( IncrementalProjectBuilder.FULL_BUILD, monitor );
         project1.build( IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor );
         waitForJobsToComplete();
-
         assertNoErrors( project1 );
 
         IJavaProject javaProject1 = JavaCore.create( project1 );
@@ -76,13 +74,8 @@ public class ModelloGenerationTest
         IProject project1 = importProject( "projects/modello/modello-IncompleteConfiguration/pom.xml", configuration );
         waitForJobsToComplete();
 
-        project1.build( IncrementalProjectBuilder.FULL_BUILD, monitor );
-        project1.build( IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor );
-        waitForJobsToComplete();
-        List<IMarker> errorMarkers = WorkspaceHelpers.findErrorMarkers( project1 );
-        assertNotNull( errorMarkers );
-        assertEquals( WorkspaceHelpers.toString( errorMarkers ), 3, errorMarkers.size() );
-        assertEquals( "Mojo execution not covered by lifecycle configuration: org.sonatype.plugins:modello-plugin-upgrade:0.0.1:upgrade {execution: standard} (maven lifecycle phase: generate-sources)",
-                      errorMarkers.get( 2 ).getAttribute( IMarker.MESSAGE ) );
+        WorkspaceHelpers.assertErrorMarker( IMavenConstants.MARKER_CONFIGURATION_ID,
+                                            "Mojo execution not covered by lifecycle configuration: org.sonatype.plugins:modello-plugin-upgrade:0.0.1:upgrade {execution: standard} (maven lifecycle phase: generate-sources)",
+                                            1 /* lineNumber */, project1 );
     }
 }
