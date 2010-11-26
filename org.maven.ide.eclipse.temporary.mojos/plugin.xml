@@ -5,30 +5,24 @@
          point="org.eclipse.m2e.core.projectConfigurators">
       <configurator
             class="org.maven.ide.eclipse.buildhelper.BuildhelperProjectConfigurator"
-            generic="false"
             id="org.maven.ide.eclipse.buildhelper.buildhelperConfigurator"
             name="build-helper-maven-plugin">
       </configurator>
       <configurator
             class="org.maven.ide.eclipse.modello.internal.ModelloProjectConfigurator"
-            generic="false"
             id="org.maven.ide.eclipse.modello.modelloConfigurator"
             name="Modello Project Configurator"
             requiresExplicitEnablement="false">
       </configurator>
       <configurator
             class="org.maven.ide.eclipse.antlr.internal.AntlrProjectConfigurator"
-            generic="false"
             id="org.maven.ide.eclipse.antlr.antlrConfigurator"
             name="ANTLR Project Configurator">
       </configurator>
       <configurator
             class="org.maven.ide.eclipse.pomproperties.internal.PomPropertiesConfigurator"
-            generic="false"
             id="org.maven.ide.eclipse.mavenarchiver.pomProperties"
             name="MavenArchiver pom.properties Generator">
       </configurator>
-
    </extension>
-
 </plugin>
