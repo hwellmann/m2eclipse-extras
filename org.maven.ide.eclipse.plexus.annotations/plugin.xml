@@ -7,6 +7,12 @@
             class="org.maven.ide.eclipse.plexus.annotations.internal.PlexusProjectConfigurator"
             id="org.maven.ide.eclipse.plexus.annotations.plexusConfigurator"
             name="Plexus Metadata Generation">
+         <mojo
+               artifactId="plexus-component-metadata"
+               goals="generate-metadata,generate-test-metadata"
+               groupId="org.codehaus.plexus"
+               versionRange="[1.0.0,)">
+         </mojo>
       </configurator>
    </extension>
 

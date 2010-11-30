@@ -16,26 +16,6 @@ public class AntlrProjectConfigurator
     extends AbstractJavaProjectConfigurator
 {
 
-    private static final MojoExecutionKey EXECUTION_KEY = new MojoExecutionKey( "org.codehaus.mojo",
-                                                                                "antlr-maven-plugin", "[2.1,)",
-                                                                                "generate" );
-
-    private static final MojoExecutionKey EXECUTION_KEY_V3 = new MojoExecutionKey( "org.antlr", "antlr3-maven-plugin",
-                                                                                   "[3.1.1,)", "generate" );
-
-    @Override
-    protected MojoExecutionKey getMojoExecutionKey()
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean isSupportedExecution( MojoExecution mojoExecution )
-    {
-        return isSupportedExecution( mojoExecution, EXECUTION_KEY )
-            || isSupportedExecution( mojoExecution, EXECUTION_KEY_V3 );
-    }
-
     @Override
     public AbstractBuildParticipant doGetBuildParticipant( MojoExecution execution )
     {

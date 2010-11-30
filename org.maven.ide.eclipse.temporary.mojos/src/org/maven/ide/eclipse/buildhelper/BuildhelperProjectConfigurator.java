@@ -19,12 +19,6 @@ public class BuildhelperProjectConfigurator
     extends AbstractJavaProjectConfigurator
 {
     @Override
-    protected MojoExecutionKey getMojoExecutionKey()
-    {
-        return new MojoExecutionKey( "org.codehaus.mojo", "build-helper-maven-plugin", "[1.0,)", "add-source,add-test-source" );
-    }
-
-    @Override
     protected File[] getSourceFolders( ProjectConfigurationRequest request, MojoExecution mojoExecution )
         throws CoreException
     {

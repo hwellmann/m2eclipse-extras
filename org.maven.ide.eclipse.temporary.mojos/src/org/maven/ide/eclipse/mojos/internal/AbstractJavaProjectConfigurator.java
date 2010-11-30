@@ -12,9 +12,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
-import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
-import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
 import org.apache.maven.plugin.MojoExecution;
@@ -37,23 +34,6 @@ public abstract class AbstractJavaProjectConfigurator
     extends AbstractProjectConfigurator
     implements IJavaProjectConfigurator
 {
-
-    protected static class MojoExecutionKey
-    {
-        final String version;
-        final String groupId;
-        final String artifactId;
-        final String goals;
-
-        public MojoExecutionKey(String groupId, String artifactId, String versionRange, String goals)
-        {
-            this.groupId = groupId;
-            this.artifactId = artifactId;
-            version = versionRange;
-            this.goals = goals;
-        }
-    }
-
     @Override
     public void configure( ProjectConfigurationRequest request, IProgressMonitor monitor )
         throws CoreException
@@ -156,39 +136,6 @@ public abstract class AbstractJavaProjectConfigurator
         return project.getFullPath().append( path );
     }
 
-    public boolean isSupportedExecution( MojoExecution mojoExecution )
-    {
-        MojoExecutionKey executionKey = getMojoExecutionKey();
-
-        return isSupportedExecution( mojoExecution, executionKey );
-    }
-
-    protected boolean isSupportedExecution( MojoExecution mojoExecution, MojoExecutionKey executionKey )
-    {
-        if ( !executionKey.groupId.equals( mojoExecution.getGroupId() )
-            || !executionKey.artifactId.equals( mojoExecution.getArtifactId() ) )
-        {
-            return false;
-        }
-
-        VersionRange range;
-        try
-        {
-            range = VersionRange.createFromVersionSpec( executionKey.version );
-        }
-        catch ( InvalidVersionSpecificationException e )
-        {
-            throw new IllegalStateException( "Can't parse version range", e );
-        }
-        DefaultArtifactVersion version = new DefaultArtifactVersion( mojoExecution.getVersion() );
-
-        // XXX supported goal
-
-        boolean supported = range.containsVersion( version );
-
-        return supported;
-    }
-
     protected File[] getSourceFolders( ProjectConfigurationRequest request, MojoExecution mojoExecution )
         throws CoreException
     {
@@ -200,7 +147,5 @@ public abstract class AbstractJavaProjectConfigurator
     {
         return "outputDirectory";
     }
-
-    protected abstract MojoExecutionKey getMojoExecutionKey();
 
 }
