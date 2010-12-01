@@ -11,7 +11,7 @@
                artifactId="plexus-component-metadata"
                goals="generate-metadata,generate-test-metadata"
                groupId="org.codehaus.plexus"
-               versionRange="[1.0.0,)">
+               versionRange="[1.0-beta-3.0.6,)">
          </mojo>
       </configurator>
    </extension>
