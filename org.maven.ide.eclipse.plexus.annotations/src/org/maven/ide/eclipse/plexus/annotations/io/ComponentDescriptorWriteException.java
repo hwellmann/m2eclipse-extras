@@ -31,6 +31,8 @@ package org.maven.ide.eclipse.plexus.annotations.io;
 public class ComponentDescriptorWriteException
     extends Exception
 {
+    private static final long serialVersionUID = 4587370995035754225L;
+
     public ComponentDescriptorWriteException( String message )
     {
         super( message );
