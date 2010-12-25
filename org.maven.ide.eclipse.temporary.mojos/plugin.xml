@@ -7,57 +7,72 @@
             class="org.maven.ide.eclipse.buildhelper.BuildhelperProjectConfigurator"
             id="org.maven.ide.eclipse.buildhelper.buildhelperConfigurator"
             name="build-helper-maven-plugin">
-         <mojo
-               artifactId="build-helper-maven-plugin"
-               goals="add-source,add-test-source"
-               groupId="org.codehaus.mojo"
-               versionRange="[1.0,)">
-         </mojo>
+         <pluginExecutionFilter>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <versionRange>[1.0,)</versionRange>
+            <goals>
+               <goal>add-source</goal>
+               <goal>add-test-source</goal>
+            </goals>
+         </pluginExecutionFilter>
       </configurator>
       <configurator
             class="org.maven.ide.eclipse.modello.internal.ModelloProjectConfigurator"
             id="org.maven.ide.eclipse.modello.modelloConfigurator"
             name="Modello Project Configurator">
-         <mojo
-               artifactId="modello-maven-plugin"
-               goals="java,xpp3-reader,xpp3-writer"
-               groupId="org.codehaus.modello"
-               versionRange="[1.0.1,)">
-         </mojo>
-         <mojo
-               artifactId="modello-plugin-upgrade"
-               goals="upgrade"
-               groupId="org.sonatype.plugins"
-               versionRange="[1.1,)">
-         </mojo>
+         <pluginExecutionFilter>
+            <groupId>org.codehaus.modello</groupId>
+            <artifactId>modello-maven-plugin</artifactId>
+            <versionRange>[1.0.1,)</versionRange>
+            <goals>
+               <goal>java</goal>
+               <goal>xpp3-reader</goal>
+               <goal>xpp3-writer</goal>
+            </goals>
+         </pluginExecutionFilter>
+         <pluginExecutionFilter>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>modello-plugin-upgrade</artifactId>
+            <versionRange>[1.1,)</versionRange>
+            <goals>
+               <goal>upgrade</goal>
+            </goals>
+         </pluginExecutionFilter>
       </configurator>
       <configurator
             class="org.maven.ide.eclipse.antlr.internal.AntlrProjectConfigurator"
             id="org.maven.ide.eclipse.antlr.antlrConfigurator"
             name="ANTLR Project Configurator">
-         <mojo
-               artifactId="antlr-maven-plugin"
-               goals="generate"
-               groupId="org.codehaus.mojo"
-               versionRange="[2.1,)">
-         </mojo>
-         <mojo
-               artifactId="antlr3-maven-plugin"
-               goals="antlr"
-               groupId="org.antlr"
-               versionRange="[3.1.1,)">
-         </mojo>
+         <pluginExecutionFilter>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>antlr-maven-plugin</artifactId>
+            <versionRange>[2.1,)</versionRange>
+            <goals>
+               <goal>generate</goal>
+            </goals>
+         </pluginExecutionFilter>
+         <pluginExecutionFilter>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr3-maven-plugin</artifactId>
+            <versionRange>[3.1.1,)</versionRange>
+            <goals>
+               <goal>antlr</goal>
+            </goals>
+         </pluginExecutionFilter>
       </configurator>
       <configurator
             class="org.maven.ide.eclipse.pomproperties.internal.PomPropertiesConfigurator"
             id="org.maven.ide.eclipse.mavenarchiver.pomProperties"
             name="MavenArchiver pom.properties Generator">
-         <mojo
-               artifactId="maven-jar-plugin"
-               goals="jar"
-               groupId="org.apache.maven.plugins"
-               versionRange="[2.0,)">
-         </mojo>
+         <pluginExecutionFilter>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <versionRange>[2.0,)</versionRange>
+            <goals>
+               <goal>jar</goal>
+            </goals>
+         </pluginExecutionFilter>
       </configurator>
    </extension>
 </plugin>

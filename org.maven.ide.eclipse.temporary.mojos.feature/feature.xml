@@ -4,7 +4,7 @@
       label="Project configurators for commonly used maven plugins (temporary)"
       version="0.12.1.qualifier"
       provider-name="Sonatype, Inc."
-      plugin="org.maven.ide.eclipse">
+      plugin="org.eclipse.m2e.core">
 
    <description url="http://m2eclipse.sonatype.org/">
       Project configurators for some commonly used maven plugins. 
