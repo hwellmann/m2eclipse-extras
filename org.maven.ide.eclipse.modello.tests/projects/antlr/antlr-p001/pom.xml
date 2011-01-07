@@ -21,7 +21,7 @@
         <artifactId>lifecycle-mapping</artifactId>
         <version>0.10.0</version>
         <configuration>
-          <mappingId>customizable</mappingId>
+          <mappingId>custom</mappingId>
           <configurators>
             <configurator id='org.eclipse.m2e.jdt.javaConfigurator' />
             <configurator id='org.eclipse.m2e.core.project.configurator.MavenResourcesProjectConfigurator'/>
