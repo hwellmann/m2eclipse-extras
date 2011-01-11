@@ -7,15 +7,9 @@
             class="org.maven.ide.eclipse.plexus.annotations.internal.PlexusProjectConfigurator"
             id="org.maven.ide.eclipse.plexus.annotations.plexusConfigurator"
             name="Plexus Metadata Generation">
-         <pluginExecutionFilter>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-component-metadata</artifactId>
-            <versionRange>[1.0-beta-3.0.6,)</versionRange>
-            <goals>
-               <goal>generate-metadata</goal>
-               <goal>generate-test-metadata</goal>
-            </goals>
-         </pluginExecutionFilter>
       </configurator>
+   </extension>
+   <extension
+         point="org.eclipse.m2e.core.lifecycleMappingMetadataSource">
    </extension>
 </plugin>

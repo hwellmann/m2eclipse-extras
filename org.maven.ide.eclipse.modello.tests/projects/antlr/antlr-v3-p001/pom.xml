@@ -18,20 +18,6 @@
     <plugins>
 
       <plugin>
-        <groupId>org.eclipse.m2e</groupId>
-        <artifactId>lifecycle-mapping</artifactId>
-        <version>0.10.0</version>
-        <configuration>
-          <mappingId>custom</mappingId>
-          <configurators>
-            <configurator id='org.eclipse.m2e.jdt.javaConfigurator' />
-            <configurator id='org.eclipse.m2e.core.project.configurator.MavenResourcesProjectConfigurator'/>
-            <configurator id='org.maven.ide.eclipse.antlr.antlrConfigurator' />
-          </configurators>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>org.antlr</groupId>
         <artifactId>antlr3-maven-plugin</artifactId>
         <version>3.1.1</version>
