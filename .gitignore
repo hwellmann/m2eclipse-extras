@@ -1,6 +1,2 @@
 /.project
-/.metadata
-/its
-
-/org.maven.ide.eclipse.modello.tests/projects/modello/modello-p002/target
-/org.maven.ide.eclipse.tests.common/target
+/.settings
