@@ -27,6 +27,7 @@
           <goal>java</goal>
           <goal>xpp3-reader</goal>
           <goal>xpp3-writer</goal>
+          <goal>xpp3-extended-reader</goal>
         </goals>
       </pluginExecutionFilter>
       <action>
