@@ -28,6 +28,7 @@
           <goal>xpp3-reader</goal>
           <goal>xpp3-writer</goal>
           <goal>xpp3-extended-reader</goal>
+          <goal>xsd</goal>
         </goals>
       </pluginExecutionFilter>
       <action>
