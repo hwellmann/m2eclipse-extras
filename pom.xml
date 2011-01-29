@@ -16,7 +16,7 @@
     <version>6</version>
   </parent>
 
-  <groupId>org.maven.ide.eclipse.extras</groupId>
+  <groupId>org.sonatype.m2e.extras</groupId>
   <artifactId>m2eclipse-extras</artifactId>
   <version>0.13.0-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -33,15 +33,15 @@
   </properties>
 
   <modules>
-    <module>org.maven.ide.eclipse.temporary.mojos</module>
-    <module>org.maven.ide.eclipse.plexus.annotations</module>
+    <module>org.sonatype.m2e.temporary.mojos</module>
+    <module>org.sonatype.m2e.plexus.annotations</module>
     
-    <module>org.maven.ide.eclipse.tests.common</module>
-    <module>org.maven.ide.eclipse.plexus.annotations.tests</module>
-    <module>org.maven.ide.eclipse.modello.tests</module>
+    <module>org.sonatype.m2e.tests.common</module>
+    <module>org.sonatype.m2e.plexus.annotations.tests</module>
+    <module>org.sonatype.m2e.modello.tests</module>
 
-    <module>org.maven.ide.eclipse.temporary.mojos.feature</module>
-    <module>org.maven.ide.eclipse.site-extras</module>
+    <module>org.sonatype.m2e.temporary.mojos.feature</module>
+    <module>org.sonatype.m2e.site-extras</module>
   </modules>
 
   <repositories>
