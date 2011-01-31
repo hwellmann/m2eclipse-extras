@@ -75,7 +75,7 @@ public class ModelloGenerationTest
         waitForJobsToComplete();
 
         WorkspaceHelpers.assertErrorMarker( IMavenConstants.MARKER_CONFIGURATION_ID,
-                                            "Mojo execution not covered by lifecycle configuration: org.sonatype.plugins:modello-plugin-upgrade:0.0.1:upgrade {execution: standard} (maven lifecycle phase: generate-sources)",
-                                            1 /* lineNumber */, project1 );
+                                            "Plugin execution not covered by lifecycle configuration: org.sonatype.plugins:modello-plugin-upgrade:0.0.1:upgrade (execution: standard, phase: generate-sources)",
+                                            45 /* lineNumber */, project1 );
     }
 }
