@@ -8,6 +8,8 @@
 
 package org.sonatype.m2e.modello.tests;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -15,10 +17,12 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.m2e.core.core.IMavenConstants;
+import org.eclipse.m2e.core.MavenPlugin;
+import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
+import org.eclipse.m2e.core.project.configurator.ILifecycleMapping;
+import org.eclipse.m2e.core.project.configurator.MojoExecutionKey;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
-import org.eclipse.m2e.tests.common.WorkspaceHelpers;
 
 public class ModelloGenerationTest
     extends AbstractMavenProjectTestCase
@@ -71,11 +75,21 @@ public class ModelloGenerationTest
         throws Exception
     {
         ResolverConfiguration configuration = new ResolverConfiguration();
-        IProject project1 = importProject( "projects/modello/modello-IncompleteConfiguration/pom.xml", configuration );
+        IProject project = importProject( "projects/modello/modello-IncompleteConfiguration/pom.xml", configuration );
         waitForJobsToComplete();
 
-        WorkspaceHelpers.assertErrorMarker( IMavenConstants.MARKER_CONFIGURATION_ID,
-                                            "Plugin execution not covered by lifecycle configuration: org.sonatype.plugins:modello-plugin-upgrade:0.0.1:upgrade (execution: standard, phase: generate-sources)",
-                                            45 /* lineNumber */, project1 );
+        IMavenProjectFacade facade = MavenPlugin.getDefault().getMavenProjectManager().create( project, monitor );
+        assertNotNull( "Expected not null MavenProjectFacade", facade );
+        ILifecycleMapping lifecycleMapping = facade.getLifecycleMapping( monitor );
+        assertNotNull( "Expected not null ILifecycleMapping", lifecycleMapping );
+        List<MojoExecutionKey> notCoveredMojoExecutions = lifecycleMapping.getNotCoveredMojoExecutions( monitor );
+        assertNotNull( notCoveredMojoExecutions );
+        assertEquals( 1, notCoveredMojoExecutions.size() );
+        MojoExecutionKey notCoveredMojoExecutionKey = notCoveredMojoExecutions.get( 0 );
+        assertNotNull( notCoveredMojoExecutionKey );
+        assertEquals( "org.sonatype.plugins", notCoveredMojoExecutionKey.getGroupId() );
+        assertEquals( "modello-plugin-upgrade", notCoveredMojoExecutionKey.getArtifactId() );
+        assertEquals( "0.0.1", notCoveredMojoExecutionKey.getVersion() );
+        assertEquals( "upgrade", notCoveredMojoExecutionKey.getGoal() );
     }
 }
