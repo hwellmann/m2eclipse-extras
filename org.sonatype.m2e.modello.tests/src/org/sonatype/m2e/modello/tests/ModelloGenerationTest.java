@@ -22,10 +22,10 @@ import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.core.project.configurator.ILifecycleMapping;
 import org.eclipse.m2e.core.project.configurator.MojoExecutionKey;
-import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
+import org.eclipse.m2e.tests.common.AbstractLifecycleMappingTest;
 
 public class ModelloGenerationTest
-    extends AbstractMavenProjectTestCase
+    extends AbstractLifecycleMappingTest
 {
     public void test_p001_simple()
         throws Exception
@@ -80,9 +80,9 @@ public class ModelloGenerationTest
 
         IMavenProjectFacade facade = MavenPlugin.getDefault().getMavenProjectManager().create( project, monitor );
         assertNotNull( "Expected not null MavenProjectFacade", facade );
-        ILifecycleMapping lifecycleMapping = facade.getLifecycleMapping( monitor );
+        ILifecycleMapping lifecycleMapping = plugin.getProjectConfigurationManager().getLifecycleMapping( facade );
         assertNotNull( "Expected not null ILifecycleMapping", lifecycleMapping );
-        List<MojoExecutionKey> notCoveredMojoExecutions = lifecycleMapping.getNotCoveredMojoExecutions( monitor );
+        List<MojoExecutionKey> notCoveredMojoExecutions = getNotCoveredMojoExecutions( facade );
         assertNotNull( notCoveredMojoExecutions );
         assertEquals( 1, notCoveredMojoExecutions.size() );
         MojoExecutionKey notCoveredMojoExecutionKey = notCoveredMojoExecutions.get( 0 );

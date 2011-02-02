@@ -9,22 +9,15 @@
 package org.sonatype.m2e.mojos.internal;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.apache.maven.model.Plugin;
-import org.apache.maven.model.PluginExecution;
 import org.apache.maven.plugin.MojoExecution;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.m2e.core.core.MavenLogger;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.MavenProjectUtils;
-import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
@@ -57,76 +50,20 @@ public abstract class AbstractJavaProjectConfigurator
 
         assertHasNature( request.getProject(), JavaCore.NATURE_ID );
 
-        for ( MojoExecution mojoExecution : getExecutions( request, monitor ) )
+        for ( MojoExecution mojoExecution : getMojoExecutions( request, monitor ) )
         {
-            if ( isSupportedExecution( mojoExecution ) )
+            File[] sources = getSourceFolders( request, mojoExecution );
+
+            for ( File source : sources )
             {
-                File[] sources = getSourceFolders( request, mojoExecution );
+                IPath sourcePath = getFullPath( facade, source );
 
-                for ( File source : sources )
+                if ( sourcePath != null && !classpath.containsPath( sourcePath ) )
                 {
-                    IPath sourcePath = getFullPath( facade, source );
-
-                    if ( sourcePath != null && !classpath.containsPath( sourcePath ) )
-                    {
-                        classpath.addSourceEntry( sourcePath, facade.getOutputLocation(), true );
-                    }
+                    classpath.addSourceEntry( sourcePath, facade.getOutputLocation(), true );
                 }
             }
         }
-    }
-
-    private List<MojoExecution> getExecutions( ProjectConfigurationRequest request, IProgressMonitor monitor )
-        throws CoreException
-    {
-        List<MojoExecution> executions = new ArrayList<MojoExecution>();
-        List<Plugin> plugins = request.getMavenProjectFacade().getMavenProject( monitor ).getBuildPlugins();
-        for ( Plugin plugin : plugins )
-        {
-            if ( plugin.getVersion() == null )
-            {
-                try
-                {
-                    String version =
-                        maven.resolvePluginVersion( plugin.getGroupId(), plugin.getArtifactId(),
-                                                    request.getMavenSession() );
-                    plugin.setVersion( version );
-                }
-                catch ( CoreException ex )
-                {
-                    MavenLogger.log( ex );
-                    console.logError( "Failed to determine plugin version for " + plugin );
-                    continue;
-                }
-            }
-
-            for ( PluginExecution execution : plugin.getExecutions() )
-            {
-                for ( String goal : execution.getGoals() )
-                {
-                    MojoExecution exec = new MojoExecution( plugin, goal, execution.getId() );
-                    exec.setConfiguration( (Xpp3Dom) execution.getConfiguration() );
-                    executions.add( exec );
-                }
-            }
-        }
-        return executions;
-    }
-
-    @Override
-    public AbstractBuildParticipant getBuildParticipant( MojoExecution execution )
-    {
-        if ( isSupportedExecution( execution ) )
-        {
-            return doGetBuildParticipant( execution );
-        }
-
-        return null;
-    }
-
-    protected AbstractBuildParticipant doGetBuildParticipant( MojoExecution execution )
-    {
-        return null;
     }
 
     protected IPath getFullPath( IMavenProjectFacade facade, File file )

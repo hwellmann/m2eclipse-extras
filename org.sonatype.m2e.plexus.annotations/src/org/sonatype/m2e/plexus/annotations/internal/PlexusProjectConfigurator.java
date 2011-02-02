@@ -11,6 +11,8 @@ package org.sonatype.m2e.plexus.annotations.internal;
 import org.apache.maven.plugin.MojoExecution;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.m2e.core.internal.lifecycle.model.PluginExecutionMetadata;
+import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.MavenProjectChangedEvent;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
@@ -25,18 +27,20 @@ public class PlexusProjectConfigurator
     private static final String PLEXUS_ARTIFACT_ID = "plexus-component-metadata";
 
     @Override
-    public AbstractBuildParticipant getBuildParticipant( MojoExecution execution )
+    public AbstractBuildParticipant getBuildParticipant( IMavenProjectFacade projectFacade, MojoExecution execution,
+                                                         PluginExecutionMetadata executionMetadata )
     {
-        if ( isPlexusExecution( execution ) )
+        if ( !isPlexusExecution( execution ) )
         {
-            if ( "generate-metadata".equals( execution.getGoal() ) )
-            {
-                return new PlexusBuildParticipant( false );
-            }
-            else if ( "generate-test-metadata".equals( execution.getGoal() ) )
-            {
-                return new PlexusBuildParticipant( true );
-            }
+            throw new IllegalArgumentException();
+        }
+        if ( "generate-metadata".equals( execution.getGoal() ) )
+        {
+            return new PlexusBuildParticipant( false );
+        }
+        else if ( "generate-test-metadata".equals( execution.getGoal() ) )
+        {
+            return new PlexusBuildParticipant( true );
         }
         return null;
     }
