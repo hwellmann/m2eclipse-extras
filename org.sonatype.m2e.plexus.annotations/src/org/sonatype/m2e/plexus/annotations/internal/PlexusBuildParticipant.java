@@ -68,9 +68,13 @@ public class PlexusBuildParticipant
     public Set<IProject> build( int kind, final IProgressMonitor monitor )
         throws CoreException
     {
-
         final IProject project = getMavenProjectFacade().getProject();
         final IJavaProject javaProject = JavaCore.create( project );
+
+        if ( !javaProject.exists() )
+        {
+            return null;
+        }
 
         boolean changed = false;
 

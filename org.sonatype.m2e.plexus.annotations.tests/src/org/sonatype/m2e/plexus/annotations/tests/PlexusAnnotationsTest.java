@@ -354,4 +354,16 @@ public class PlexusAnnotationsTest
             reader.close();
         }
     }
+
+    public void testNotJavaProject()
+        throws Exception
+    {
+        IProject project = createExisting( "notJavaProject", "projects/notJavaProject" );
+        waitForJobsToComplete();
+
+        project.build( IncrementalProjectBuilder.CLEAN_BUILD, monitor );
+        project.build( IncrementalProjectBuilder.FULL_BUILD, monitor );
+
+        assertNoErrors( project );
+    }
 }
