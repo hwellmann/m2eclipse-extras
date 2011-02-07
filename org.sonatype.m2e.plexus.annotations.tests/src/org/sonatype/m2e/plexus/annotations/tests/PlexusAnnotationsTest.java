@@ -19,7 +19,7 @@ import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
 import org.sonatype.m2e.plexus.annotations.io.DefaultComponentDescriptorReader;
 
-public class P001SimpleTest extends AbstractMavenProjectTestCase {
+public class PlexusAnnotationsTest extends AbstractMavenProjectTestCase {
 
   @Override
   protected void setUp() throws Exception {
