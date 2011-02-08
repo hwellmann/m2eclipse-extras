@@ -26,12 +26,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2e.core.embedder.ArtifactKey;
+import org.eclipse.m2e.core.internal.M2EUtils;
 import org.eclipse.m2e.core.internal.lifecycle.model.PluginExecutionMetadata;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
-import org.eclipse.m2e.core.util.Util;
 
 
 /**
@@ -75,7 +75,7 @@ public class PomPropertiesConfigurator extends AbstractProjectConfigurator {
         mavenProject.getArtifactId());
 
     IFolder output = root.getFolder(outputPath);
-    Util.createFolder(output, true);
+    M2EUtils.createFolder(output, true);
 
     Properties properties = new Properties();
     properties.put("groupId", mavenProject.getGroupId());

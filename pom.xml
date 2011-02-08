@@ -24,7 +24,7 @@
   <properties>
     <tycho-version>0.10.0</tycho-version>
 
-    <m2eclipse-core.version>0.13.0/N/0.13.0.201102080807</m2eclipse-core.version>
+    <m2eclipse-core.version>0.13.0/N/0.13.0.201102081526</m2eclipse-core.version>
     
     <target.platform>m2e-e35</target.platform>
     <target.platform.version>0.13.0-SNAPSHOT</target.platform.version>

@@ -43,9 +43,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.core.MavenLogger;
+import org.eclipse.m2e.core.internal.M2EUtils;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.MavenProjectManager;
-import org.eclipse.m2e.core.util.Util;
 import org.sonatype.m2e.plexus.annotations.PlexusAnnotationsCore;
 import org.sonatype.m2e.plexus.annotations.io.ComponentDescriptorWriter;
 import org.sonatype.m2e.plexus.annotations.io.DefaultComponentDescriptorReader;
@@ -209,7 +209,7 @@ public class PlexusMetadata {
     IFile file = outputFolder.getFile("components.xml");
 
     if(!descriptors.isEmpty()) {
-      Util.createFolder(outputFolder, true);
+      M2EUtils.createFolder(outputFolder, true);
 
       ComponentDescriptorWriter writer = new DefaultComponentDescriptorWriter();
 
