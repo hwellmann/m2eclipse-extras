@@ -37,7 +37,7 @@ import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
-import org.eclipse.m2e.jdt.BuildPathManager;
+import org.eclipse.m2e.jdt.IClasspathManager;
 
 public class PlexusBuildParticipant
     extends AbstractBuildParticipant
@@ -200,7 +200,7 @@ public class PlexusBuildParticipant
         {
             for ( IClasspathAttribute attr : attrs )
             {
-                if ( BuildPathManager.SCOPE_ATTRIBUTE.equals( attr.getName() ) )
+                if ( IClasspathManager.SCOPE_ATTRIBUTE.equals( attr.getName() ) )
                 {
                     return Artifact.SCOPE_TEST.equals( attr.getValue() );
                 }

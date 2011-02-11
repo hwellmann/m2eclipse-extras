@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+    <groupId>org.sonatype.plugins</groupId>
+    <artifactId>plugins-parent</artifactId>
+    <version>3</version>
+	</parent>
+
+	<artifactId>modello-plugin-upgrade</artifactId>
+	<version>0.0.1</version>
+  <packaging>maven-plugin</packaging>
+  <name>Modello Upgrade Generator Plugin</name>
+  
+  <properties>
+    <modelloVersion>1.0-alpha-21</modelloVersion>
+    <mavenVersion>2.0.9</mavenVersion>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.modello</groupId>
+      <artifactId>modello-maven-plugin</artifactId>
+      <version>${modelloVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.modello</groupId>
+      <artifactId>modello-core</artifactId>
+      <version>${modelloVersion}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>${mavenVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-project</artifactId>
+      <version>${mavenVersion}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+    </dependency>
+
+  </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>2.4.2</version>
+      </plugin>
+    </plugins>
+  </build>
+
+  <scm>
+    <connection>scm:svn:http://svn.sonatype.org/plugins/tags/modello-plugin-upgrade-0.0.1</connection>
+    <developerConnection>scm:svn:https://svn.sonatype.org/plugins/tags/modello-plugin-upgrade-0.0.1</developerConnection>
+    <url>http://svn.sonatype.org/plugins/tags/modello-plugin-upgrade-0.0.1</url>
+  </scm>
+</project>
