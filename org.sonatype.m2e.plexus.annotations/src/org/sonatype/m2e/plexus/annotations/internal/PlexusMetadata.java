@@ -43,7 +43,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.internal.M2EUtils;
-import org.eclipse.m2e.core.internal.lifecycle.LifecycleMappingFactory;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.MavenProjectManager;
 import org.slf4j.Logger;
