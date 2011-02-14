@@ -239,8 +239,6 @@ public class PlexusMetadata
 
         IPath outputLocation = testDescriptor ? facade.getTestOutputLocation() : facade.getOutputLocation();
 
-        String encoding = "UTF-8";
-
         IFolder outputFolder = project.getFolder( outputLocation.append( "META-INF/plexus" ).removeFirstSegments( 1 ) );
         IFile file = outputFolder.getFile( "components.xml" );
 
@@ -283,7 +281,6 @@ public class PlexusMetadata
             {
                 file.setContents( source, true, false, monitor );
             }
-            file.setCharset( encoding, monitor );
         }
         else
         {
@@ -292,7 +289,6 @@ public class PlexusMetadata
                 file.delete( true, monitor );
             }
         }
-
     }
 
     public List<IResource> getStaleResources( IProject project, boolean testMetadata )
