@@ -9,7 +9,7 @@
 package org.sonatype.m2e.modello.internal;
 
 import org.apache.maven.plugin.MojoExecution;
-import org.eclipse.m2e.core.internal.lifecycle.model.PluginExecutionMetadata;
+import org.eclipse.m2e.core.internal.lifecyclemapping.model.PluginExecutionMetadata;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.core.project.configurator.MojoExecutionBuildParticipant;
