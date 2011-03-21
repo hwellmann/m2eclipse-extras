@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Collection of project configurators (temporary)
 Bundle-SymbolicName: org.sonatype.m2e.temporary.mojos;singleton:=true
-Bundle-Version: 0.13.0.qualifier
+Bundle-Version: 0.13.0.20110321-1300
 Bundle-Vendor: Sonatype, Inc.
 Bundle-RequiredExecutionEnvironment: J2SE-1.5,
  JavaSE-1.6

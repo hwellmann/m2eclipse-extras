@@ -2,7 +2,7 @@
 <feature
       id="org.sonatype.m2e.temporary.mojos.feature"
       label="Project configurators for commonly used maven plugins (temporary)"
-      version="0.13.0.qualifier"
+      version="0.13.0.20110321-1300"
       provider-name="Sonatype, Inc."
       plugin="org.eclipse.m2e.core">
 
