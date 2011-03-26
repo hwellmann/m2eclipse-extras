@@ -366,4 +366,23 @@ public class PlexusAnnotationsTest
 
         assertNoErrors( project );
     }
+
+    public void testTestComponents()
+        throws Exception
+    {
+        IProject project = importProject( "projects/testComponents/pom.xml", new ResolverConfiguration() );
+        waitForJobsToComplete();
+
+        workspace.build( IncrementalProjectBuilder.CLEAN_BUILD, monitor );
+        workspace.build( IncrementalProjectBuilder.FULL_BUILD, monitor );
+
+        assertNoErrors( project );
+
+        IFile metadata = project.getFile( "target/classes/META-INF/plexus/components.xml" );
+        assertFalse( metadata.isAccessible() );
+
+        IFile testMetadata = project.getFile( "target/test-classes/META-INF/plexus/components.xml" );
+        ComponentSetDescriptor componentSet = readComponentSet( testMetadata );
+        assertEquals( 1, componentSet.getComponents().size() );
+    }
 }

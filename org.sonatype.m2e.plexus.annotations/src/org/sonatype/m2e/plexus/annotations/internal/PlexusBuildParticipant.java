@@ -206,6 +206,18 @@ public class PlexusBuildParticipant
                 }
             }
         }
+
+        if ( cpe.getEntryKind() == IClasspathEntry.CPE_SOURCE )
+        {
+            IProject project = getMavenProjectFacade().getProject();
+            for ( IPath testPath : getMavenProjectFacade().getTestCompileSourceLocations() )
+            {
+                if ( project.getFolder( testPath ).getFullPath().equals( cpe.getPath() ) )
+                {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
