@@ -17,6 +17,20 @@
         </configurator>
       </action>
     </pluginExecution>
+    <pluginExecution>
+      <pluginExecutionFilter>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <versionRange>[1.0,)</versionRange>
+        <goals>
+          <goal>maven-version</goal>
+          <goal>parse-version</goal>
+        </goals>
+      </pluginExecutionFilter>
+      <action>
+        <execute/>
+      </action>
+    </pluginExecution>
 
     <pluginExecution>
       <pluginExecutionFilter>
