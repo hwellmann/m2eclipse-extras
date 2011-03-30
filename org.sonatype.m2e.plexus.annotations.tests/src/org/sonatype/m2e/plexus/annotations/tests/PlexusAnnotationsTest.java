@@ -38,11 +38,16 @@ public class PlexusAnnotationsTest
     protected void tearDown()
         throws Exception
     {
-        IWorkspaceDescription description = workspace.getDescription();
-        description.setAutoBuilding( true );
-        workspace.setDescription( description );
-
-        super.tearDown();
+        try
+        {
+            IWorkspaceDescription description = workspace.getDescription();
+            description.setAutoBuilding( true );
+            workspace.setDescription( description );
+        }
+        finally
+        {
+            super.tearDown();
+        }
     }
 
     public void testBuild()
