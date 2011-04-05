@@ -38,6 +38,13 @@ http://www.eclipse.org/legal/epl-v10.html
    </url>
 
    <plugin
+         id="org.sonatype.m2e.antlr"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.sonatype.m2e.buildhelper"
          download-size="0"
          install-size="0"

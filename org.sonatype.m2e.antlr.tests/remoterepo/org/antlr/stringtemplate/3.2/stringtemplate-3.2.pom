@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.antlr</groupId>
+  <artifactId>stringtemplate</artifactId>
+  <packaging>jar</packaging>
+  <version>3.2</version>
+  <name>ANTLR StringTemplate</name>
+  <description>StringTemplate is a java template engine for generating source code,
+web pages, emails, or any other formatted text output.
+
+StringTemplate is particularly good at multi-targeted code generators,
+multiple site skins, and internationalization/localization. 
+
+It evolved over years of effort developing jGuru.com. 
+
+StringTemplate also generates the stringtemplate website: http://www.stringtemplate.org
+and powers the ANTLR v3 code generator. Its distinguishing characteristic 
+is that unlike other engines, it strictly enforces model-view separation.
+
+Strict separation makes websites and code generators more flexible
+and maintainable; it also provides an excellent defense against malicious
+template authors.
+
+There are currently about 600 StringTemplate source downloads a month.</description>
+  <url>http://www.stringtemplate.org</url>
+  <licenses>
+      <license>
+          <name>BSD licence</name>
+          <url>http://antlr.org/license.html</url>
+          <distribution>repo</distribution>
+       </license>
+  </licenses>
+  <scm>
+    <url>http://fisheye2.cenqua.com/browse/antlr</url>
+    <connection>http://fisheye2.cenqua.com/browse/antlr</connection>
+  </scm>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+            <groupId>antlr</groupId>
+            <artifactId>antlr</artifactId>
+            <version>2.7.7</version>
+            <scope>compile</scope>
+    </dependency>
+  </dependencies>
+  
+</project>

@@ -4,11 +4,6 @@
    <extension
          point="org.eclipse.m2e.core.projectConfigurators">
       <configurator
-            class="org.sonatype.m2e.antlr.internal.AntlrProjectConfigurator"
-            id="org.sonatype.m2e.antlr.antlrConfigurator"
-            name="ANTLR Project Configurator">
-      </configurator>
-      <configurator
             class="org.sonatype.m2e.pomproperties.internal.PomPropertiesConfigurator"
             id="org.sonatype.m2e.mavenarchiver.pomProperties"
             name="MavenArchiver pom.properties Generator">
