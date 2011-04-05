@@ -34,6 +34,7 @@
 
   <modules>
     <module>org.sonatype.m2e.temporary.mojos</module>
+    <module>org.sonatype.m2e.modello</module>
     <module>org.sonatype.m2e.plexus.annotations</module>
     
     <module>org.sonatype.m2e.tests.common</module>

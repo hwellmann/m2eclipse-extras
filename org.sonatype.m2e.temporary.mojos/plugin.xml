@@ -9,11 +9,6 @@
             name="build-helper-maven-plugin">
       </configurator>
       <configurator
-            class="org.sonatype.m2e.modello.internal.ModelloProjectConfigurator"
-            id="org.sonatype.m2e.modello.modelloConfigurator"
-            name="Modello Project Configurator">
-      </configurator>
-      <configurator
             class="org.sonatype.m2e.antlr.internal.AntlrProjectConfigurator"
             id="org.sonatype.m2e.antlr.antlrConfigurator"
             name="ANTLR Project Configurator">
