@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2e.core.embedder.ArtifactKey;
 import org.eclipse.m2e.core.internal.M2EUtils;
-import org.eclipse.m2e.core.internal.lifecyclemapping.model.PluginExecutionMetadata;
+import org.eclipse.m2e.core.lifecyclemapping.model.IPluginExecutionMetadata;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
@@ -57,7 +57,7 @@ public class PomPropertiesConfigurator extends AbstractProjectConfigurator {
 
   @Override
   public AbstractBuildParticipant getBuildParticipant(IMavenProjectFacade projectFacade, MojoExecution execution,
-                                                      PluginExecutionMetadata executionMetadata) {
+                                                      IPluginExecutionMetadata executionMetadata) {
     return new AbstractBuildParticipant() {
       public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
         writePom(getMavenProjectFacade(), monitor);
