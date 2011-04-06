@@ -3,7 +3,7 @@
    <description url="http://m2eclipse.sonatype.org/site-extras">
       Maven Integration for Eclipse Extras
    </description>
-   <feature url="features/org.sonatype.m2e.temporary.mojos.feature_0.0.0.jar" id="org.sonatype.m2e.temporary.mojos.feature" version="0.0.0">
+   <feature url="features/org.sonatype.m2e.extras.feature_0.0.0.jar" id="org.sonatype.m2e.extras.feature" version="0.0.0">
       <category name="m2e-extras"/>
    </feature>
    <category-def name="m2e-extras" label="Maven Integration for Eclipse Extras"/>

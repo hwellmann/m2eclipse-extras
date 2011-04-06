@@ -46,7 +46,7 @@
     <module>org.sonatype.m2e.modello.tests</module>
     <module>org.sonatype.m2e.plexus.annotations.tests</module>
 
-    <module>org.sonatype.m2e.temporary.mojos.feature</module>
+    <module>org.sonatype.m2e.extras.feature</module>
     <module>org.sonatype.m2e.site-extras</module>
   </modules>
 

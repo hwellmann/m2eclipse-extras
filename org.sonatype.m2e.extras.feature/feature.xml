@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.sonatype.m2e.temporary.mojos.feature"
-      label="Project configurators for commonly used maven plugins (temporary)"
+      id="org.sonatype.m2e.extras.feature"
+      label="Project configurators for some commonly used maven plugins"
       version="0.13.0.qualifier"
       provider-name="Sonatype, Inc."
       plugin="org.eclipse.m2e.core">
@@ -9,19 +9,15 @@
    <description url="http://m2eclipse.sonatype.org/">
       Project configurators for some commonly used maven plugins. 
 
-Included project configurators
+Included project configurators:
 
-org.codehaus.plexus:plexus-component-annotations:*:generate-metadata,generate-test-metadata
-org.codehaus.modello:modello-maven-plugin:[1.0.1,):*
+org.antlr:antlr3-maven-plugin:[3.1.1,):antlr
+org.codehaus.mojo:antlr-maven-plugin:[2.1,):generate
 org.codehaus.mojo:build-helper-maven-plugin:*:*
-
-
-Included generic project configurators
-
-org.apache.maven.plugins:maven-eclipse-plugin:*:eclipse,m2eclipse
-org.codehaus.mojo:sysdeo-tomcat-maven-plugin:*:sysdeo-tomcat,m2eclipse
+org.codehaus.modello:modello-maven-plugin:[1.0.1,):*
+org.sonatype.plugins:modello-plugin-upgrade:[1.1,):upgrade
+org.codehaus.plexus:plexus-component-metadata:[1.0-beta-3.0.6,):generate-metadata,generate-test-metadata
    </description>
-
    <copyright url="http://sonatype.com/">
       Copyright (c) 2008 Sonatype, Inc.
    </copyright>
