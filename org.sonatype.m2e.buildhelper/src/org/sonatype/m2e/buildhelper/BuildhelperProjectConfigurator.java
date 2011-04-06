@@ -13,7 +13,7 @@ import java.io.File;
 import org.apache.maven.plugin.MojoExecution;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
-import org.sonatype.m2e.mojos.internal.AbstractJavaProjectConfigurator;
+import org.eclipse.m2e.jdt.AbstractJavaProjectConfigurator;
 
 public class BuildhelperProjectConfigurator
     extends AbstractJavaProjectConfigurator

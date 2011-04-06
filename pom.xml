@@ -24,7 +24,7 @@
   <properties>
     <tycho-version>0.10.0</tycho-version>
 
-    <m2eclipse-core.version>0.13.0/N/0.13.0.201104051512</m2eclipse-core.version>
+    <m2eclipse-core.version>0.13.0/N/0.13.0.201104051804</m2eclipse-core.version>
     
     <target.platform>m2e-e35</target.platform>
     <target.platform.version>0.13.0-SNAPSHOT</target.platform.version>
@@ -33,7 +33,6 @@
   </properties>
 
   <modules>
-    <module>org.sonatype.m2e.temporary.mojos</module>
     <module>org.sonatype.m2e.antlr</module>
     <module>org.sonatype.m2e.buildhelper</module>
     <module>org.sonatype.m2e.mavenarchiver.pomproperties</module>

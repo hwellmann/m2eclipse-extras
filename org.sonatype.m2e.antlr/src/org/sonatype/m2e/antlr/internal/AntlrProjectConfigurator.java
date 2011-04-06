@@ -12,7 +12,7 @@ import org.apache.maven.plugin.MojoExecution;
 import org.eclipse.m2e.core.lifecyclemapping.model.IPluginExecutionMetadata;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
-import org.sonatype.m2e.mojos.internal.AbstractJavaProjectConfigurator;
+import org.eclipse.m2e.jdt.AbstractJavaProjectConfigurator;
 
 public class AntlrProjectConfigurator
     extends AbstractJavaProjectConfigurator
