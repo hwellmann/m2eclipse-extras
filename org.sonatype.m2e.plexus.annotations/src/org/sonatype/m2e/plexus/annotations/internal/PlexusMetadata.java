@@ -44,7 +44,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.internal.M2EUtils;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
-import org.eclipse.m2e.core.project.MavenProjectManager;
+import org.eclipse.m2e.core.project.IMavenProjectRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonatype.m2e.plexus.annotations.PlexusAnnotationsCore;
@@ -206,7 +206,7 @@ public class PlexusMetadata
                                   boolean testDescriptor )
         throws CoreException
     {
-        MavenProjectManager projectManager = MavenPlugin.getDefault().getMavenProjectManager();
+        IMavenProjectRegistry projectManager = MavenPlugin.getMavenProjectRegistry();
         NullProgressMonitor monitor = new NullProgressMonitor();
         IMavenProjectFacade facade = projectManager.create( project, monitor );
 

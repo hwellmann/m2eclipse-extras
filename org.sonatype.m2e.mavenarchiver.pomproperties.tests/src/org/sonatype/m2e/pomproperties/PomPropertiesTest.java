@@ -23,7 +23,7 @@ public class PomPropertiesTest
             importProject( "projects/pomproperties/pomproperties-p001/pom.xml", new ResolverConfiguration() );
         waitForJobsToComplete();
 
-        IMavenProjectFacade facade = plugin.getMavenProjectManager().create( project, monitor );
+        IMavenProjectFacade facade = plugin.getMavenProjectRegistry().create( project, monitor );
         ArtifactKey key = facade.getArtifactKey();
 
         IPath pomPath =

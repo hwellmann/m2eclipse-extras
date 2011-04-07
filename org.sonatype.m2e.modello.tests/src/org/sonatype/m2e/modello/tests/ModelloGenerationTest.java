@@ -78,7 +78,7 @@ public class ModelloGenerationTest
         IProject project = importProject( "projects/modello/modello-IncompleteConfiguration/pom.xml", configuration );
         waitForJobsToComplete();
 
-        IMavenProjectFacade facade = MavenPlugin.getDefault().getMavenProjectManager().create( project, monitor );
+        IMavenProjectFacade facade = MavenPlugin.getDefault().getMavenProjectRegistry().create( project, monitor );
         assertNotNull( "Expected not null MavenProjectFacade", facade );
         ILifecycleMapping lifecycleMapping = plugin.getProjectConfigurationManager().getLifecycleMapping( facade );
         assertNotNull( "Expected not null ILifecycleMapping", lifecycleMapping );
