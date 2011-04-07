@@ -31,22 +31,31 @@ public class ModelloGenerationTest
         throws Exception
     {
         ResolverConfiguration configuration = new ResolverConfiguration();
-        IProject project1 = importProject( "projects/modello/modello-p001/pom.xml", configuration );
+        IProject project = importProject( "projects/modello/modello-p001/pom.xml", configuration );
         waitForJobsToComplete();
-        assertNoErrors( project1 );
+        assertNoErrors( project );
+        assertFalse( project.getFolder( "target/generated-sources/modello" ).exists() );
 
-        project1.build( IncrementalProjectBuilder.FULL_BUILD, monitor );
-        project1.build( IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor );
+        project.build( IncrementalProjectBuilder.FULL_BUILD, monitor );
+        project.build( IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor );
         waitForJobsToComplete();
-        assertNoErrors( project1 );
+        assertNoErrors( project );
 
-        IJavaProject javaProject1 = JavaCore.create( project1 );
+        IJavaProject javaProject1 = JavaCore.create( project );
         IClasspathEntry[] cp1 = javaProject1.getRawClasspath();
 
         assertEquals( new Path( "/modello-p001/target/generated-sources/modello" ), cp1[3].getPath() );
 
-        assertTrue( project1.getFile( "target/generated-sources/modello/generated/test/GeneratedTest.java" ).isSynchronized( IResource.DEPTH_ZERO ) );
-        assertTrue( project1.getFile( "target/generated-sources/modello/generated/test/GeneratedTest.java" ).isAccessible() );
+        assertTrue( project.getFolder( "target/generated-sources/modello" ).exists() );
+        assertTrue( project.getFile( "target/generated-sources/modello/generated/test/GeneratedTest.java" ).exists() );
+        assertTrue( project.getFile( "target/generated-sources/modello/generated/test/GeneratedTest.java" ).isSynchronized( IResource.DEPTH_ZERO ) );
+        assertTrue( project.getFile( "target/generated-sources/modello/generated/test/GeneratedTest.java" ).isAccessible() );
+
+        // Test CLEAN
+        project.build( IncrementalProjectBuilder.CLEAN_BUILD, monitor );
+        waitForJobsToComplete();
+        assertNoErrors( project );
+        assertFalse( project.getFolder( "target/generated-sources/modello" ).exists() );
     }
 
     public void test_NoLifecycleMapping()
@@ -78,7 +87,7 @@ public class ModelloGenerationTest
         IProject project = importProject( "projects/modello/modello-IncompleteConfiguration/pom.xml", configuration );
         waitForJobsToComplete();
 
-        IMavenProjectFacade facade = MavenPlugin.getDefault().getMavenProjectRegistry().create( project, monitor );
+        IMavenProjectFacade facade = MavenPlugin.getMavenProjectRegistry().create( project, monitor );
         assertNotNull( "Expected not null MavenProjectFacade", facade );
         ILifecycleMapping lifecycleMapping = plugin.getProjectConfigurationManager().getLifecycleMapping( facade );
         assertNotNull( "Expected not null ILifecycleMapping", lifecycleMapping );
