@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: M2E Discovery Publisher P2 Facade Implementation
+Bundle-SymbolicName: org.sonatype.m2e.discovery.publisher.p2.impl;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-Vendor: Sonatype
+Bundle-RequiredExecutionEnvironment: J2SE-1.5,
+ JavaSE-1.6
+Import-Package: org.sonatype.m2e.discovery.publisher.p2.facade,
+ org.sonatype.tycho.p2
+Service-Component: OSGI-INF/p2facade.xml
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.equinox.p2.core,
+ org.eclipse.equinox.p2.artifact.repository,
+ org.eclipse.equinox.p2.metadata,
+ org.eclipse.equinox.p2.publisher,
+ org.eclipse.equinox.p2.repository,
+ org.eclipse.osgi,
+ org.sonatype.tycho.p2.impl
+Bundle-Activator: org.sonatype.m2e.discovery.publisher.p2.impl.Activator
