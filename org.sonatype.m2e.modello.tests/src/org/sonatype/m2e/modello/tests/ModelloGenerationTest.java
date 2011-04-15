@@ -89,7 +89,7 @@ public class ModelloGenerationTest
 
         IMavenProjectFacade facade = MavenPlugin.getMavenProjectRegistry().create( project, monitor );
         assertNotNull( "Expected not null MavenProjectFacade", facade );
-        ILifecycleMapping lifecycleMapping = plugin.getProjectConfigurationManager().getLifecycleMapping( facade );
+        ILifecycleMapping lifecycleMapping = MavenPlugin.getProjectConfigurationManager().getLifecycleMapping( facade );
         assertNotNull( "Expected not null ILifecycleMapping", lifecycleMapping );
         List<MojoExecutionKey> notCoveredMojoExecutions = getNotCoveredMojoExecutions( facade );
         assertNotNull( notCoveredMojoExecutions );

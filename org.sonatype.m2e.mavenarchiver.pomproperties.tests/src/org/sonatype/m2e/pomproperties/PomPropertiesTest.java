@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.ArtifactKey;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
@@ -23,7 +24,7 @@ public class PomPropertiesTest
             importProject( "projects/pomproperties/pomproperties-p001/pom.xml", new ResolverConfiguration() );
         waitForJobsToComplete();
 
-        IMavenProjectFacade facade = plugin.getMavenProjectRegistry().create( project, monitor );
+        IMavenProjectFacade facade = MavenPlugin.getMavenProjectRegistry().create( project, monitor );
         ArtifactKey key = facade.getArtifactKey();
 
         IPath pomPath =
