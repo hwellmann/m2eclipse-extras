@@ -52,6 +52,11 @@
 
   <repositories>
     <repository>
+      <id>rso</id>
+      <url>http://repository.sonatype.org/content/groups/sonatype-public-grid</url>
+    </repository>
+
+    <repository>
       <id>helios</id>
       <layout>p2</layout>
       <url>http://download.eclipse.org/releases/helios</url>
