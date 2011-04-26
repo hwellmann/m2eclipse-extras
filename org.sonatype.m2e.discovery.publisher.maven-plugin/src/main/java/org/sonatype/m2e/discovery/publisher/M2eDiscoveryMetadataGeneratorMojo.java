@@ -358,7 +358,8 @@ public class M2eDiscoveryMetadataGeneratorMojo
         try
         {
             p2Data.setIuId( mavenArtifact.getGroupId() + "_" + mavenArtifact.getArtifactId() );
-            p2Data.setIuVersion( mavenArtifact.getVersion().replace( "-SNAPSHOT", BUNDLE_QUALIFIER ) );
+            String bundleVersion = mavenArtifact.getBaseVersion().replace( "-SNAPSHOT", BUNDLE_QUALIFIER );
+            p2Data.setIuVersion( bundleVersion );
             byte[] content = getByteContent( is );
             mergeLifecycleMappingMetadata( content, mergedLifecycleMappingMetadataSource );
 
