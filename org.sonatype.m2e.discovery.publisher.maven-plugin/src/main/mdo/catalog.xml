@@ -198,6 +198,10 @@
           <type>String</type>
         </field>
         <field>
+          <name>classifier</name>
+          <type>String</type>
+        </field>
+        <field>
           <name>version</name>
           <type>String</type>
         </field>

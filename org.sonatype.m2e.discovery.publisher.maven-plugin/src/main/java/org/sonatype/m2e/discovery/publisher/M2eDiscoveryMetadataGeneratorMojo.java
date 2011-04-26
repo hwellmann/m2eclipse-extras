@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,8 +31,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
+import java.util.zip.ZipEntry;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -77,11 +81,12 @@ public class M2eDiscoveryMetadataGeneratorMojo
     extends AbstractMojo
 {
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
-    // /**
-    // * @parameter expression="${project.build.directory}"
-    // * @required
-    // */
-    // private File outputDirectory;
+
+    private static final String BUNDLE_QUALIFIER = "." + new SimpleDateFormat( "yyyyMMddHHmm" ).format( new Date() );
+
+    private static final String CATALOG_SOURCE_FILENAME = "connectors.xml";
+
+    private static final String LIFECYCLE_MAPPING_METADATA_CLASSIFIER = "lifecycle-mapping-metadata";
 
     /**
      * @parameter
@@ -102,7 +107,7 @@ public class M2eDiscoveryMetadataGeneratorMojo
 
     /** @component */
     private EquinoxServiceFactory equinox;
-    
+
     /** @component */
     private RepositorySystem repositorySystem;
 
@@ -182,21 +187,31 @@ public class M2eDiscoveryMetadataGeneratorMojo
                     p2Data = new P2Data();
                     p2Data.setRepositoryUrl( p2RepositoryUrl );
                     catalogItem.setP2Data( p2Data );
-
-                    boolean isBundle = bundle2P2Data( mavenArtifact.getFile(), p2Data );
-                    if ( isBundle )
+                    if ( LIFECYCLE_MAPPING_METADATA_CLASSIFIER.equals( mavenArtifact.getClassifier() ) )
                     {
-                        hasLifecycleMappings =
-                            processBundle( mavenArtifact.getFile(), mergedLifecycleMappingMetadataSource,
-                                           mergedPluginXmlDom );
-                        File destination = new File( p2RepositoryDirectory, "plugins" );
-                        destination = new File(destination, p2Data.getIuId() + "_" + p2Data.getIuVersion() + ".jar");
-                        FileUtils.copyFile( mavenArtifact.getFile(), destination );
+                        getLog().debug( "Found lifecycle mapping metadata maven artifact: " + mavenArtifact );
+                        processLMMArtifact( mavenArtifact, mergedLifecycleMappingMetadataSource, mergedPluginXmlDom,
+                                            p2RepositoryDirectory, p2Data );
+                        hasLifecycleMappings = true;
                     }
                     else
                     {
-                        // TODO Handle lifecycle mapping metadata xml files
-                        throw new RuntimeException( "Not a bundle: " + mavenArtifact.getFile() );
+                        boolean isBundle = bundle2P2Data( mavenArtifact.getFile(), p2Data );
+                        if ( isBundle )
+                        {
+                            hasLifecycleMappings =
+                                processBundle( mavenArtifact.getFile(), mergedLifecycleMappingMetadataSource,
+                                               mergedPluginXmlDom );
+                            File destination = new File( p2RepositoryDirectory, "plugins" );
+                            destination =
+                                new File( destination, p2Data.getIuId() + "_" + p2Data.getIuVersion() + ".jar" );
+                            FileUtils.copyFile( mavenArtifact.getFile(), destination );
+                        }
+                        else
+                        {
+                            throw new RuntimeException( "Not a bundle or lifecycle mapping metadata xml file: "
+                                + mavenArtifact.getFile() );
+                        }
                     }
                 }
                 else
@@ -217,24 +232,7 @@ public class M2eDiscoveryMetadataGeneratorMojo
 
             generateMainPluginXml( catalog );
 
-            List<String> contentArgs = new ArrayList<String>();
-            contentArgs.add( "-source" );
-            contentArgs.add( p2RepositoryDirectory.toString() );
-
-            launcher.setWorkingDirectory( new File( basedir ) );
-            launcher.setApplicationName( "org.eclipse.equinox.p2.publisher.FeaturesAndBundlesPublisher" );
-            launcher.addArguments( "-artifactRepository", p2RepositoryDirectory.toURI().toString(), //
-                                   "-artifactRepositoryName", "m2e Discovery Catalog Items - Artifact Repository", //
-                                   "-metadataRepository", p2RepositoryDirectory.toURI().toString(), //
-                                   "-metadataRepositoryName", "m2e Discovery Catalog Items - Metadata Repository" );
-            launcher.addArguments( contentArgs.toArray( new String[contentArgs.size()] ) );
-
-            int forkedProcessTimeoutInSeconds = 60;
-            int result = launcher.execute( forkedProcessTimeoutInSeconds );
-            if ( result != 0 )
-            {
-                throw new RuntimeException( "P2 publisher return code was " + result );
-            }
+            generateP2RepositoryMetadata( p2RepositoryDirectory );
         }
         catch ( RuntimeException e )
         {
@@ -254,6 +252,28 @@ public class M2eDiscoveryMetadataGeneratorMojo
         }
     }
 
+    private void generateP2RepositoryMetadata( File p2RepositoryDirectory )
+    {
+        List<String> contentArgs = new ArrayList<String>();
+        contentArgs.add( "-source" );
+        contentArgs.add( p2RepositoryDirectory.toString() );
+
+        launcher.setWorkingDirectory( new File( basedir ) );
+        launcher.setApplicationName( "org.eclipse.equinox.p2.publisher.FeaturesAndBundlesPublisher" );
+        launcher.addArguments( "-artifactRepository", p2RepositoryDirectory.toURI().toString(), //
+                               "-artifactRepositoryName", "m2e Discovery Catalog Items - Artifact Repository", //
+                               "-metadataRepository", p2RepositoryDirectory.toURI().toString(), //
+                               "-metadataRepositoryName", "m2e Discovery Catalog Items - Metadata Repository" );
+        launcher.addArguments( contentArgs.toArray( new String[contentArgs.size()] ) );
+
+        int forkedProcessTimeoutInSeconds = 60;
+        int result = launcher.execute( forkedProcessTimeoutInSeconds );
+        if ( result != 0 )
+        {
+            throw new RuntimeException( "P2 publisher return code was " + result );
+        }
+    }
+
     private boolean bundle2P2Data( File bundleJar, P2Data p2Data )
         throws IOException
     {
@@ -264,6 +284,10 @@ public class M2eDiscoveryMetadataGeneratorMojo
             fis = new FileInputStream( bundleJar );
             jis = new JarInputStream( fis );
             Manifest manifest = jis.getManifest();
+            if ( manifest == null )
+            {
+                return false;
+            }
             Attributes mainAttributes = manifest.getMainAttributes();
             String bundleId = mainAttributes.getValue( "Bundle-SymbolicName" );
             if ( bundleId == null )
@@ -296,9 +320,14 @@ public class M2eDiscoveryMetadataGeneratorMojo
         List<RemoteRepository> mavenRepositories = new ArrayList<RemoteRepository>();
         mavenRepositories.add( mavenRepository );
         ArtifactRequest request = new ArtifactRequest();
-        DefaultArtifact defaultArtifact =
-            new DefaultArtifact( mavenData.getGroupId() + ":" + mavenData.getArtifactId() + ":"
-                + mavenData.getVersion() );
+
+        String artifactCoords = mavenData.getGroupId() + ":" + mavenData.getArtifactId() + ":";
+        if ( LIFECYCLE_MAPPING_METADATA_CLASSIFIER.equals( mavenData.getClassifier() ) )
+        {
+            artifactCoords += "xml:" + LIFECYCLE_MAPPING_METADATA_CLASSIFIER + ":";
+        }
+        artifactCoords += mavenData.getVersion();
+        DefaultArtifact defaultArtifact = new DefaultArtifact( artifactCoords );
         request.setArtifact( defaultArtifact );
         request.setRepositories( mavenRepositories );
 
@@ -308,7 +337,7 @@ public class M2eDiscoveryMetadataGeneratorMojo
 
         Artifact mavenArtifact = result.getArtifact();
         getLog().debug( "Resolved artifact " + mavenArtifact + " to " + result.getArtifact().getFile() + " from "
-                           + result.getRepository() );
+                            + result.getRepository() );
         File file = mavenArtifact.getFile();
         if ( file == null || !file.exists() || !file.canRead() )
         {
@@ -316,6 +345,61 @@ public class M2eDiscoveryMetadataGeneratorMojo
         }
 
         return mavenArtifact;
+    }
+
+    private void processLMMArtifact( Artifact mavenArtifact,
+                                     LifecycleMappingMetadataSource mergedLifecycleMappingMetadataSource,
+                                     Xpp3Dom mergedPluginXmlDom, File p2RepositoryDirectory, P2Data p2Data )
+        throws IOException, XmlPullParserException
+    {
+        FileOutputStream fos = null;
+        JarOutputStream jos = null;
+        FileInputStream is = new FileInputStream( mavenArtifact.getFile() );
+        try
+        {
+            p2Data.setIuId( mavenArtifact.getGroupId() + "_" + mavenArtifact.getArtifactId() );
+            p2Data.setIuVersion( mavenArtifact.getVersion().replace( "-SNAPSHOT", BUNDLE_QUALIFIER ) );
+            byte[] content = getByteContent( is );
+            mergeLifecycleMappingMetadata( content, mergedLifecycleMappingMetadataSource );
+
+            String bundleJarFileName = p2Data.getIuId() + "_" + p2Data.getIuVersion() + ".jar";
+            File bundleJar = new File( p2RepositoryDirectory, "plugins" );
+            bundleJar.mkdirs();
+            bundleJar = new File( bundleJar, bundleJarFileName );
+
+            fos = new FileOutputStream( bundleJar );
+            jos = new JarOutputStream( fos );
+
+            JarEntry jarEntry = new JarEntry( LifecycleMappingFactory.LIFECYCLE_MAPPING_METADATA_SOURCE_NAME );
+            jarEntry.setMethod( ZipEntry.DEFLATED );
+            jos.putNextEntry( jarEntry );
+            jos.write( content );
+
+            jarEntry = new JarEntry( "plugin.xml" );
+            jarEntry.setMethod( ZipEntry.DEFLATED );
+            jos.putNextEntry( jarEntry );
+            Xpp3Dom pluginDom = new Xpp3Dom( "plugin" );
+            Xpp3Dom extDom = new Xpp3Dom( "extension" );
+            // TODO Replace with LifecycleMappingFactory.EXTENSION_LIFECYCLE_MAPPING_METADATA_SOURCE
+            extDom.setAttribute( "point", "org.eclipse.m2e.core.lifecycleMappingMetadataSource" );
+            pluginDom.addChild( extDom );
+            writeXml( pluginDom, jos );
+
+            Manifest manifest = new Manifest();
+            manifest.getMainAttributes().putValue( "Manifest-Version", "1.0" );
+            manifest.getMainAttributes().putValue( "Bundle-SymbolicName", p2Data.getIuId() + ";singleton:=true" );
+            manifest.getMainAttributes().putValue( "Bundle-Version", p2Data.getIuVersion() );
+            jarEntry = new JarEntry( JarFile.MANIFEST_NAME );
+            jarEntry.setMethod( ZipEntry.DEFLATED );
+            jos.putNextEntry( jarEntry );
+            manifest.write( jos );
+        }
+        finally
+        {
+            IOUtil.close( is );
+            IOUtil.close( jos );
+            IOUtil.close( fos );
+        }
     }
 
     private boolean processBundle( File bundleJar, LifecycleMappingMetadataSource mergedLifecycleMappingMetadataSource,
@@ -334,13 +418,13 @@ public class M2eDiscoveryMetadataGeneratorMojo
             {
                 if ( LifecycleMappingFactory.LIFECYCLE_MAPPING_METADATA_SOURCE_NAME.equals( jarEntry.getName() ) )
                 {
-                    byte[] jarEntryContent = getJarEntryContent( jis );
+                    byte[] jarEntryContent = getByteContent( jis );
                     mergeLifecycleMappingMetadata( jarEntryContent, mergedLifecycleMappingMetadataSource );
                     hasLifecycleMappings = true;
                 }
                 else if ( "plugin.xml".equals( jarEntry.getName() ) )
                 {
-                    byte[] jarEntryContent = getJarEntryContent( jis );
+                    byte[] jarEntryContent = getByteContent( jis );
                     mergePluginXml( jarEntryContent, mergedPluginXmlDom );
                 }
                 jarEntry = jis.getNextJarEntry();
@@ -402,23 +486,28 @@ public class M2eDiscoveryMetadataGeneratorMojo
         FileOutputStream fos = new FileOutputStream( destination );
         try
         {
-            MXSerializer mx = new MXSerializer();
-            mx.setProperty( "http://xmlpull.org/v1/doc/properties.html#serializer-indentation", "  " );
-            mx.setProperty( "http://xmlpull.org/v1/doc/properties.html#serializer-line-separator", "\n" );
-            String x = getHeader();
-            String encoding = "UTF-8";
-            mx.setOutput( fos, encoding );
-            mx.startDocument( encoding, null );
-            mx.comment( getHeader() );
-            mx.ignorableWhitespace( "\n" );
-            source.writeToSerializer( null, mx );
-            mx.flush();
-            fos.flush();
+            writeXml( source, fos );
         }
         finally
         {
             IOUtil.close( fos );
         }
+    }
+
+    private void writeXml( Xpp3Dom source, OutputStream os )
+        throws IOException
+    {
+        MXSerializer mx = new MXSerializer();
+        mx.setProperty( "http://xmlpull.org/v1/doc/properties.html#serializer-indentation", "  " );
+        mx.setProperty( "http://xmlpull.org/v1/doc/properties.html#serializer-line-separator", "\n" );
+        String encoding = "UTF-8";
+        mx.setOutput( os, encoding );
+        mx.startDocument( encoding, null );
+        mx.comment( getHeader() );
+        mx.ignorableWhitespace( "\n" );
+        source.writeToSerializer( null, mx );
+        mx.flush();
+        os.flush();
     }
 
     private String getHeader()
@@ -495,7 +584,7 @@ public class M2eDiscoveryMetadataGeneratorMojo
         }
     }
 
-    private byte[] getJarEntryContent( JarInputStream jis )
+    private byte[] getByteContent( InputStream is )
         throws IOException
     {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -503,7 +592,7 @@ public class M2eDiscoveryMetadataGeneratorMojo
         try
         {
             byte[] buffer = new byte[0x1000];
-            for ( int n = 0; ( n = jis.read( buffer ) ) > -1; os.write( buffer, 0, n ) )
+            for ( int n = 0; ( n = is.read( buffer ) ) > -1; os.write( buffer, 0, n ) )
                 ;
             return os.toByteArray();
         }
@@ -516,7 +605,7 @@ public class M2eDiscoveryMetadataGeneratorMojo
     private DiscoveryCatalog loadDiscoveryCatalog()
         throws IOException, XmlPullParserException
     {
-        File catalogFile = new File( basedir, "connectors.xml" );
+        File catalogFile = new File( basedir, CATALOG_SOURCE_FILENAME );
         InputStream is = new FileInputStream( catalogFile );
         try
         {
