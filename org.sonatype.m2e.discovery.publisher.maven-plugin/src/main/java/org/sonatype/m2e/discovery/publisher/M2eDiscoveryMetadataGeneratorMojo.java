@@ -381,8 +381,7 @@ public class M2eDiscoveryMetadataGeneratorMojo
             jos.putNextEntry( jarEntry );
             Xpp3Dom pluginDom = new Xpp3Dom( "plugin" );
             Xpp3Dom extDom = new Xpp3Dom( "extension" );
-            // TODO Replace with LifecycleMappingFactory.EXTENSION_LIFECYCLE_MAPPING_METADATA_SOURCE
-            extDom.setAttribute( "point", "org.eclipse.m2e.core.lifecycleMappingMetadataSource" );
+            extDom.setAttribute( "point", LifecycleMappingFactory.EXTENSION_LIFECYCLE_MAPPING_METADATA_SOURCE );
             pluginDom.addChild( extDom );
             writeXml( pluginDom, jos );
 
