@@ -33,7 +33,7 @@ public class AntlrBuildParticipant
     public Set<IProject> build( int kind, IProgressMonitor monitor )
         throws Exception
     {
-        IMaven maven = MavenPlugin.getDefault().getMaven();
+        IMaven maven = MavenPlugin.getMaven();
         BuildContext buildContext = getBuildContext();
 
         // check if any of the grammar files changed
