@@ -24,10 +24,10 @@
   <properties>
     <tycho-version>0.10.0</tycho-version>
 
-    <m2eclipse-core.version>0.13.0/N/LATEST</m2eclipse-core.version>
+    <m2eclipse-core.version>1.0.0/N/LATEST</m2eclipse-core.version>
 
     <target.platform>m2e-e35</target.platform>
-    <target.platform.version>0.13.0-SNAPSHOT</target.platform.version>
+    <target.platform.version>1.0.0-SNAPSHOT</target.platform.version>
 
     <site-compressed>http://repository.sonatype.org/service/local/repositories/forge-sites/content-compressed/</site-compressed>
   </properties>
