@@ -15,8 +15,8 @@
     <version>0.13.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.sonatype.m2e.extras.feature</artifactId>
+  <artifactId>org.sonatype.m2e.mavenarchiver.pomproperties.feature</artifactId>
   <packaging>eclipse-feature</packaging>
 
-  <name>Project configurators for some commonly used maven plugins</name>
+  <name>m2e connector for mavenarchiver pom properties feature</name>
 </project>

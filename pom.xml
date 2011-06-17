@@ -22,7 +22,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <tycho-version>0.10.0</tycho-version>
+    <tycho-version>0.11.1</tycho-version>
 
     <m2eclipse-core.version>1.0.0/N/LATEST</m2eclipse-core.version>
 
@@ -34,10 +34,19 @@
 
   <modules>
     <module>org.sonatype.m2e.antlr</module>
+    <module>org.sonatype.m2e.antlr.feature</module>
+
     <module>org.sonatype.m2e.buildhelper</module>
+    <module>org.sonatype.m2e.buildhelper.feature</module>
+
     <module>org.sonatype.m2e.mavenarchiver.pomproperties</module>
+    <module>org.sonatype.m2e.mavenarchiver.pomproperties.feature</module>
+
     <module>org.sonatype.m2e.modello</module>
+    <module>org.sonatype.m2e.modello.feature</module>
+
     <module>org.sonatype.m2e.plexus.annotations</module>
+    <module>org.sonatype.m2e.plexus.annotations.feature</module>
     
     <module>org.sonatype.m2e.tests.common</module>
     <module>org.sonatype.m2e.antlr.tests</module>
@@ -46,7 +55,6 @@
     <module>org.sonatype.m2e.modello.tests</module>
     <module>org.sonatype.m2e.plexus.annotations.tests</module>
 
-    <module>org.sonatype.m2e.extras.feature</module>
     <module>org.sonatype.m2e.site-extras</module>
   </modules>
 
