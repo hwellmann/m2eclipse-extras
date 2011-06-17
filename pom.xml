@@ -26,9 +26,6 @@
 
     <m2eclipse-core.version>1.0.0/N/LATEST</m2eclipse-core.version>
 
-    <target.platform>m2e-e35</target.platform>
-    <target.platform.version>1.0.0-SNAPSHOT</target.platform.version>
-
     <site-compressed>http://repository.sonatype.org/service/local/repositories/forge-sites/content-compressed/</site-compressed>
   </properties>
 
@@ -67,13 +64,13 @@
     <repository>
       <id>helios</id>
       <layout>p2</layout>
-      <url>http://download.eclipse.org/releases/helios</url>
+      <url>http://download.eclipse.org/releases/indigo</url>
     </repository>
 
     <repository>
       <id>m2e</id>
       <layout>p2</layout>
-      <url>http://repository.sonatype.org/content/sites/forge-sites/m2e/${m2eclipse-core.version}</url>
+      <url>http://download.eclipse.org/technology/m2e/releases/1.0</url>
     </repository>
   </repositories>
 
@@ -92,14 +89,6 @@
         <version>${tycho-version}</version>
         <configuration>
           <resolver>p2</resolver>
-          <target>
-            <artifact>
-              <groupId>org.eclipse.m2e</groupId>
-              <artifactId>target-platform</artifactId>
-              <version>${target.platform.version}</version>
-              <classifier>${target.platform}</classifier>
-            </artifact>
-          </target>
           <ignoreTychoRepositories>true</ignoreTychoRepositories>
         </configuration>
       </plugin>
@@ -155,9 +144,28 @@
         </property>
       </activation>
       <properties>
-        <tycho.test.jvmArgs>-Xmx800m -XX:MaxPermSize=256m -Dosgi.ws=cocoa -XstartOnFirstThread</tycho.test.jvmArgs>
-        <osgi.ws>cocoa</osgi.ws>
+        <tycho.test.jvmArgs>-Xmx800m -XX:MaxPermSize=256m -XstartOnFirstThread</tycho.test.jvmArgs>
       </properties>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.sonatype.tycho</groupId>
+              <artifactId>maven-osgi-test-plugin</artifactId>
+              <version>${tycho-version}</version>
+              <configuration>
+                <dependencies>
+                  <dependency>
+                    <artifactId>org.eclipse.jdt.launching.macosx</artifactId>
+                    <version>3.2.100</version>
+                    <type>eclipse-plugin</type>
+                  </dependency>
+                </dependencies>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
     </profile>
     <profile>
       <id>sign</id>
