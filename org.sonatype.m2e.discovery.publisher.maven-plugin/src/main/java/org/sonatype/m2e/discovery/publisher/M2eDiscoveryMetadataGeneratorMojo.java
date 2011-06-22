@@ -39,7 +39,6 @@ import java.util.zip.ZipEntry;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.XmlStreamReader;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
@@ -136,6 +135,8 @@ public class M2eDiscoveryMetadataGeneratorMojo
             File tempFile = File.createTempFile( "M2eDiscoveryMetadataGeneratorMojo", ".jar" );
             tempFile.deleteOnExit();
 
+            List<P2Data> missingLicense = new ArrayList<P2Data>();
+
             DiscoveryCatalog catalog = loadDiscoveryCatalog();
             for ( DiscoveryCatalogItem catalogItem : catalog.getCatalogItems() )
             {
@@ -179,40 +180,46 @@ public class M2eDiscoveryMetadataGeneratorMojo
                                 processBundle( tempFile, mergedLifecycleMappingMetadataSource, mergedPluginXmlDom );
                         }
                     }
+                    if ( !p2Facade.validateLicense( p2RepoUrl, p2Data.getIuId(), p2Data.getIuVersion() ) )
+                    {
+                        missingLicense.add( p2Data );
+                    }
                 }
                 else if ( mavenData != null )
                 {
-                    Artifact mavenArtifact = getMavenArtifact( mavenData );
-
-                    p2Data = new P2Data();
-                    p2Data.setRepositoryUrl( p2RepositoryUrl );
-                    catalogItem.setP2Data( p2Data );
-                    if ( LIFECYCLE_MAPPING_METADATA_CLASSIFIER.equals( mavenArtifact.getClassifier() ) )
-                    {
-                        getLog().debug( "Found lifecycle mapping metadata maven artifact: " + mavenArtifact );
-                        processLMMArtifact( mavenArtifact, mergedLifecycleMappingMetadataSource, mergedPluginXmlDom,
-                                            p2RepositoryDirectory, p2Data );
-                        hasLifecycleMappings = true;
-                    }
-                    else
-                    {
-                        boolean isBundle = bundle2P2Data( mavenArtifact.getFile(), p2Data );
-                        if ( isBundle )
-                        {
-                            hasLifecycleMappings =
-                                processBundle( mavenArtifact.getFile(), mergedLifecycleMappingMetadataSource,
-                                               mergedPluginXmlDom );
-                            File destination = new File( p2RepositoryDirectory, "plugins" );
-                            destination =
-                                new File( destination, p2Data.getIuId() + "_" + p2Data.getIuVersion() + ".jar" );
-                            FileUtils.copyFile( mavenArtifact.getFile(), destination );
-                        }
-                        else
-                        {
-                            throw new RuntimeException( "Not a bundle or lifecycle mapping metadata xml file: "
-                                + mavenArtifact.getFile() );
-                        }
-                    }
+                    throw new RuntimeException(
+                                                "Publishing from maven repositories is disabled due to https://bugs.eclipse.org/bugs/show_bug.cgi?id=346830" );
+                    // Artifact mavenArtifact = getMavenArtifact( mavenData );
+                    //
+                    // p2Data = new P2Data();
+                    // p2Data.setRepositoryUrl( p2RepositoryUrl );
+                    // catalogItem.setP2Data( p2Data );
+                    // if ( LIFECYCLE_MAPPING_METADATA_CLASSIFIER.equals( mavenArtifact.getClassifier() ) )
+                    // {
+                    // getLog().debug( "Found lifecycle mapping metadata maven artifact: " + mavenArtifact );
+                    // processLMMArtifact( mavenArtifact, mergedLifecycleMappingMetadataSource, mergedPluginXmlDom,
+                    // p2RepositoryDirectory, p2Data );
+                    // hasLifecycleMappings = true;
+                    // }
+                    // else
+                    // {
+                    // boolean isBundle = bundle2P2Data( mavenArtifact.getFile(), p2Data );
+                    // if ( isBundle )
+                    // {
+                    // hasLifecycleMappings =
+                    // processBundle( mavenArtifact.getFile(), mergedLifecycleMappingMetadataSource,
+                    // mergedPluginXmlDom );
+                    // File destination = new File( p2RepositoryDirectory, "plugins" );
+                    // destination =
+                    // new File( destination, p2Data.getIuId() + "_" + p2Data.getIuVersion() + ".jar" );
+                    // FileUtils.copyFile( mavenArtifact.getFile(), destination );
+                    // }
+                    // else
+                    // {
+                    // throw new RuntimeException( "Not a bundle or lifecycle mapping metadata xml file: "
+                    // + mavenArtifact.getFile() );
+                    // }
+                    // }
                 }
                 else
                 {
@@ -230,15 +237,22 @@ public class M2eDiscoveryMetadataGeneratorMojo
                 }
             }
 
+            if ( !missingLicense.isEmpty() )
+            {
+                StringBuilder sb = new StringBuilder( "The following items do not have required license information:" );
+                for ( P2Data p2Data : missingLicense )
+                {
+                    sb.append( '\n' ).append( p2Data.getIuId() ).append( '@' ).append( p2Data.getIuVersion() );
+                    sb.append( " from " ).append( p2Data.getRepositoryUrl() );
+                }
+                throw new MojoExecutionException( sb.toString() );
+            }
+
             generateMainPluginXml( catalog );
 
             generateP2RepositoryMetadata( p2RepositoryDirectory );
         }
         catch ( RuntimeException e )
-        {
-            throw new MojoExecutionException( e.getMessage(), e );
-        }
-        catch ( ArtifactResolutionException e )
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
