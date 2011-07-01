@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description url="http://www.omadac.org/m2e">
+      Omadac m2e extras
+   </description>
+   <feature url="features/org.omadac.m2e.jaxb.feature_0.14.0.qualifier.jar" id="org.omadac.m2e.jaxb.feature" version="0.14.0.qualifier">
+      <category name="Omadac m2e Extensions"/>
+   </feature>
+   <category-def name="Omadac m2e Extensions" label="Omadac m2e Extensions"/>
+</site>
