@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.sonatype.m2e.jaxb.internal;
+package org.omadac.m2e.jaxb.internal;
 
 import java.io.File;
 import java.util.Set;

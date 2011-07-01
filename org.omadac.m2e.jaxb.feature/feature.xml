@@ -4,7 +4,7 @@
       label="%featureName"
       version="0.14.0.qualifier"
       provider-name="%providerName"
-      plugin="org.sonatype.m2e.jaxb">
+      plugin="org.omadac.m2e.jaxb">
 
    <description>
       %description
