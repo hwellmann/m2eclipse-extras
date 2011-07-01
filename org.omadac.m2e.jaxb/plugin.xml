@@ -4,8 +4,8 @@
    <extension
          point="org.eclipse.m2e.core.projectConfigurators">
       <configurator
-            class="org.sonatype.m2e.jaxb.internal.JaxbProjectConfigurator"
-            id="org.sonatype.m2e.jaxb.jaxbConfigurator"
+            class="org.omadac.m2e.jaxb.internal.JaxbProjectConfigurator"
+            id="org.omadac.m2e.jaxb.jaxbConfigurator"
             name="JAXB Project Configurator">
       </configurator>
    </extension>

@@ -19,7 +19,7 @@
    </license>
 
    <plugin
-         id="org.sonatype.m2e.jaxb"
+         id="org.omadac.m2e.jaxb"
          download-size="0"
          install-size="0"
          version="0.0.0"

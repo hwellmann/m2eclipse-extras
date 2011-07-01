@@ -6,6 +6,6 @@
     <version>0.14.0-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
-  <artifactId>org.sonatype.m2e.jaxb</artifactId>
+  <artifactId>org.omadac.m2e.jaxb</artifactId>
   <packaging>eclipse-plugin</packaging>
 </project>

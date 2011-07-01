@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: m2e connector for JAXB
-Bundle-SymbolicName: org.sonatype.m2e.jaxb;singleton:=true
+Bundle-SymbolicName: org.omadac.m2e.jaxb;singleton:=true
 Bundle-Version: 0.14.0.qualifier
-Bundle-Vendor: Sonatype, Inc.
+Bundle-Vendor: Omadac
 Bundle-RequiredExecutionEnvironment: J2SE-1.5,
  JavaSE-1.6
 Require-Bundle: org.eclipse.core.resources;bundle-version="3.4.0",

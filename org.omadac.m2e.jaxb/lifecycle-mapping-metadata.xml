@@ -12,7 +12,7 @@
       </pluginExecutionFilter>
       <action>
         <configurator>
-          <id>org.sonatype.m2e.jaxb.jaxbConfigurator</id>
+          <id>org.omadac.m2e.jaxb.jaxbConfigurator</id>
         </configurator>
       </action>
     </pluginExecution>

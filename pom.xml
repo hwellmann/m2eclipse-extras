@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Copyright (c) 2008 Sonatype, Inc.
-  All rights reserved. This program and the accompanying materials
-  are made available under the terms of the Eclipse Public License v1.0
-  which accompanies this distribution, and is available at
-  http://www.eclipse.org/legal/epl-v10.html
--->
+<!-- Copyright (c) 2008 Sonatype, Inc. All rights reserved. This program 
+  and the accompanying materials are made available under the terms of the 
+  Eclipse Public License v1.0 which accompanies this distribution, and is available 
+  at http://www.eclipse.org/legal/epl-v10.html -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -28,30 +25,6 @@
   </properties>
 
   <modules>
-    <module>org.sonatype.m2e.antlr</module>
-    <module>org.sonatype.m2e.antlr.feature</module>
-
-    <module>org.sonatype.m2e.buildhelper</module>
-    <module>org.sonatype.m2e.buildhelper.feature</module>
-
-    <module>org.sonatype.m2e.mavenarchiver.pomproperties</module>
-    <module>org.sonatype.m2e.mavenarchiver.pomproperties.feature</module>
-
-    <module>org.sonatype.m2e.modello</module>
-    <module>org.sonatype.m2e.modello.feature</module>
-
-    <module>org.sonatype.m2e.plexus.annotations</module>
-    <module>org.sonatype.m2e.plexus.annotations.feature</module>
-    
-    <module>org.sonatype.m2e.tests.common</module>
-    <module>org.sonatype.m2e.antlr.tests</module>
-    <module>org.sonatype.m2e.buildhelper.tests</module>
-    <module>org.sonatype.m2e.mavenarchiver.pomproperties.tests</module>
-    <module>org.sonatype.m2e.modello.tests</module>
-    <module>org.sonatype.m2e.plexus.annotations.tests</module>
-
-    <module>org.sonatype.m2e.site-extras</module>
-    <module>org.sonatype.m2e.jaxb</module>
     <module>org.omadac.m2e.repo</module>
     <module>org.omadac.m2e.jaxb</module>
     <module>org.omadac.m2e.jaxb.feature</module>
@@ -113,7 +86,7 @@
             <forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
           </configuration>
         </plugin>
-        
+
         <!-- important for self-hosting -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -125,6 +98,34 @@
   </build>
 
   <profiles>
+    <profile>
+      <id>sonatype</id>
+      <modules>
+        <module>org.sonatype.m2e.antlr</module>
+        <module>org.sonatype.m2e.antlr.feature</module>
+
+        <module>org.sonatype.m2e.buildhelper</module>
+        <module>org.sonatype.m2e.buildhelper.feature</module>
+
+        <module>org.sonatype.m2e.mavenarchiver.pomproperties</module>
+        <module>org.sonatype.m2e.mavenarchiver.pomproperties.feature</module>
+
+        <module>org.sonatype.m2e.modello</module>
+        <module>org.sonatype.m2e.modello.feature</module>
+
+        <module>org.sonatype.m2e.plexus.annotations</module>
+        <module>org.sonatype.m2e.plexus.annotations.feature</module>
+
+        <module>org.sonatype.m2e.tests.common</module>
+        <module>org.sonatype.m2e.antlr.tests</module>
+        <module>org.sonatype.m2e.buildhelper.tests</module>
+        <module>org.sonatype.m2e.mavenarchiver.pomproperties.tests</module>
+        <module>org.sonatype.m2e.modello.tests</module>
+        <module>org.sonatype.m2e.plexus.annotations.tests</module>
+
+        <module>org.sonatype.m2e.site-extras</module>
+      </modules>
+    </profile>
     <profile>
       <id>sun-jvm</id>
       <activation>
@@ -146,7 +147,8 @@
         </property>
       </activation>
       <properties>
-        <tycho.test.jvmArgs>-Xmx800m -XX:MaxPermSize=256m -XstartOnFirstThread</tycho.test.jvmArgs>
+        <tycho.test.jvmArgs>-Xmx800m -XX:MaxPermSize=256m
+          -XstartOnFirstThread</tycho.test.jvmArgs>
       </properties>
       <build>
         <pluginManagement>
@@ -172,7 +174,9 @@
     <profile>
       <id>sign</id>
       <activation>
-        <property><name>jarsigner.alias</name></property>
+        <property>
+          <name>jarsigner.alias</name>
+        </property>
       </activation>
       <build>
         <plugins>
