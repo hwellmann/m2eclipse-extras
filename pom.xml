@@ -51,6 +51,10 @@
     <module>org.sonatype.m2e.plexus.annotations.tests</module>
 
     <module>org.sonatype.m2e.site-extras</module>
+    <module>org.sonatype.m2e.jaxb</module>
+    <module>org.omadac.m2e.repo</module>
+    <module>org.omadac.m2e.jaxb</module>
+    <module>org.omadac.m2e.jaxb.feature</module>
   </modules>
 
   <repositories>
