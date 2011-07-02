@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Sonatype, Inc.
+ * Copyright (c) 2011 Harald Wellmann
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,39 +20,35 @@ import org.eclipse.m2e.core.embedder.IMaven;
 import org.eclipse.m2e.core.project.configurator.MojoExecutionBuildParticipant;
 import org.sonatype.plexus.build.incremental.BuildContext;
 
-public class JaxbBuildParticipant
-    extends MojoExecutionBuildParticipant
-{
+public class JaxbBuildParticipant extends MojoExecutionBuildParticipant {
 
-    public JaxbBuildParticipant( MojoExecution execution )
-    {
-        super( execution, true );
+    public JaxbBuildParticipant(MojoExecution execution) {
+        super(execution, true);
     }
 
     @Override
-    public Set<IProject> build( int kind, IProgressMonitor monitor )
-        throws Exception
-    {
+    public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
         IMaven maven = MavenPlugin.getMaven();
         BuildContext buildContext = getBuildContext();
 
-        // check if any of the grammar files changed
-        File source = maven.getMojoParameterValue(getSession(), getMojoExecution(), "schemaDirectory", File.class);
-        Scanner ds = buildContext.newScanner( source ); // delta or full scanner
+        // check if any of the schema files changed
+        File source = maven.getMojoParameterValue(getSession(), getMojoExecution(),
+                "schemaDirectory", File.class);
+        Scanner ds = buildContext.newScanner(source);
         ds.scan();
         String[] includedFiles = ds.getIncludedFiles();
-        if (includedFiles == null || includedFiles.length <= 0 )
-        {
+        if (includedFiles == null || includedFiles.length <= 0) {
             return null;
         }
 
         // execute mojo
-        Set<IProject> result = super.build( kind, monitor );
+        Set<IProject> result = super.build(kind, monitor);
 
         // tell m2e builder to refresh generated files
-        File generated = maven.getMojoParameterValue(getSession(), getMojoExecution(), "generateDirectory", File.class);
+        File generated = maven.getMojoParameterValue(getSession(), getMojoExecution(),
+                "generateDirectory", File.class);
         if (generated != null) {
-            buildContext.refresh( generated );
+            buildContext.refresh(generated);
         }
 
         return result;

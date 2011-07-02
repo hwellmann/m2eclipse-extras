@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Sonatype, Inc.
+ * Copyright (c) 2011 Harald Wellmann
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,19 +14,16 @@ import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.jdt.AbstractJavaProjectConfigurator;
 
-public class JaxbProjectConfigurator
-    extends AbstractJavaProjectConfigurator
-{
-    @Override
-    public AbstractBuildParticipant getBuildParticipant( IMavenProjectFacade projectFacade,
-                                                         MojoExecution execution,
-                                                         IPluginExecutionMetadata executionMetadata )
-    {
-        return new JaxbBuildParticipant( execution );
-    }
+public class JaxbProjectConfigurator extends AbstractJavaProjectConfigurator {
     
     @Override
+    public AbstractBuildParticipant getBuildParticipant(IMavenProjectFacade projectFacade,
+            MojoExecution execution, IPluginExecutionMetadata executionMetadata) {
+        return new JaxbBuildParticipant(execution);
+    }
+
+    @Override
     protected String getOutputFolderParameterName() {
-    	return "generateDirectory";
+        return "generateDirectory";
     }
 }
