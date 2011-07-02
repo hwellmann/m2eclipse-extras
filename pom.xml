@@ -9,7 +9,7 @@
 
   <groupId>org.omadac.m2e.extras</groupId>
   <artifactId>m2eclipse-extras</artifactId>
-  <version>0.14.0-SNAPSHOT</version>
+  <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
