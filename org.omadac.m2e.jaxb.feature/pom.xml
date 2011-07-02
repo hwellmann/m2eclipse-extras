@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>m2eclipse-extras</artifactId>
-		<groupId>org.sonatype.m2e.extras</groupId>
+		<groupId>org.omadac.m2e.extras</groupId>
 		<version>0.14.0-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
