@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.sonatype.m2e.mavenarchiver.pomproperties.internal;
+package org.sonatype.m2e.mavenarchiver.internal;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

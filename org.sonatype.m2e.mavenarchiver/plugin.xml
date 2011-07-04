@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.m2e.core.projectConfigurators">
       <configurator
-            class="org.sonatype.m2e.mavenarchiver.pomproperties.internal.PomPropertiesConfigurator"
+            class="org.sonatype.m2e.mavenarchiver.internal.PomPropertiesConfigurator"
             id="org.sonatype.m2e.mavenarchiver.pomProperties"
             name="MavenArchiver pom.properties Generator">
       </configurator>

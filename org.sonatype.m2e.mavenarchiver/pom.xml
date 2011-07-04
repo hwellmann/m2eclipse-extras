@@ -15,7 +15,7 @@
     <version>0.14.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.sonatype.m2e.mavenarchiver.pomproperties</artifactId>
+  <artifactId>org.sonatype.m2e.mavenarchiver</artifactId>
   <packaging>eclipse-plugin</packaging>
 
   <name>m2e connector for mavenarchiver pom properties</name>
