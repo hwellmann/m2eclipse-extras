@@ -4,12 +4,18 @@
    <extension
          point="org.eclipse.m2e.core.projectConfigurators">
       <configurator
-            class="org.sonatype.m2e.mavenarchiver.internal.PomPropertiesConfigurator"
-            id="org.sonatype.m2e.mavenarchiver.pomProperties"
-            name="MavenArchiver pom.properties Generator">
+            class="org.sonatype.m2e.mavenarchiver.internal.JarArchiverConfigurator"
+            id="org.sonatype.m2e.mavenarchiver.jararchiverconfigurator"
+            name="MavenArchiver Manifest and pom.properties Generator">
       </configurator>
    </extension>
    <extension
          point="org.eclipse.m2e.core.lifecycleMappingMetadataSource">
    </extension>
+       <extension point="org.eclipse.core.resources.markers"
+         id="org.eclipse.m2e.core.maven2Problem.mavenarchiver.error"
+         name="Maven Configuration Problem">
+      <super type="org.eclipse.m2e.core.maven2Problem"/>
+      <persistent value="true"/>
+   </extension>   
 </plugin>

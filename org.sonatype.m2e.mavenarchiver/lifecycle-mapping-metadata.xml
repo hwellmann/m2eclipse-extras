@@ -12,7 +12,7 @@
       </pluginExecutionFilter>
       <action>
         <configurator>
-          <id>org.sonatype.m2e.mavenarchiver.pomProperties</id>
+          <id>org.sonatype.m2e.mavenarchiver.jararchiverconfigurator</id>
         </configurator>
       </action>
     </pluginExecution>
