@@ -34,8 +34,8 @@
     <module>org.sonatype.m2e.buildhelper</module>
     <module>org.sonatype.m2e.buildhelper.feature</module>
 
-    <module>org.sonatype.m2e.mavenarchiver.pomproperties</module>
-    <module>org.sonatype.m2e.mavenarchiver.pomproperties.feature</module>
+    <module>org.sonatype.m2e.mavenarchiver</module>
+    <module>org.sonatype.m2e.mavenarchiver.feature</module>
 
     <module>org.sonatype.m2e.modello</module>
     <module>org.sonatype.m2e.modello.feature</module>
@@ -46,7 +46,7 @@
     <module>org.sonatype.m2e.tests.common</module>
     <module>org.sonatype.m2e.antlr.tests</module>
     <module>org.sonatype.m2e.buildhelper.tests</module>
-    <module>org.sonatype.m2e.mavenarchiver.pomproperties.tests</module>
+    <module>org.sonatype.m2e.mavenarchiver.tests</module>
     <module>org.sonatype.m2e.modello.tests</module>
     <module>org.sonatype.m2e.plexus.annotations.tests</module>
 
