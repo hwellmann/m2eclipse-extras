@@ -22,6 +22,8 @@
     <module>org.omadac.m2e.repo</module>
     <module>org.omadac.m2e.jaxb</module>
     <module>org.omadac.m2e.jaxb.feature</module>
+    <module>org.omadac.m2e.openjpa</module>
+    <module>org.omadac.m2e.openjpa.feature</module>
   </modules>
 
   <repositories>

@@ -6,7 +6,7 @@
     <version>0.1.0-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
-  <artifactId>org.omadac.m2e.jaxb</artifactId>
+  <artifactId>org.omadac.m2e.openjpa</artifactId>
   <packaging>eclipse-plugin</packaging>
-  <name>m2e connector for JAXB</name>
+  <name>m2e connector for OpenJPA</name>
 </project>
