@@ -202,9 +202,16 @@ public abstract class AbstractMavenArchiverConfigurator extends AbstractProjectC
    * @throws CoreException
    */
   protected void refresh(IMavenProjectFacade mavenFacade, IFolder outputdir, IProgressMonitor monitor) throws CoreException {
-	 //refresh the target folder
+     //refresh the target folder
      if (outputdir.exists()) {
-    	 outputdir.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+	   try {
+	     outputdir.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+       } catch (Exception e) {
+	     e.printStackTrace();
+        //random java.lang.IllegalArgumentException: Element not found: /parent/project/target/classes/META-INF.
+	    //occur when refreshing the folder on project import / creation 
+	    //See https://bugs.eclipse.org/bugs/show_bug.cgi?id=244315
+       }
      }
   }
   
@@ -354,7 +361,6 @@ public abstract class AbstractMavenArchiverConfigurator extends AbstractProjectC
       reflectManifestGeneration(mavenProject, mojoExecution, session, new File(manifest.getLocation().toOSString()));
        
     } catch(Exception ex) {
-      //ex.printStackTrace();
       markerManager.addErrorMarkers(mavenFacade.getPom(), MavenArchiverConstants.MAVENARCHIVER_MARKER_ERROR,ex);
       
     } finally {
