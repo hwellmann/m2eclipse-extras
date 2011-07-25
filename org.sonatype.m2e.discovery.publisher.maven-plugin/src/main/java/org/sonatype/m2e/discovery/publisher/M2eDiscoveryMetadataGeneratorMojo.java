@@ -28,7 +28,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -137,9 +139,16 @@ public class M2eDiscoveryMetadataGeneratorMojo
 
             List<P2Data> missingLicense = new ArrayList<P2Data>();
 
+            Set<String> allids = new HashSet<String>();
+
             DiscoveryCatalog catalog = loadDiscoveryCatalog();
             for ( DiscoveryCatalogItem catalogItem : catalog.getCatalogItems() )
             {
+                if ( !allids.add( catalogItem.getId() ) )
+                {
+                    throw new RuntimeException( "Duplicate catalog item id " + catalogItem.getId() );
+                }
+
                 boolean hasLifecycleMappings = false;
                 LifecycleMappingMetadataSource mergedLifecycleMappingMetadataSource =
                     new LifecycleMappingMetadataSource();
