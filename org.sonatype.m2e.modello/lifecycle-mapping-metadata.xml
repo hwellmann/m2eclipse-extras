@@ -13,6 +13,7 @@
           <goal>xpp3-extended-reader</goal>
           <goal>xsd</goal>
           <goal>stax-reader</goal>
+          <goal>stax-writer</goal>
         </goals>
       </pluginExecutionFilter>
       <action>
