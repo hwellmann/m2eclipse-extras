@@ -716,6 +716,17 @@ public class M2eDiscoveryMetadataGeneratorMojo
         iuDom.setAttribute( "version", item.getP2Data().getIuVersion() );
         result.addChild( iuDom );
 
+        for ( IUData rootIU : item.getP2Data().getRootIUs() )
+        {
+            Xpp3Dom rootIUDom = new _Xpp3Dom( "iu" );
+            rootIUDom.setAttribute( "id", rootIU.getIuId() );
+            if ( rootIU.getIuVersion() != null )
+            {
+                rootIUDom.setAttribute( "version", rootIU.getIuVersion() );
+            }
+            result.addChild( rootIUDom );
+        }
+
         Xpp3Dom overviewDom = new _Xpp3Dom( "overview" );
         overviewDom.setAttribute( "summary", item.getOverview().getSummary() );
         overviewDom.setAttribute( "url", item.getOverview().getUrl() );

@@ -172,6 +172,13 @@
           <name>iuVersion</name>
           <type>String</type>
         </field>
+        <field xml.tagName="rootIU">
+          <name>rootIUs</name>
+          <association xml.itemsStyle="flat">
+            <type>IUData</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
         <field xml.tagName="lifecycleMappingIU">
           <name>lifecycleMappingIUs</name>
           <association xml.itemsStyle="flat">
