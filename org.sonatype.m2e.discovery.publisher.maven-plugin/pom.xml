@@ -98,7 +98,7 @@
             <id>standard</id>
             <goals>
               <goal>java</goal>
-              <goal>xpp3-reader</goal>
+              <goal>xpp3-extended-reader</goal>
               <goal>xpp3-writer</goal>
             </goals>
             <configuration>

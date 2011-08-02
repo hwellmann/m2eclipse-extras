@@ -228,5 +228,23 @@
         </field>
       </fields>
     </class>
+
+    <class locationTracker="locations" java.clone="shallow">
+      <name>InputLocation</name>
+      <codeSegments>
+        <codeSegment>
+          <code>                                                                                                             
+              <![CDATA[                                                                                                        
+                                                                                                                               
+      @Override                                                                                                                
+      public String toString()                                                                                                 
+      {                                                                                                                        
+          return getLineNumber() + " : " + getColumnNumber();                                             
+      }                                                                                                                        
+              ]]>
+          </code>
+        </codeSegment>
+      </codeSegments>
+    </class>
   </classes>
 </model>

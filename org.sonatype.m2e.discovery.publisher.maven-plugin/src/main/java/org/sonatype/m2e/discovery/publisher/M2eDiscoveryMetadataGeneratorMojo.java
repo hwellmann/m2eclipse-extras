@@ -67,9 +67,11 @@ import org.sonatype.m2e.discovery.catalog.model.DiscoveryCatalogItem;
 import org.sonatype.m2e.discovery.catalog.model.DiscoveryCategory;
 import org.sonatype.m2e.discovery.catalog.model.DiscoveryIcon;
 import org.sonatype.m2e.discovery.catalog.model.IUData;
+import org.sonatype.m2e.discovery.catalog.model.InputLocation;
+import org.sonatype.m2e.discovery.catalog.model.InputLocationTracker;
 import org.sonatype.m2e.discovery.catalog.model.MavenData;
 import org.sonatype.m2e.discovery.catalog.model.P2Data;
-import org.sonatype.m2e.discovery.catalog.model.io.xpp3.DiscoveryCatalogModelXpp3Reader;
+import org.sonatype.m2e.discovery.catalog.model.io.xpp3.DiscoveryCatalogModelXpp3ReaderEx;
 import org.sonatype.m2e.discovery.publisher.p2.facade.P2Facade;
 import org.sonatype.tycho.equinox.EquinoxServiceFactory;
 import org.sonatype.tycho.p2.facade.internal.P2ApplicationLauncher;
@@ -148,6 +150,9 @@ public class M2eDiscoveryMetadataGeneratorMojo
                 {
                     throw new RuntimeException( "Duplicate catalog item id " + catalogItem.getId() );
                 }
+
+                getLog().debug( "Processing catalog item with id " + catalogItem.getId() );
+                validateCatalogItem( catalog, catalogItem );
 
                 boolean hasLifecycleMappings = false;
                 LifecycleMappingMetadataSource mergedLifecycleMappingMetadataSource =
@@ -273,6 +278,46 @@ public class M2eDiscoveryMetadataGeneratorMojo
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
+    }
+
+    private void validateCatalogItem( InputLocationTracker locationTracker, DiscoveryCatalogItem item )
+    {
+        List<String> messages = new ArrayList<String>();
+        if ( nv( item.getId() ) == null )
+        {
+            messages.add( "id must be specified" );
+        }
+        if ( nv( item.getProvider() ) == null )
+        {
+            messages.add( "provider must be specified" );
+        }
+
+        if ( !messages.isEmpty() )
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.append( "Problems with <catalogItem>" );
+
+            InputLocation location = item.getLocation( "" );
+            if ( location != null )
+            {
+                sb.append( '[' ).append( location.toString() ).append( ']' );
+            }
+
+            for ( String msg : messages )
+            {
+                sb.append( "\n   " ).append( msg );
+            }
+            throw new RuntimeException( sb.toString() );
+        }
+    }
+
+    private static String nv( String str )
+    {
+        if ( str != null && !"".equals( str.trim() ) )
+        {
+            return str;
+        }
+        return null;
     }
 
     private void generateP2RepositoryMetadata( File p2RepositoryDirectory )
@@ -632,7 +677,7 @@ public class M2eDiscoveryMetadataGeneratorMojo
         InputStream is = new FileInputStream( catalogFile );
         try
         {
-            return new DiscoveryCatalogModelXpp3Reader().read( is );
+            return new DiscoveryCatalogModelXpp3ReaderEx().read( is, true );
         }
         finally
         {
