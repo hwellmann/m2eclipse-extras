@@ -24,6 +24,8 @@
     <module>org.omadac.m2e.aspectj.feature</module>
     <module>org.omadac.m2e.hyperjaxb3</module>
     <module>org.omadac.m2e.hyperjaxb3.feature</module>
+    <module>org.omadac.m2e.cxf-xjc</module>
+    <module>org.omadac.m2e.cxf-xjc.feature</module>
     <module>org.omadac.m2e.jaxb</module>
     <module>org.omadac.m2e.jaxb.feature</module>
     <module>org.omadac.m2e.openjpa</module>
