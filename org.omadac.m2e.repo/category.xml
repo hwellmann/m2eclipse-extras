@@ -15,5 +15,11 @@
    <feature url="features/org.omadac.m2e.hyperjaxb3.feature_0.1.0.qualifier.jar" id="org.omadac.m2e.hyperjaxb3.feature" version="0.1.0.qualifier">
       <category name="Omadac m2e Extensions"/>
    </feature>
+   <feature url="features/org.omadac.m2e.cxfcodegen.feature_0.1.0.qualifier.jar" id="org.omadac.m2e.cxfcodegen.feature" version="0.1.0.qualifier">
+      <category name="Omadac m2e Extensions"/>
+   </feature>
+   <feature url="features/org.omadac.m2e.cxfxjc.feature_0.1.0.qualifier.jar" id="org.omadac.m2e.cxfxjc.feature" version="0.1.0.qualifier">
+      <category name="Omadac m2e Extensions"/>
+   </feature>
    <category-def name="Omadac m2e Extensions" label="Omadac m2e Extensions"/>
 </site>

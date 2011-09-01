@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.m2e.core.projectConfigurators">
+      <configurator
+            class="org.omadac.m2e.cxfcodegen.internal.CxfCodegenProjectConfigurator"
+            id="org.omadac.m2e.cxfcodegen.cxfcodegenConfigurator"
+            name="CXF codegen Project Configurator">
+      </configurator>
+   </extension>
+   <extension
+         point="org.eclipse.m2e.core.lifecycleMappingMetadataSource">
+   </extension>
+</plugin>
