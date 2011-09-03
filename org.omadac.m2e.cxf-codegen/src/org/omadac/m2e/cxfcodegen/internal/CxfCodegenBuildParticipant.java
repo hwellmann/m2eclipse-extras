@@ -12,9 +12,6 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.cxf.maven_plugin.WsdlOption;
 import org.apache.maven.plugin.MojoExecution;
 import org.bitstrings.eclipse.m2e.common.BuildHelper;
 import org.codehaus.plexus.util.Scanner;
@@ -39,10 +36,10 @@ public class CxfCodegenBuildParticipant extends MojoExecutionBuildParticipant {
         boolean needBuild = false;
         
     	// check if the WSDL files are modified
-    	
+    	Class<?> wsdlOptionCls = Class.forName("org.apache.cxf.maven_plugin.WsdlOption", true, maven.getClass().getClassLoader());
     	// default option (http://cxf.apache.org/docs/maven-cxf-codegen-plugin-wsdl-to-java.html#Mavencxf-codegen-plugin%28WSDLtoJava%29-Example3:UsingdefaultOptiontoavoidrepetition)
-    	WsdlOption defaultOptions = maven.getMojoParameterValue(getSession(), getMojoExecution(), "defaultOptions", WsdlOption.class);
-    	needBuild = needBuild(buildContext, defaultOptions);
+        Object defaultOptions = maven.getMojoParameterValue(getSession(), getMojoExecution(), "defaultOptions", wsdlOptionCls);
+        needBuild = needBuild(buildContext, new WsdlOptionWrapper(defaultOptions));
     	
     	if (!needBuild) {
         	// check wsdl if files have changed
@@ -71,24 +68,19 @@ public class CxfCodegenBuildParticipant extends MojoExecutionBuildParticipant {
 		return result;
     }
 
-	private boolean needBuild(BuildContext buildContext, WsdlOption wsdlOption)
+	private boolean needBuild(BuildContext buildContext, WsdlOptionWrapper wsdlOption)
 			throws Exception {
 		boolean needBuild = false;
 		String[] defaultBindingFiles = wsdlOption.getBindingFiles();
 
 		String defaultWsdl = wsdlOption.getWsdl();
-		needBuild = (!StringUtils.isEmpty(defaultWsdl) && !ArrayUtils
-				.isEmpty(BuildHelper.getModifiedFiles(buildContext,
-						new File(defaultWsdl))));
+		needBuild = needsBuild(buildContext, defaultWsdl);
 		
 		if (needBuild) {
 			return true;
 		}
-		
 		for (String bindingFile : defaultBindingFiles) {
-			needBuild = (!StringUtils.isEmpty(bindingFile) && !ArrayUtils
-					.isEmpty(BuildHelper.getModifiedFiles(
-							buildContext, new File(bindingFile))));
+			needBuild = needsBuild(buildContext, bindingFile);
 
 			if (needBuild) {
 				return true;
@@ -97,9 +89,19 @@ public class CxfCodegenBuildParticipant extends MojoExecutionBuildParticipant {
 		
 		return false;
 	}
+
+	private boolean needsBuild(BuildContext buildContext, String currFile)
+			throws Exception {
+		if(currFile == null || currFile.isEmpty()) {
+			return false;
+		}
+		String[] modifiedFiles = BuildHelper.getModifiedFiles(buildContext, new File(currFile));
+		
+		return (modifiedFiles != null && modifiedFiles.length > 0);
+	}
 	
 	// a class to cope with the class loading issues
-	private static class WsdlOptionWrapper extends WsdlOption {
+	private static class WsdlOptionWrapper {
 		private final Object target;
 		
 		private final Method mGetWsdl;
@@ -111,7 +113,6 @@ public class CxfCodegenBuildParticipant extends MojoExecutionBuildParticipant {
 			mGetBindingFiles = target.getClass().getMethod("getBindingFiles");
 		}
 
-		@Override
 		public String getWsdl() {
 			try {
 				return (String) mGetWsdl.invoke(target);
@@ -120,7 +121,6 @@ public class CxfCodegenBuildParticipant extends MojoExecutionBuildParticipant {
 			}
 		}
 
-		@Override
 		public String[] getBindingFiles() {
 			try {
 				return (String[]) mGetBindingFiles.invoke(target);

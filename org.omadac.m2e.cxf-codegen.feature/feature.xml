@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.omadac.m2e.cxfcodegen.feature"
+      id="org.omadac.m2e.cxf-codegen.feature"
       label="%featureName"
       version="0.1.0.qualifier"
       provider-name="%providerName"
-      plugin="org.omadac.m2e.cxfcodegen">
+      plugin="org.omadac.m2e.cxf-codegen">
 
    <description>
       %description
@@ -19,7 +19,7 @@
    </license>
 
    <plugin
-         id="org.omadac.m2e.cxfcodegen"
+         id="org.omadac.m2e.cxf-codegen"
          download-size="0"
          install-size="0"
          version="0.0.0"
