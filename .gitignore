@@ -6,3 +6,4 @@ bin/
 .classpath
 .DS_Store
 *~
+*.BAK
