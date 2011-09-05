@@ -12,10 +12,11 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.MojoExecution;
 import org.bitstrings.eclipse.m2e.common.BuildHelper;
-import org.codehaus.plexus.util.Scanner;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.IMaven;
@@ -34,10 +35,10 @@ public class CxfCodegenBuildParticipant extends MojoExecutionBuildParticipant {
         BuildContext buildContext = getBuildContext();
 
         boolean needBuild = false;
-        
-    	// check if the WSDL files are modified
-    	Class<?> wsdlOptionCls = Class.forName("org.apache.cxf.maven_plugin.WsdlOption", true, maven.getClass().getClassLoader());
-    	// default option (http://cxf.apache.org/docs/maven-cxf-codegen-plugin-wsdl-to-java.html#Mavencxf-codegen-plugin%28WSDLtoJava%29-Example3:UsingdefaultOptiontoavoidrepetition)
+
+        Class<?> wsdlOptionCls = loadPluginClass(maven, "org.apache.cxf.maven_plugin.WsdlOption");
+
+        // default option (http://cxf.apache.org/docs/maven-cxf-codegen-plugin-wsdl-to-java.html#Mavencxf-codegen-plugin%28WSDLtoJava%29-Example3:UsingdefaultOptiontoavoidrepetition)
         Object defaultOptions = maven.getMojoParameterValue(getSession(), getMojoExecution(), "defaultOptions", wsdlOptionCls);
         needBuild = needBuild(buildContext, new WsdlOptionWrapper(defaultOptions));
     	
@@ -67,6 +68,15 @@ public class CxfCodegenBuildParticipant extends MojoExecutionBuildParticipant {
 
 		return result;
     }
+
+	private Class<?> loadPluginClass(IMaven maven, String className) throws CoreException,
+			ClassNotFoundException {
+		// we need to get the class loader of the plugin in order to load WsdlOption
+        Mojo mojo = maven.getConfiguredMojo(getSession(), getMojoExecution(), Mojo.class);
+        ClassLoader cl = mojo.getClass().getClassLoader();
+        Class<?> wsdlOptionCls = Class.forName(className, true, cl);
+		return wsdlOptionCls;
+	}
 
 	private boolean needBuild(BuildContext buildContext, WsdlOptionWrapper wsdlOption)
 			throws Exception {
