@@ -1,5 +1,6 @@
 .project/
 .settings/
+.metadata/
 target/
 bin/
 .project

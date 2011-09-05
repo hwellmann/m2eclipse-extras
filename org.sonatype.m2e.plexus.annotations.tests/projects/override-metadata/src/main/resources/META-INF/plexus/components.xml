@@ -1,8 +1,0 @@
-<component-set>
-  <components>
-    <component>
-      <role>override.Override</role>
-      <implementation>override.OverrideImpl</implementation>
-    </component>
-  </components>
-</component-set>

@@ -1,9 +1,0 @@
-<component-set>
-  <components>
-    <component>
-      <role>simple.p004.P004Simple</role>
-      <implementation>simple.p004.P004SimpleImpl</implementation>
-      <role-hint>other</role-hint>
-    </component>
-  </components>
-</component-set>
