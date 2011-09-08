@@ -7,7 +7,6 @@ import java.util.Properties;
 import org.codehaus.plexus.util.IOUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -18,6 +17,7 @@ import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
 import org.junit.Test;
 
+@SuppressWarnings("restriction")
 public class MavenArchiverTest
     extends AbstractMavenProjectTestCase
 {
@@ -119,7 +119,6 @@ public class MavenArchiverTest
         assertNoErrors(dependency);
         
         IMavenProjectFacade facade = MavenPlugin.getMavenProjectRegistry().create( project, monitor );
-        ArtifactKey key = facade.getArtifactKey();
         
         IFile manifestFile = project.getFile( "target/classes/META-INF/MANIFEST.MF");
         IPath manifestPath = manifestFile.getFullPath();
@@ -170,7 +169,28 @@ public class MavenArchiverTest
       assertTrue("Implementation-Title is invalid :"+manifest, manifest.contains("Implementation-Title: "+key.getArtifactId()));
       assertTrue("Invalid Classpath in manifest : " + manifest, manifest.contains("Class-Path: custom.jar"));
     }
-    
+
+    public void testMECLIPSEWTP163_ParentMustBeResolved()
+            throws Exception
+    {
+        IProject[] projects = importProjects( "projects/mavenarchiver/parent-contextsession/", 
+        									new String[]{"pom.xml", "child-contextsession/pom.xml"}, 
+        									new ResolverConfiguration());
+        waitForJobsToComplete();
+        IProject parent = projects[0];
+        IProject child = projects[1];
+        assertNoErrors(parent);
+        assertNoErrors(child);
+        
+        IFile generatedManifestFile = child.getFile("target/classes/META-INF/MANIFEST.MF");
+        assertTrue("The generated manifest is missing", generatedManifestFile.exists());
+        
+        IMavenProjectFacade parentFacade = MavenPlugin.getMavenProjectRegistry().create( parent, monitor );
+        String parentUrl = parentFacade.getMavenProject().getModel().getUrl();
+        
+        String manifest =getAsString(generatedManifestFile);
+        assertTrue("Implementation-Url is invalid :"+manifest, manifest.contains("Implementation-URL: "+parentUrl));
+    }
     
     private Properties loadProperties( IPath aPath )
         throws CoreException, IOException

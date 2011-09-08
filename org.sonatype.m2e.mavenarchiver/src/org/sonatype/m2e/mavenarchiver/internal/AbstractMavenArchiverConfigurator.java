@@ -335,12 +335,15 @@ public abstract class AbstractMavenArchiverConfigurator extends AbstractProjectC
 
     MavenProject mavenProject = mavenFacade.getMavenProject();
     Set<Artifact> originalArtifacts = mavenProject.getArtifacts();
-
+    boolean parentHierarchyLoaded = false;
     try {
       markerManager.deleteMarkers(mavenFacade.getPom(), MavenArchiverConstants.MAVENARCHIVER_MARKER_ERROR);
       
       //Find the mojoExecution
       MavenSession session = getMavenSession(mavenFacade, monitor);
+      
+      parentHierarchyLoaded = loadParentHierarchy(mavenFacade, monitor);
+      
       MavenExecutionPlan executionPlan = maven.calculateExecutionPlan(session, mavenProject,
           Collections.singletonList("package"), true, monitor);
       MojoExecution mojoExecution = getExecution(executionPlan, getExecutionKey());
@@ -364,8 +367,11 @@ public abstract class AbstractMavenArchiverConfigurator extends AbstractProjectC
       markerManager.addErrorMarkers(mavenFacade.getPom(), MavenArchiverConstants.MAVENARCHIVER_MARKER_ERROR,ex);
       
     } finally {
-      //Restore the original artifacts, no matter what
+      //Restore the project state
       mavenProject.setArtifacts(originalArtifacts);
+      if (parentHierarchyLoaded) {
+    	  mavenProject.setParent(null);
+      }
     }
 
   }
@@ -438,6 +444,44 @@ public abstract class AbstractMavenArchiverConfigurator extends AbstractProjectC
 
       maven.releaseMojo(mojo, mojoExecution);
     }
+  }
+
+  /**
+   * Workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=356725. 
+   * Loads the parent project hierarchy if needed.
+   * @param facade
+   * @param monitor
+   * @return true if parent projects had to be loaded.
+   * @throws CoreException
+   */
+  private boolean loadParentHierarchy(IMavenProjectFacade facade, IProgressMonitor monitor) throws CoreException {
+    boolean loadedParent = false; 
+    MavenProject mavenProject = facade.getMavenProject();
+    try {
+      if (mavenProject.getModel().getParent() == null || mavenProject.getParent() != null) {
+        //If the getParent() method is called without error,
+        // we can assume the project has been fully loaded, no need to continue.
+        return false;
+      }
+    } catch (IllegalStateException e) {
+      //The parent can not be loaded properly 
+    }
+    MavenExecutionRequest request = null;
+    while(mavenProject !=null && mavenProject.getModel().getParent() != null) {
+      if(monitor.isCanceled()) {
+        break;
+      }
+      if (request == null) {
+        request = projectManager.createExecutionRequest(facade, monitor);
+      }
+      MavenProject parentProject = maven.resolveParentProject(request, mavenProject, monitor);
+      if (parentProject != null) {
+        mavenProject.setParent(parentProject);
+        loadedParent = true;
+      }
+      mavenProject = parentProject;
+    }
+    return loadedParent; 
   }
 
   private Object getProvidedManifest(Class manifestClass, Object archiveConfiguration) 
