@@ -23,7 +23,7 @@ http://www.eclipse.org/legal/epl-v10.html
 
   <properties>
     <tycho-version>0.12.0</tycho-version>
-
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <site-compressed>http://repository.sonatype.org/service/local/repositories/forge-sites/content-compressed/</site-compressed>
   </properties>
 
@@ -69,6 +69,8 @@ http://www.eclipse.org/legal/epl-v10.html
     	org.sonatype.m2e.mavenarchiver.pomproperties.feature
     </module>
     <module>org.sonatype.m2e.mavenarchiver.pomproperties.tests</module>
+    <module>org.omadac.m2e.depunpack</module>
+    <module>org.omadac.m2e.depunpack.feature</module>
   </modules>
 
   <repositories>
