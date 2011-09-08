@@ -1,0 +1,225 @@
+<?xml version="1.0"?>
+
+<model xmlns="http://modello.codehaus.org/MODELLO/1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://modello.codehaus.org/MODELLO/1.4.1 http://modello.codehaus.org/xsd/modello-1.4.1.xsd">
+  
+  <id>discovery-catalog-model</id>
+  <name>DiscoveryCatalogModel</name>
+
+  <defaults>
+    <default>
+      <key>package</key>
+      <value>org.sonatype.m2e.discovery.catalog.model</value>
+    </default>
+  </defaults>
+
+  <classes>
+    <class rootElement="true" xml.tagName="catalog">
+      <name>DiscoveryCatalog</name>
+      <fields>
+        <field>
+          <name>categories</name>
+          <association>
+            <type>DiscoveryCategory</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>catalogItems</name>
+          <association>
+            <type>DiscoveryCatalogItem</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    
+    <class>
+      <name>DiscoveryIcon</name>
+      <fields>
+        <field>
+          <name>size</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>path</name>
+          <type>String</type>
+        </field>
+      </fields>
+    </class>
+    
+    <class xml.tagName="category">
+      <name>DiscoveryCategory</name>
+      <fields>
+        <field>
+          <name>id</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>name</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>description</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>relevance</name>
+          <type>String</type>
+        </field>
+        <field xml.tagName="groupId">
+          <name>groupIds</name>
+          <association xml.itemsStyle="flat">
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>icon</name>
+          <association>
+            <type>DiscoveryIcon</type>
+            <multiplicity>1</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    
+    <class xml.tagName="catalogItem">
+      <name>DiscoveryCatalogItem</name>
+      <fields>
+        <field>
+          <name>categoryId</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>description</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>groupId</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>id</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>kind</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>license</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>name</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>provider</name>
+          <type>String</type>
+        </field>
+        <field xml.tagName="maven">
+          <name>mavenData</name>
+          <association xml.itemsStyle="flat">
+            <type>MavenData</type>
+            <multiplicity>1</multiplicity>
+          </association>
+        </field>
+        <field xml.tagName="p2">
+          <name>p2Data</name>
+          <association xml.itemsStyle="flat">
+            <type>P2Data</type>
+            <multiplicity>1</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>overview</name>
+          <association xml.itemsStyle="flat">
+            <type>Overview</type>
+            <multiplicity>1</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    
+    <class xml.tagName="overview">
+      <name>Overview</name>
+      <fields>
+        <field>
+          <name>summary</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>url</name>
+          <type>String</type>
+        </field>
+      </fields>
+    </class>
+    
+    <class xml.tagName="p2">
+      <name>P2Data</name>
+      <fields>
+        <field>
+          <name>repositoryUrl</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>iuId</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>iuVersion</name>
+          <type>String</type>
+        </field>
+        <field xml.tagName="lifecycleMappingIU">
+          <name>lifecycleMappingIUs</name>
+          <association xml.itemsStyle="flat">
+            <type>IUData</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    
+    <class xml.tagName="maven">
+      <name>MavenData</name>
+      <fields>
+        <field>
+          <name>repositoryUrl</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>groupId</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>artifactId</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>classifier</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>version</name>
+          <type>String</type>
+        </field>
+      </fields>
+    </class>
+    
+    <class>
+      <name>IUData</name>
+      <fields>
+        <field>
+          <name>iuId</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>iuVersion</name>
+          <type>String</type>
+        </field>
+      </fields>
+    </class>
+  </classes>
+</model>

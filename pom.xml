@@ -19,6 +19,7 @@
   </properties>
 
   <modules>
+<<<<<<< HEAD
     <module>org.omadac.m2e.repo</module>
     <module>org.omadac.m2e.aspectj</module>
     <module>org.omadac.m2e.aspectj.feature</module>
@@ -32,6 +33,31 @@
     <module>org.omadac.m2e.jaxb.feature</module>
     <module>org.omadac.m2e.openjpa</module>
     <module>org.omadac.m2e.openjpa.feature</module>
+=======
+    <module>org.sonatype.m2e.antlr</module>
+    <module>org.sonatype.m2e.antlr.feature</module>
+
+    <module>org.sonatype.m2e.buildhelper</module>
+    <module>org.sonatype.m2e.buildhelper.feature</module>
+
+    <module>org.sonatype.m2e.mavenarchiver</module>
+    <module>org.sonatype.m2e.mavenarchiver.feature</module>
+
+    <module>org.sonatype.m2e.modello</module>
+    <module>org.sonatype.m2e.modello.feature</module>
+
+    <module>org.sonatype.m2e.plexus.annotations</module>
+    <module>org.sonatype.m2e.plexus.annotations.feature</module>
+    
+    <module>org.sonatype.m2e.tests.common</module>
+    <module>org.sonatype.m2e.antlr.tests</module>
+    <module>org.sonatype.m2e.buildhelper.tests</module>
+    <module>org.sonatype.m2e.mavenarchiver.tests</module>
+    <module>org.sonatype.m2e.modello.tests</module>
+    <module>org.sonatype.m2e.plexus.annotations.tests</module>
+
+    <module>org.sonatype.m2e.site-extras</module>
+>>>>>>> sonatype/master
   </modules>
 
   <repositories>
