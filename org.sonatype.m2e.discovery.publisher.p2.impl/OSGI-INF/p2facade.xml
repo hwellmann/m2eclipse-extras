@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.sonatype.m2e.discovery.publisher.p2.facade.P2Facade">
+   <implementation class="org.sonatype.m2e.discovery.publisher.p2.impl.P2FacadeImpl"/>
+   <service>
+      <provide interface="org.sonatype.m2e.discovery.publisher.p2.facade.P2Facade"/>
+   </service>
+</scr:component>

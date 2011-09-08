@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: M2E Discovery Publisher P2 Facade
+Bundle-SymbolicName: org.sonatype.m2e.discovery.publisher.p2.facade;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-Vendor: Sonatype
+Bundle-RequiredExecutionEnvironment: J2SE-1.5,
+ JavaSE-1.6
+Export-Package: org.sonatype.m2e.discovery.publisher.p2.facade

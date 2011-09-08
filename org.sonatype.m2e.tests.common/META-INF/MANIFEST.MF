@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.sonatype.m2e.tests.common
+Bundle-SymbolicName: org.sonatype.m2e.tests.common;singleton:=true
+Bundle-Version: 0.14.0.qualifier
+Bundle-RequiredExecutionEnvironment: J2SE-1.5,
+ JavaSE-1.6
+Require-Bundle: org.junit;bundle-version="3.8.2"
+Bundle-ClassPath: .,
+ jars/sshd-core-0.3.0.jar,
+ jars/sshd-pam-0.3.0.jar,
+ jars/mina-core-2.0.0-RC1.jar
+Bundle-Vendor: Sonatype, Inc.
