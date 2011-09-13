@@ -1,1 +1,1 @@
-testc
+static
