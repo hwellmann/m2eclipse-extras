@@ -10,6 +10,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
+import org.junit.Ignore;
 
 @SuppressWarnings( "restriction" )
 public class BuildhelperTest
@@ -34,8 +35,9 @@ public class BuildhelperTest
         assertEquals( new Path( "/buildhelper-002/src/custom/main/java" ), classpath[5].getPath() );
         assertEquals( new Path( "/buildhelper-002/src/custom/test/java" ), classpath[6].getPath() );
         assertEquals( new Path( "/buildhelper-002/src/custom/test/resources" ), classpath[7].getPath() );
-
-        File target = new File( "projects/buildhelper/buildhelper-002/target" );
+        
+        File target = project.findMember( "target" ).getRawLocation().toFile();
+        assertTrue( target+" does not exist", target.exists() );
         assertTrue( "Class", new File( target, "classes/buildhelper002/custom/CustomTreeClass.class" ).exists() );
         assertTrue( "Resource", new File( target, "classes/buildhelper002/custom/CustomTree.txt" ).exists() );
         assertTrue( "Test Class",
