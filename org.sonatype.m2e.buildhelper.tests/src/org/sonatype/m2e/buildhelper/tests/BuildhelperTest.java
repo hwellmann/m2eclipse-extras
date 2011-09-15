@@ -39,7 +39,7 @@ public class BuildhelperTest
         File target = project.findMember( "target" ).getRawLocation().toFile();
         assertTrue( target+" does not exist", target.exists() );
         assertTrue( "Class", new File( target, "classes/buildhelper002/custom/CustomTreeClass.class" ).exists() );
-        assertTrue( "Resource", new File( target, "classes/buildhelper002/custom/CustomTree.txt" ).exists() );
+        assertTrue( "Resource", new File( target, "classes/buildhelper002/custom/customTree.txt" ).exists() );
         assertTrue( "Test Class",
                     new File( target, "test-classes/buildhelper002/custom/CustomTreeClassTest.class" ).exists() );
         assertTrue( "Test Resource",
