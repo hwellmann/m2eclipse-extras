@@ -27,10 +27,12 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
@@ -71,16 +73,31 @@ public class M2eDiscoveryMetadataGeneratorMojo
 {
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
 
-    private static final String CATALOG_SOURCE_FILENAME = "connectors.xml";
+    private static final List<String> SUPPORTED_M2E_VERSION = Arrays.asList( "1.0", "1.1" );
 
     /**
      * Base directory of the project.
      * 
-     * @parameter default-value="${basedir}"
+     * @parameter default-value="${project.build.directory}/catalog"
      * @readonly
      * @required
      */
-    private String basedir;
+    private File outputdir;
+
+    /**
+     * Catalog descriptor file
+     * 
+     * @parameter default-value="${project.basedir}/connectors.xml"
+     * @readonly
+     * @required
+     */
+    private File descriptor;
+
+    /**
+     * @parameter default-value="1.0"
+     * @required
+     */
+    private String m2eversion;
 
     private P2Facade p2Facade;
 
@@ -90,11 +107,20 @@ public class M2eDiscoveryMetadataGeneratorMojo
     public void execute()
         throws MojoExecutionException
     {
+        if ( !SUPPORTED_M2E_VERSION.contains( m2eversion ) )
+        {
+            throw new MojoExecutionException( "Specified m2e version " + m2eversion + " is not supported" );
+        }
+
+        getLog().info( "Generating discovery catalog for m2e version " + m2eversion );
+
         try
         {
             p2Facade = equinox.getService( P2Facade.class );
 
-            deleteDirectoryContent( new File( basedir, MavenDiscovery.LIFECYCLE_PATH ) );
+            outputdir.mkdirs();
+
+            deleteDirectoryContent( new File( outputdir, MavenDiscovery.LIFECYCLE_PATH ) );
             File tempFile = File.createTempFile( "M2eDiscoveryMetadataGeneratorMojo", ".jar" );
             tempFile.deleteOnExit();
 
@@ -105,6 +131,13 @@ public class M2eDiscoveryMetadataGeneratorMojo
             DiscoveryCatalog catalog = loadDiscoveryCatalog();
             for ( DiscoveryCatalogItem catalogItem : catalog.getCatalogItems() )
             {
+                if ( !isCompatibleWithM2EVersion( catalogItem ) )
+                {
+                    getLog().debug( "Catalog item id " + catalogItem.getId() + " m2e compatibility "
+                                        + catalogItem.getM2EVersions() + " does not include version " + m2eversion );
+                    continue;
+                }
+
                 if ( !allids.add( catalogItem.getId() ) )
                 {
                     throw new RuntimeException( "Duplicate catalog item id " + catalogItem.getId() );
@@ -170,7 +203,7 @@ public class M2eDiscoveryMetadataGeneratorMojo
 
                 if ( hasLifecycleMappings )
                 {
-                    File destinationDirectory = new File( basedir, MavenDiscovery.LIFECYCLE_PATH );
+                    File destinationDirectory = new File( outputdir, MavenDiscovery.LIFECYCLE_PATH );
                     writeLifecycleMappingMetadata( mergedLifecycleMappingMetadataSource,
                                                    new File( destinationDirectory, catalogItem.getId()
                                                        + MavenDiscovery.LIFECYCLE_EXT ) );
@@ -204,6 +237,29 @@ public class M2eDiscoveryMetadataGeneratorMojo
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
+    }
+
+    private boolean isCompatibleWithM2EVersion( DiscoveryCatalogItem catalogItem )
+        throws MojoExecutionException
+    {
+        StringTokenizer st = new StringTokenizer( catalogItem.getM2EVersions(), "," );
+
+        boolean compatible = false;
+
+        while ( st.hasMoreTokens() )
+        {
+            String version = st.nextToken().trim();
+
+            if ( !SUPPORTED_M2E_VERSION.contains( version ) )
+            {
+                throw new MojoExecutionException( "Catalog item with id " + catalogItem.getId()
+                    + " specifies unknown/unsuported m2e version " + version );
+            }
+
+            compatible |= version.equals( m2eversion );
+        }
+
+        return compatible;
     }
 
     private void validateCatalogItem( InputLocationTracker locationTracker, DiscoveryCatalogItem item )
@@ -449,8 +505,7 @@ public class M2eDiscoveryMetadataGeneratorMojo
     private DiscoveryCatalog loadDiscoveryCatalog()
         throws IOException, XmlPullParserException
     {
-        File catalogFile = new File( basedir, CATALOG_SOURCE_FILENAME );
-        InputStream is = new FileInputStream( catalogFile );
+        InputStream is = new FileInputStream( descriptor );
         try
         {
             return new DiscoveryCatalogModelXpp3ReaderEx().read( is, true );
@@ -490,7 +545,7 @@ public class M2eDiscoveryMetadataGeneratorMojo
             }
         }
 
-        writeXml( pluginXmlDom, new File( basedir, "plugin.xml" ) );
+        writeXml( pluginXmlDom, new File( outputdir, "plugin.xml" ) );
     }
 
     private Xpp3Dom discoveryCategory2PluginXml( DiscoveryCategory category )

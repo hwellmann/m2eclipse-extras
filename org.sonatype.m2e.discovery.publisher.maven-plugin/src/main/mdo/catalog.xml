@@ -91,6 +91,12 @@
           <name>categoryId</name>
           <type>String</type>
         </field>
+        <field xml.tagName="m2e-versions">
+          <name>M2EVersions</name>
+          <description>Comma separated list of compatible m2e version, eg, "1.0" or "1.0,1.1".</description>
+          <type>String</type>
+          <defaultValue>1.0</defaultValue>
+        </field>
         <field>
           <name>description</name>
           <type>String</type>
