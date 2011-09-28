@@ -31,13 +31,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
-import java.util.jar.JarOutputStream;
-import java.util.jar.Manifest;
-import java.util.zip.ZipEntry;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -54,14 +49,6 @@ import org.eclipse.m2e.core.internal.lifecyclemapping.model.PluginExecutionMetad
 import org.eclipse.m2e.core.internal.lifecyclemapping.model.io.xpp3.LifecycleMappingMetadataSourceXpp3Reader;
 import org.eclipse.m2e.core.internal.lifecyclemapping.model.io.xpp3.LifecycleMappingMetadataSourceXpp3Writer;
 import org.eclipse.m2e.internal.discovery.MavenDiscovery;
-import org.sonatype.aether.RepositorySystem;
-import org.sonatype.aether.RepositorySystemSession;
-import org.sonatype.aether.artifact.Artifact;
-import org.sonatype.aether.repository.RemoteRepository;
-import org.sonatype.aether.resolution.ArtifactRequest;
-import org.sonatype.aether.resolution.ArtifactResolutionException;
-import org.sonatype.aether.resolution.ArtifactResult;
-import org.sonatype.aether.util.artifact.DefaultArtifact;
 import org.sonatype.m2e.discovery.catalog.model.DiscoveryCatalog;
 import org.sonatype.m2e.discovery.catalog.model.DiscoveryCatalogItem;
 import org.sonatype.m2e.discovery.catalog.model.DiscoveryCategory;
@@ -74,7 +61,6 @@ import org.sonatype.m2e.discovery.catalog.model.P2Data;
 import org.sonatype.m2e.discovery.catalog.model.io.xpp3.DiscoveryCatalogModelXpp3ReaderEx;
 import org.sonatype.m2e.discovery.publisher.p2.facade.P2Facade;
 import org.sonatype.tycho.equinox.EquinoxServiceFactory;
-import org.sonatype.tycho.p2.facade.internal.P2ApplicationLauncher;
 
 /**
  * @goal generate
@@ -85,17 +71,7 @@ public class M2eDiscoveryMetadataGeneratorMojo
 {
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
 
-    private static final String BUNDLE_QUALIFIER = "." + new SimpleDateFormat( "yyyyMMddHHmm" ).format( new Date() );
-
     private static final String CATALOG_SOURCE_FILENAME = "connectors.xml";
-
-    private static final String LIFECYCLE_MAPPING_METADATA_CLASSIFIER = "lifecycle-mapping-metadata";
-
-    /**
-     * @parameter
-     * @required
-     */
-    private String p2RepositoryUrl;
 
     /**
      * Base directory of the project.
@@ -111,28 +87,11 @@ public class M2eDiscoveryMetadataGeneratorMojo
     /** @component */
     private EquinoxServiceFactory equinox;
 
-    /** @component */
-    private RepositorySystem repositorySystem;
-
-    /**
-     * The current repository/network configuration of Maven.
-     * 
-     * @parameter default-value="${repositorySystemSession}"
-     * @readonly
-     */
-    private RepositorySystemSession repoSession;
-
-    /** @component */
-    private P2ApplicationLauncher launcher;
-
     public void execute()
         throws MojoExecutionException
     {
         try
         {
-            File p2RepositoryDirectory = new File( basedir, "target/p2repository" ).getCanonicalFile();
-            p2RepositoryDirectory.mkdirs();
-
             p2Facade = equinox.getService( P2Facade.class );
 
             deleteDirectoryContent( new File( basedir, MavenDiscovery.LIFECYCLE_PATH ) );
@@ -203,37 +162,6 @@ public class M2eDiscoveryMetadataGeneratorMojo
                 {
                     throw new RuntimeException(
                                                 "Publishing from maven repositories is disabled due to https://bugs.eclipse.org/bugs/show_bug.cgi?id=346830" );
-                    // Artifact mavenArtifact = getMavenArtifact( mavenData );
-                    //
-                    // p2Data = new P2Data();
-                    // p2Data.setRepositoryUrl( p2RepositoryUrl );
-                    // catalogItem.setP2Data( p2Data );
-                    // if ( LIFECYCLE_MAPPING_METADATA_CLASSIFIER.equals( mavenArtifact.getClassifier() ) )
-                    // {
-                    // getLog().debug( "Found lifecycle mapping metadata maven artifact: " + mavenArtifact );
-                    // processLMMArtifact( mavenArtifact, mergedLifecycleMappingMetadataSource, mergedPluginXmlDom,
-                    // p2RepositoryDirectory, p2Data );
-                    // hasLifecycleMappings = true;
-                    // }
-                    // else
-                    // {
-                    // boolean isBundle = bundle2P2Data( mavenArtifact.getFile(), p2Data );
-                    // if ( isBundle )
-                    // {
-                    // hasLifecycleMappings =
-                    // processBundle( mavenArtifact.getFile(), mergedLifecycleMappingMetadataSource,
-                    // mergedPluginXmlDom );
-                    // File destination = new File( p2RepositoryDirectory, "plugins" );
-                    // destination =
-                    // new File( destination, p2Data.getIuId() + "_" + p2Data.getIuVersion() + ".jar" );
-                    // FileUtils.copyFile( mavenArtifact.getFile(), destination );
-                    // }
-                    // else
-                    // {
-                    // throw new RuntimeException( "Not a bundle or lifecycle mapping metadata xml file: "
-                    // + mavenArtifact.getFile() );
-                    // }
-                    // }
                 }
                 else
                 {
@@ -263,8 +191,6 @@ public class M2eDiscoveryMetadataGeneratorMojo
             }
 
             generateMainPluginXml( catalog );
-
-            generateP2RepositoryMetadata( p2RepositoryDirectory );
         }
         catch ( RuntimeException e )
         {
@@ -318,156 +244,6 @@ public class M2eDiscoveryMetadataGeneratorMojo
             return str;
         }
         return null;
-    }
-
-    private void generateP2RepositoryMetadata( File p2RepositoryDirectory )
-    {
-        List<String> contentArgs = new ArrayList<String>();
-        contentArgs.add( "-source" );
-        contentArgs.add( p2RepositoryDirectory.toString() );
-
-        launcher.setWorkingDirectory( new File( basedir ) );
-        launcher.setApplicationName( "org.eclipse.equinox.p2.publisher.FeaturesAndBundlesPublisher" );
-        launcher.addArguments( "-artifactRepository", p2RepositoryDirectory.toURI().toString(), //
-                               "-artifactRepositoryName", "m2e Discovery Catalog Items - Artifact Repository", //
-                               "-metadataRepository", p2RepositoryDirectory.toURI().toString(), //
-                               "-metadataRepositoryName", "m2e Discovery Catalog Items - Metadata Repository" );
-        launcher.addArguments( contentArgs.toArray( new String[contentArgs.size()] ) );
-
-        int forkedProcessTimeoutInSeconds = 60;
-        int result = launcher.execute( forkedProcessTimeoutInSeconds );
-        if ( result != 0 )
-        {
-            throw new RuntimeException( "P2 publisher return code was " + result );
-        }
-    }
-
-    private boolean bundle2P2Data( File bundleJar, P2Data p2Data )
-        throws IOException
-    {
-        FileInputStream fis = null;
-        JarInputStream jis = null;
-        try
-        {
-            fis = new FileInputStream( bundleJar );
-            jis = new JarInputStream( fis );
-            Manifest manifest = jis.getManifest();
-            if ( manifest == null )
-            {
-                return false;
-            }
-            Attributes mainAttributes = manifest.getMainAttributes();
-            String bundleId = mainAttributes.getValue( "Bundle-SymbolicName" );
-            if ( bundleId == null )
-            {
-                getLog().info( "Not a bundle: " + bundleJar.getAbsolutePath() );
-                return false;
-            }
-            int at = bundleId.indexOf( ';' );
-            if ( at > 0 )
-            {
-                bundleId = bundleId.substring( 0, at );
-            }
-            p2Data.setIuId( bundleId );
-            p2Data.setIuVersion( mainAttributes.getValue( "Bundle-Version" ) );
-
-            return true;
-        }
-        finally
-        {
-            IOUtil.close( fis );
-            IOUtil.close( jis );
-        }
-    }
-
-    private Artifact getMavenArtifact( MavenData mavenData )
-        throws ArtifactResolutionException
-    {
-        String repoUrl = mavenData.getRepositoryUrl();
-        RemoteRepository mavenRepository = new RemoteRepository( null /* id */, "default", repoUrl );
-        List<RemoteRepository> mavenRepositories = new ArrayList<RemoteRepository>();
-        mavenRepositories.add( mavenRepository );
-        ArtifactRequest request = new ArtifactRequest();
-
-        String artifactCoords = mavenData.getGroupId() + ":" + mavenData.getArtifactId() + ":";
-        if ( LIFECYCLE_MAPPING_METADATA_CLASSIFIER.equals( mavenData.getClassifier() ) )
-        {
-            artifactCoords += "xml:" + LIFECYCLE_MAPPING_METADATA_CLASSIFIER + ":";
-        }
-        artifactCoords += mavenData.getVersion();
-        DefaultArtifact defaultArtifact = new DefaultArtifact( artifactCoords );
-        request.setArtifact( defaultArtifact );
-        request.setRepositories( mavenRepositories );
-
-        getLog().debug( "Resolving artifact " + defaultArtifact + " from " + mavenRepository );
-
-        ArtifactResult result = repositorySystem.resolveArtifact( repoSession, request );
-
-        Artifact mavenArtifact = result.getArtifact();
-        getLog().debug( "Resolved artifact " + mavenArtifact + " to " + result.getArtifact().getFile() + " from "
-                            + result.getRepository() );
-        File file = mavenArtifact.getFile();
-        if ( file == null || !file.exists() || !file.canRead() )
-        {
-            throw new RuntimeException( "Cannot find file for artifact " + mavenArtifact );
-        }
-
-        return mavenArtifact;
-    }
-
-    private void processLMMArtifact( Artifact mavenArtifact,
-                                     LifecycleMappingMetadataSource mergedLifecycleMappingMetadataSource,
-                                     Xpp3Dom mergedPluginXmlDom, File p2RepositoryDirectory, P2Data p2Data )
-        throws IOException, XmlPullParserException
-    {
-        FileOutputStream fos = null;
-        JarOutputStream jos = null;
-        FileInputStream is = new FileInputStream( mavenArtifact.getFile() );
-        try
-        {
-            p2Data.setIuId( mavenArtifact.getGroupId() + "_" + mavenArtifact.getArtifactId() );
-            String bundleVersion = mavenArtifact.getBaseVersion().replace( "-SNAPSHOT", BUNDLE_QUALIFIER );
-            p2Data.setIuVersion( bundleVersion );
-            byte[] content = getByteContent( is );
-            mergeLifecycleMappingMetadata( content, mergedLifecycleMappingMetadataSource );
-
-            String bundleJarFileName = p2Data.getIuId() + "_" + p2Data.getIuVersion() + ".jar";
-            File bundleJar = new File( p2RepositoryDirectory, "plugins" );
-            bundleJar.mkdirs();
-            bundleJar = new File( bundleJar, bundleJarFileName );
-
-            fos = new FileOutputStream( bundleJar );
-            jos = new JarOutputStream( fos );
-
-            JarEntry jarEntry = new JarEntry( LifecycleMappingFactory.LIFECYCLE_MAPPING_METADATA_SOURCE_NAME );
-            jarEntry.setMethod( ZipEntry.DEFLATED );
-            jos.putNextEntry( jarEntry );
-            jos.write( content );
-
-            jarEntry = new JarEntry( "plugin.xml" );
-            jarEntry.setMethod( ZipEntry.DEFLATED );
-            jos.putNextEntry( jarEntry );
-            Xpp3Dom pluginDom = new Xpp3Dom( "plugin" );
-            Xpp3Dom extDom = new Xpp3Dom( "extension" );
-            extDom.setAttribute( "point", LifecycleMappingFactory.EXTENSION_LIFECYCLE_MAPPING_METADATA_SOURCE );
-            pluginDom.addChild( extDom );
-            writeXml( pluginDom, jos );
-
-            Manifest manifest = new Manifest();
-            manifest.getMainAttributes().putValue( "Manifest-Version", "1.0" );
-            manifest.getMainAttributes().putValue( "Bundle-SymbolicName", p2Data.getIuId() + ";singleton:=true" );
-            manifest.getMainAttributes().putValue( "Bundle-Version", p2Data.getIuVersion() );
-            jarEntry = new JarEntry( JarFile.MANIFEST_NAME );
-            jarEntry.setMethod( ZipEntry.DEFLATED );
-            jos.putNextEntry( jarEntry );
-            manifest.write( jos );
-        }
-        finally
-        {
-            IOUtil.close( is );
-            IOUtil.close( jos );
-            IOUtil.close( fos );
-        }
     }
 
     private boolean processBundle( File bundleJar, LifecycleMappingMetadataSource mergedLifecycleMappingMetadataSource,
