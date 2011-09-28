@@ -14,7 +14,7 @@
   <properties>
     <modello.version>1.5</modello.version>
     <aether.version>1.11</aether.version>
-    <m2e.version>1.0.0-SNAPSHOT</m2e.version>
+    <m2e-lib.version>1.0.0-SNAPSHOT</m2e-lib.version>
   </properties>
 
   <dependencies>
@@ -56,12 +56,12 @@
     <dependency>
       <groupId>org.eclipse.m2e</groupId>
       <artifactId>org.eclipse.m2e.core</artifactId>
-      <version>${m2e.version}</version>
+      <version>${m2e-lib.version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.m2e</groupId>
       <artifactId>org.eclipse.m2e.discovery</artifactId>
-      <version>${m2e.version}</version>
+      <version>${m2e-lib.version}</version>
     </dependency>
   </dependencies>
 
