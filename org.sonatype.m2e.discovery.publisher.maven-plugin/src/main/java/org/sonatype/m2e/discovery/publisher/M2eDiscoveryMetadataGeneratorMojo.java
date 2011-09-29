@@ -517,7 +517,7 @@ public class M2eDiscoveryMetadataGeneratorMojo
     }
 
     private void generateMainPluginXml( DiscoveryCatalog catalog )
-        throws IOException
+        throws IOException, MojoExecutionException
     {
         Xpp3Dom pluginXmlDom = new _Xpp3Dom( "plugin" );
 
@@ -540,8 +540,11 @@ public class M2eDiscoveryMetadataGeneratorMojo
             pluginXmlDom.addChild( extensionDom );
             for ( DiscoveryCatalogItem item : catalog.getCatalogItems() )
             {
-                Xpp3Dom itemDom = discoveryItem2PluginXml( item );
-                extensionDom.addChild( itemDom );
+                if ( isCompatibleWithM2EVersion( item ) )
+                {
+                    Xpp3Dom itemDom = discoveryItem2PluginXml( item );
+                    extensionDom.addChild( itemDom );
+                }
             }
         }
 
