@@ -18,5 +18,8 @@
    <feature url="features/org.sonatype.m2e.plexus.annotations.feature_0.0.0.jar" id="org.sonatype.m2e.plexus.annotations.feature" version="0.0.0">
       <category name="m2e-extras"/>
    </feature>
+   <feature url="features/org.sonatype.m2e.sisuindex.feature_0.0.0.jar" id="org.sonatype.m2e.sisuindex.feature" version="0.0.0">
+      <category name="m2e-extras"/>
+   </feature>
    <category-def name="m2e-extras" label="Maven Integration for Eclipse Extras"/>
 </site>

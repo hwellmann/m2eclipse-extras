@@ -42,6 +42,9 @@
 
     <module>org.sonatype.m2e.plexus.annotations</module>
     <module>org.sonatype.m2e.plexus.annotations.feature</module>
+
+    <module>org.sonatype.m2e.sisuindex</module>
+    <module>org.sonatype.m2e.sisuindex.feature</module>
     
     <module>org.sonatype.m2e.tests.common</module>
     <module>org.sonatype.m2e.antlr.tests</module>
