@@ -28,7 +28,7 @@ http://www.eclipse.org/legal/epl-v10.html
   </properties>
 
   <modules>
-    <!--module>org.omadac.m2e.repo</module-->
+    <module>org.omadac.m2e.repo</module>
     <module>org.omadac.m2e.aspectj</module>
     <module>org.omadac.m2e.aspectj.feature</module>
     <module>org.omadac.m2e.hyperjaxb3</module>
@@ -57,7 +57,7 @@ http://www.eclipse.org/legal/epl-v10.html
     <module>org.sonatype.m2e.plexus.annotations.feature</module>
     
     <module>org.sonatype.m2e.tests.common</module>
-    <module>org.sonatype.m2e.antlr.tests</module>
+    <!-- module>org.sonatype.m2e.antlr.tests</module--> <!-- fails when built on Linux headless -->
     <module>org.sonatype.m2e.buildhelper.tests</module>
     <module>org.sonatype.m2e.mavenarchiver.tests</module>
     <module>org.sonatype.m2e.modello.tests</module>
