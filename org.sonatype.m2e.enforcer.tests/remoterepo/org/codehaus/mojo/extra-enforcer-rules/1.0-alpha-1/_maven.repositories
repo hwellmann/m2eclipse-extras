@@ -1,0 +1,6 @@
+#NOTE: This is an internal implementation file, its format can be changed without prior notice.
+#Wed Sep 14 11:26:47 CDT 2011
+extra-enforcer-rules-1.0-alpha-1.pom>central=
+extra-enforcer-rules-1.0-alpha-1.pom>nexus.default=
+extra-enforcer-rules-1.0-alpha-1.jar>nexus.default=
+extra-enforcer-rules-1.0-alpha-1.jar>central=
