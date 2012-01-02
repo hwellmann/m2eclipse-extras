@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.m2e.core.projectConfigurators">
+      <configurator
+            class="org.omadac.m2e.cxfxjc.internal.Xsd2JavaProjectConfigurator"
+            id="org.omadac.m2e.cxfxjc.xsd2JavaConfigurator"
+            name="XSD 2 Java Project Configurator">
+      </configurator>
+   </extension>
+   <extension
+         point="org.eclipse.m2e.core.lifecycleMappingMetadataSource">
+   </extension>
+</plugin>

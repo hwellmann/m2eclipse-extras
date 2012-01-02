@@ -3,16 +3,28 @@
    <description url="http://www.omadac.org/m2e">
       Omadac m2e Extensions
    </description>
-   <feature url="features/org.omadac.m2e.aspectj.feature_0.0.0.jar" id="org.omadac.m2e.aspectj.feature" version="0.0.0">
+   <feature url="features/org.omadac.m2e.openjpa.feature_0.1.0-SNAPSHOT.jar" id="org.omadac.m2e.openjpa.feature" version="0.0.0">
       <category name="Omadac m2e Extensions"/>
    </feature>
-   <feature url="features/org.omadac.m2e.jaxb.feature_0.0.0.jar" id="org.omadac.m2e.jaxb.feature" version="0.0.0">
+   <feature url="features/org.omadac.m2e.hyperjaxb3.feature_0.14.0.qualifier.jar" id="org.omadac.m2e.hyperjaxb3.feature" version="0.14.0.qualifier">
       <category name="Omadac m2e Extensions"/>
    </feature>
-   <feature url="features/org.omadac.m2e.openjpa.feature_0.0.0.jar" id="org.omadac.m2e.openjpa.feature" version="0.0.0">
+   <feature url="features/org.omadac.m2e.openjpa.feature_0.14.0.qualifier.jar" id="org.omadac.m2e.openjpa.feature" version="0.14.0.qualifier">
       <category name="Omadac m2e Extensions"/>
    </feature>
-   <feature url="features/org.omadac.m2e.hyperjaxb3.feature_0.1.0.qualifier.jar" id="org.omadac.m2e.hyperjaxb3.feature" version="0.1.0.qualifier">
+   <feature url="features/org.omadac.m2e.aspectj.feature_0.14.0.qualifier.jar" id="org.omadac.m2e.aspectj.feature" version="0.14.0.qualifier">
+      <category name="Omadac m2e Extensions"/>
+   </feature>
+   <feature url="features/org.omadac.m2e.depunpack.feature_0.14.0.qualifier.jar" id="org.omadac.m2e.depunpack.feature" version="0.14.0.qualifier">
+      <category name="Omadac m2e Extensions"/>
+   </feature>
+   <feature url="features/org.omadac.m2e.cxf-codegen.feature_0.14.0.qualifier.jar" id="org.omadac.m2e.cxf-codegen.feature" version="0.14.0.qualifier">
+      <category name="Omadac m2e Extensions"/>
+   </feature>
+   <feature url="features/org.omadac.m2e.cxf-xjc.feature_0.14.0.qualifier.jar" id="org.omadac.m2e.cxf-xjc.feature" version="0.14.0.qualifier">
+      <category name="Omadac m2e Extensions"/>
+   </feature>
+   <feature url="features/org.omadac.m2e.jaxb.feature_0.14.0.qualifier.jar" id="org.omadac.m2e.jaxb.feature" version="0.14.0.qualifier">
       <category name="Omadac m2e Extensions"/>
    </feature>
    <category-def name="Omadac m2e Extensions" label="Omadac m2e Extensions"/>

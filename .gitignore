@@ -1,6 +1,10 @@
 .project/
 .settings/
+.metadata/
 target/
 bin/
 .project
 .classpath
+.DS_Store
+*~
+*.BAK

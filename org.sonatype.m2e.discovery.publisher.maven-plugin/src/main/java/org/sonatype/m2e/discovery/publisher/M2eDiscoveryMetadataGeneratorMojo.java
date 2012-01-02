@@ -28,7 +28,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -65,9 +67,11 @@ import org.sonatype.m2e.discovery.catalog.model.DiscoveryCatalogItem;
 import org.sonatype.m2e.discovery.catalog.model.DiscoveryCategory;
 import org.sonatype.m2e.discovery.catalog.model.DiscoveryIcon;
 import org.sonatype.m2e.discovery.catalog.model.IUData;
+import org.sonatype.m2e.discovery.catalog.model.InputLocation;
+import org.sonatype.m2e.discovery.catalog.model.InputLocationTracker;
 import org.sonatype.m2e.discovery.catalog.model.MavenData;
 import org.sonatype.m2e.discovery.catalog.model.P2Data;
-import org.sonatype.m2e.discovery.catalog.model.io.xpp3.DiscoveryCatalogModelXpp3Reader;
+import org.sonatype.m2e.discovery.catalog.model.io.xpp3.DiscoveryCatalogModelXpp3ReaderEx;
 import org.sonatype.m2e.discovery.publisher.p2.facade.P2Facade;
 import org.sonatype.tycho.equinox.EquinoxServiceFactory;
 import org.sonatype.tycho.p2.facade.internal.P2ApplicationLauncher;
@@ -137,9 +141,19 @@ public class M2eDiscoveryMetadataGeneratorMojo
 
             List<P2Data> missingLicense = new ArrayList<P2Data>();
 
+            Set<String> allids = new HashSet<String>();
+
             DiscoveryCatalog catalog = loadDiscoveryCatalog();
             for ( DiscoveryCatalogItem catalogItem : catalog.getCatalogItems() )
             {
+                if ( !allids.add( catalogItem.getId() ) )
+                {
+                    throw new RuntimeException( "Duplicate catalog item id " + catalogItem.getId() );
+                }
+
+                getLog().debug( "Processing catalog item with id " + catalogItem.getId() );
+                validateCatalogItem( catalog, catalogItem );
+
                 boolean hasLifecycleMappings = false;
                 LifecycleMappingMetadataSource mergedLifecycleMappingMetadataSource =
                     new LifecycleMappingMetadataSource();
@@ -264,6 +278,46 @@ public class M2eDiscoveryMetadataGeneratorMojo
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
+    }
+
+    private void validateCatalogItem( InputLocationTracker locationTracker, DiscoveryCatalogItem item )
+    {
+        List<String> messages = new ArrayList<String>();
+        if ( nv( item.getId() ) == null )
+        {
+            messages.add( "id must be specified" );
+        }
+        if ( nv( item.getProvider() ) == null )
+        {
+            messages.add( "provider must be specified" );
+        }
+
+        if ( !messages.isEmpty() )
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.append( "Problems with <catalogItem>" );
+
+            InputLocation location = item.getLocation( "" );
+            if ( location != null )
+            {
+                sb.append( '[' ).append( location.toString() ).append( ']' );
+            }
+
+            for ( String msg : messages )
+            {
+                sb.append( "\n   " ).append( msg );
+            }
+            throw new RuntimeException( sb.toString() );
+        }
+    }
+
+    private static String nv( String str )
+    {
+        if ( str != null && !"".equals( str.trim() ) )
+        {
+            return str;
+        }
+        return null;
     }
 
     private void generateP2RepositoryMetadata( File p2RepositoryDirectory )
@@ -623,7 +677,7 @@ public class M2eDiscoveryMetadataGeneratorMojo
         InputStream is = new FileInputStream( catalogFile );
         try
         {
-            return new DiscoveryCatalogModelXpp3Reader().read( is );
+            return new DiscoveryCatalogModelXpp3ReaderEx().read( is, true );
         }
         finally
         {
@@ -706,6 +760,17 @@ public class M2eDiscoveryMetadataGeneratorMojo
         iuDom.setAttribute( "id", item.getP2Data().getIuId() );
         iuDom.setAttribute( "version", item.getP2Data().getIuVersion() );
         result.addChild( iuDom );
+
+        for ( IUData rootIU : item.getP2Data().getRootIUs() )
+        {
+            Xpp3Dom rootIUDom = new _Xpp3Dom( "iu" );
+            rootIUDom.setAttribute( "id", rootIU.getIuId() );
+            if ( rootIU.getIuVersion() != null )
+            {
+                rootIUDom.setAttribute( "version", rootIU.getIuVersion() );
+            }
+            result.addChild( rootIUDom );
+        }
 
         Xpp3Dom overviewDom = new _Xpp3Dom( "overview" );
         overviewDom.setAttribute( "summary", item.getOverview().getSummary() );

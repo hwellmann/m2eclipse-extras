@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (c) 2008 Sonatype, Inc. All rights reserved. This program 
-  and the accompanying materials are made available under the terms of the 
-  Eclipse Public License v1.0 which accompanies this distribution, and is available 
-  at http://www.eclipse.org/legal/epl-v10.html -->
+<!--
+Copyright (c) 2008 Sonatype, Inc.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.omadac.m2e.extras</groupId>
+  <parent>
+    <groupId>org.sonatype.forge</groupId>
+    <artifactId>forge-parent</artifactId>
+    <version>10</version>
+  </parent>
+
+  <groupId>org.sonatype.m2e.extras</groupId>
   <artifactId>m2eclipse-extras</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.14.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
     <tycho-version>0.12.0</tycho-version>
-
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <site-compressed>http://repository.sonatype.org/service/local/repositories/forge-sites/content-compressed/</site-compressed>
   </properties>
 
@@ -24,13 +33,52 @@
     <module>org.omadac.m2e.aspectj.feature</module>
     <module>org.omadac.m2e.hyperjaxb3</module>
     <module>org.omadac.m2e.hyperjaxb3.feature</module>
+    <module>org.omadac.m2e.cxf-xjc</module>
+    <module>org.omadac.m2e.cxf-xjc.feature</module>
+    <module>org.omadac.m2e.cxf-codegen</module>
+    <module>org.omadac.m2e.cxf-codegen.feature</module>
     <module>org.omadac.m2e.jaxb</module>
     <module>org.omadac.m2e.jaxb.feature</module>
     <module>org.omadac.m2e.openjpa</module>
     <module>org.omadac.m2e.openjpa.feature</module>
+    <module>org.sonatype.m2e.antlr</module>
+    <module>org.sonatype.m2e.antlr.feature</module>
+
+    <module>org.sonatype.m2e.buildhelper</module>
+    <module>org.sonatype.m2e.buildhelper.feature</module>
+
+    <module>org.sonatype.m2e.mavenarchiver</module>
+    <module>org.sonatype.m2e.mavenarchiver.feature</module>
+
+    <module>org.sonatype.m2e.modello</module>
+    <module>org.sonatype.m2e.modello.feature</module>
+
+    <module>org.sonatype.m2e.plexus.annotations</module>
+    <module>org.sonatype.m2e.plexus.annotations.feature</module>
+    
+    <module>org.sonatype.m2e.tests.common</module>
+    <!-- module>org.sonatype.m2e.antlr.tests</module--> <!-- fails when built on Linux headless -->
+    <module>org.sonatype.m2e.buildhelper.tests</module>
+    <module>org.sonatype.m2e.mavenarchiver.tests</module>
+    <module>org.sonatype.m2e.modello.tests</module>
+    <module>org.sonatype.m2e.plexus.annotations.tests</module>
+
+    <module>org.sonatype.m2e.site-extras</module>
+    <module>org.sonatype.m2e.mavenarchiver.pomproperties</module>
+    <module>
+    	org.sonatype.m2e.mavenarchiver.pomproperties.feature
+    </module>
+    <module>org.sonatype.m2e.mavenarchiver.pomproperties.tests</module>
+    <module>org.omadac.m2e.depunpack</module>
+    <module>org.omadac.m2e.depunpack.feature</module>
   </modules>
 
   <repositories>
+    <repository>
+      <id>rso</id>
+      <url>http://repository.sonatype.org/content/groups/sonatype-public-grid</url>
+    </repository>
+
     <repository>
       <id>helios</id>
       <layout>p2</layout>
@@ -60,6 +108,33 @@
         <configuration>
           <resolver>p2</resolver>
           <ignoreTychoRepositories>true</ignoreTychoRepositories>
+			<environments>
+				<environment>
+					<os>linux</os>
+					<ws>gtk</ws>
+					<arch>x86</arch>
+				</environment>
+				<environment>
+					<os>linux</os>
+					<ws>gtk</ws>
+					<arch>x86_64</arch>
+				</environment>
+				<environment>
+					<os>win32</os>
+					<ws>win32</ws>
+					<arch>x86</arch>
+				</environment>
+				<environment>
+					<os>win32</os>
+					<ws>win32</ws>
+					<arch>x86_64</arch>
+				</environment>
+				<environment>
+					<os>macosx</os>
+					<ws>cocoa</ws>
+					<arch>x86_64</arch>
+				</environment>
+			</environments>
         </configuration>
       </plugin>
     </plugins>
@@ -76,12 +151,12 @@
               <include>**/*Test.java</include>
             </includes>
             <argLine>${tycho.test.jvmArgs}</argLine>
-            <!-- kill test JVM it tests take more than 10 minutes (600 seconds) 
-              to finish -->
+            <!-- kill test JVM it tests take more than 10 minutes (600 seconds)
+to finish -->
             <forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
           </configuration>
         </plugin>
-
+        
         <!-- important for self-hosting -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -93,34 +168,6 @@
   </build>
 
   <profiles>
-    <profile>
-      <id>sonatype</id>
-      <modules>
-        <module>org.sonatype.m2e.antlr</module>
-        <module>org.sonatype.m2e.antlr.feature</module>
-
-        <module>org.sonatype.m2e.buildhelper</module>
-        <module>org.sonatype.m2e.buildhelper.feature</module>
-
-        <module>org.sonatype.m2e.mavenarchiver.pomproperties</module>
-        <module>org.sonatype.m2e.mavenarchiver.pomproperties.feature</module>
-
-        <module>org.sonatype.m2e.modello</module>
-        <module>org.sonatype.m2e.modello.feature</module>
-
-        <module>org.sonatype.m2e.plexus.annotations</module>
-        <module>org.sonatype.m2e.plexus.annotations.feature</module>
-
-        <module>org.sonatype.m2e.tests.common</module>
-        <module>org.sonatype.m2e.antlr.tests</module>
-        <module>org.sonatype.m2e.buildhelper.tests</module>
-        <module>org.sonatype.m2e.mavenarchiver.pomproperties.tests</module>
-        <module>org.sonatype.m2e.modello.tests</module>
-        <module>org.sonatype.m2e.plexus.annotations.tests</module>
-
-        <module>org.sonatype.m2e.site-extras</module>
-      </modules>
-    </profile>
     <profile>
       <id>sun-jvm</id>
       <activation>
@@ -142,8 +189,7 @@
         </property>
       </activation>
       <properties>
-        <tycho.test.jvmArgs>-Xmx800m -XX:MaxPermSize=256m
-          -XstartOnFirstThread</tycho.test.jvmArgs>
+        <tycho.test.jvmArgs>-Xmx800m -XX:MaxPermSize=256m -XstartOnFirstThread</tycho.test.jvmArgs>
       </properties>
       <build>
         <pluginManagement>
@@ -169,9 +215,7 @@
     <profile>
       <id>sign</id>
       <activation>
-        <property>
-          <name>jarsigner.alias</name>
-        </property>
+        <property><name>jarsigner.alias</name></property>
       </activation>
       <build>
         <plugins>

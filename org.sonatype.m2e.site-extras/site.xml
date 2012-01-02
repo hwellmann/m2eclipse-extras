@@ -3,19 +3,49 @@
    <description url="http://m2eclipse.sonatype.org/site-extras">
       Maven Integration for Eclipse Extras
    </description>
-   <feature url="features/org.sonatype.m2e.antlr.feature_0.0.0.jar" id="org.sonatype.m2e.antlr.feature" version="0.0.0">
-      <category name="m2e-extras"/>
-   </feature>
    <feature url="features/org.sonatype.m2e.buildhelper.feature_0.0.0.jar" id="org.sonatype.m2e.buildhelper.feature" version="0.0.0">
-      <category name="m2e-extras"/>
-   </feature>
-   <feature url="org.sonatype.m2e.mavenarchiver.pomproperties.feature_0.0.0.jar" id="org.sonatype.m2e.mavenarchiver.pomproperties.feature" version="0.0.0">
       <category name="m2e-extras"/>
    </feature>
    <feature url="features/org.sonatype.m2e.modello.feature_0.0.0.jar" id="org.sonatype.m2e.modello.feature" version="0.0.0">
       <category name="m2e-extras"/>
    </feature>
    <feature url="features/org.sonatype.m2e.plexus.annotations.feature_0.0.0.jar" id="org.sonatype.m2e.plexus.annotations.feature" version="0.0.0">
+      <category name="m2e-extras"/>
+   </feature>
+   <feature url="features/org.omadac.m2e.aspectj.feature_0.14.0.qualifier.jar" id="org.omadac.m2e.aspectj.feature" version="0.14.0.qualifier">
+      <category name="m2e-extras"/>
+   </feature>
+   <feature url="features/org.omadac.m2e.cxf-codegen.feature_0.14.0.qualifier.jar" id="org.omadac.m2e.cxf-codegen.feature" version="0.14.0.qualifier">
+      <category name="m2e-extras"/>
+   </feature>
+   <feature url="features/org.omadac.m2e.cxf-xjc.feature_0.14.0.qualifier.jar" id="org.omadac.m2e.cxf-xjc.feature" version="0.14.0.qualifier">
+      <category name="m2e-extras"/>
+   </feature>
+   <feature url="features/org.omadac.m2e.depunpack.feature_0.14.0.qualifier.jar" id="org.omadac.m2e.depunpack.feature" version="0.14.0.qualifier">
+      <category name="m2e-extras"/>
+   </feature>
+   <feature url="features/org.omadac.m2e.hyperjaxb3.feature_0.14.0.qualifier.jar" id="org.omadac.m2e.hyperjaxb3.feature" version="0.14.0.qualifier">
+      <category name="m2e-extras"/>
+   </feature>
+   <feature url="features/org.omadac.m2e.jaxb.feature_0.14.0.qualifier.jar" id="org.omadac.m2e.jaxb.feature" version="0.14.0.qualifier">
+      <category name="m2e-extras"/>
+   </feature>
+   <feature url="features/org.omadac.m2e.openjpa.feature_0.14.0.qualifier.jar" id="org.omadac.m2e.openjpa.feature" version="0.14.0.qualifier">
+      <category name="m2e-extras"/>
+   </feature>
+   <feature url="features/org.sonatype.m2e.antlr.feature_0.14.0.qualifier.jar" id="org.sonatype.m2e.antlr.feature" version="0.14.0.qualifier">
+      <category name="m2e-extras"/>
+   </feature>
+   <feature url="features/org.sonatype.m2e.mavenarchiver.feature_0.14.0.qualifier.jar" id="org.sonatype.m2e.mavenarchiver.feature" version="0.14.0.qualifier">
+      <category name="m2e-extras"/>
+   </feature>
+   <feature url="features/org.sonatype.m2e.mavenarchiver.pomproperties.feature_0.14.0.qualifier.jar" id="org.sonatype.m2e.mavenarchiver.pomproperties.feature" version="0.14.0.qualifier">
+      <category name="m2e-extras"/>
+   </feature>
+   <feature url="features/org.sonatype.m2e.modello.feature_0.14.0.qualifier.jar" id="org.sonatype.m2e.modello.feature" version="0.14.0.qualifier">
+      <category name="m2e-extras"/>
+   </feature>
+   <feature url="features/org.sonatype.m2e.plexus.annotations.feature_0.14.0.qualifier.jar" id="org.sonatype.m2e.plexus.annotations.feature" version="0.14.0.qualifier">
       <category name="m2e-extras"/>
    </feature>
    <category-def name="m2e-extras" label="Maven Integration for Eclipse Extras"/>
