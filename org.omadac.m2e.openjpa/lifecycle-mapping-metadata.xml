@@ -8,6 +8,7 @@
         <versionRange>[1.1,2.0)</versionRange>
         <goals>
           <goal>enhance</goal>
+          <goal>test-enhance</goal>
         </goals>
       </pluginExecutionFilter>
       <action>
@@ -24,12 +25,11 @@
         <goals>
           <goal>schema</goal>
           <goal>sql</goal>
-          <goal>test-enhance</goal>
         </goals>
       </pluginExecutionFilter>
       <action>
         <ignore/>
       </action>
     </pluginExecution>
-  </pluginExecutions>    
+  </pluginExecutions>
 </lifecycleMappingMetadata>
