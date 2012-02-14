@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -23,7 +22,9 @@ import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.core.project.configurator.ILifecycleMapping;
 import org.eclipse.m2e.core.project.configurator.MojoExecutionKey;
 import org.eclipse.m2e.tests.common.AbstractLifecycleMappingTest;
+import org.eclipse.m2e.tests.common.ClasspathHelpers;
 
+@SuppressWarnings( "restriction" )
 public class ModelloGenerationTest
     extends AbstractLifecycleMappingTest
 {
@@ -44,7 +45,12 @@ public class ModelloGenerationTest
         IJavaProject javaProject1 = JavaCore.create( project );
         IClasspathEntry[] cp1 = javaProject1.getRawClasspath();
 
-        assertEquals( new Path( "/modello-p001/target/generated-sources/modello" ), cp1[3].getPath() );
+        ClasspathHelpers.assertClasspath( new String[] { "/modello-p001/src/main/java", //
+            "/modello-p001/src/test/java", //
+            "org.eclipse.jdt.launching.JRE_CONTAINER/.*", //
+            "org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER", //
+            "/modello-p001/target/generated-sources/modello", //
+        }, cp1 );
 
         assertTrue( project.getFolder( "target/generated-sources/modello" ).exists() );
         assertTrue( project.getFile( "target/generated-sources/modello/generated/test/GeneratedTest.java" ).exists() );
@@ -74,7 +80,12 @@ public class ModelloGenerationTest
         IJavaProject javaProject1 = JavaCore.create( project1 );
         IClasspathEntry[] cp1 = javaProject1.getRawClasspath();
 
-        assertEquals( new Path( "/modello-NoLifecycleMapping/target/generated-sources/modello" ), cp1[3].getPath() );
+        ClasspathHelpers.assertClasspath( new String[] { "/modello-NoLifecycleMapping/src/main/java", //
+            "/modello-NoLifecycleMapping/src/test/java", //
+            "org.eclipse.jdt.launching.JRE_CONTAINER/.*", //
+            "org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER", //
+            "/modello-NoLifecycleMapping/target/generated-sources/modello", //
+        }, cp1 );
 
         assertTrue( project1.getFile( "target/generated-sources/modello/generated/test/GeneratedTest.java" ).isSynchronized( IResource.DEPTH_ZERO ) );
         assertTrue( project1.getFile( "target/generated-sources/modello/generated/test/GeneratedTest.java" ).isAccessible() );

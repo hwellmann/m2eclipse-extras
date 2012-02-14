@@ -3,13 +3,14 @@ package org.sonatype.m2e.antlr.tests;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
+import org.eclipse.m2e.tests.common.ClasspathHelpers;
 
+@SuppressWarnings( "restriction" )
 public class AntlrGenerationTest
     extends AbstractMavenProjectTestCase
 {
@@ -29,7 +30,12 @@ public class AntlrGenerationTest
         IJavaProject javaProject1 = JavaCore.create( project1 );
         IClasspathEntry[] cp1 = javaProject1.getRawClasspath();
 
-        assertEquals( new Path( "/antlr-p001/target/generated-sources/antlr" ), cp1[3].getPath() );
+        ClasspathHelpers.assertClasspath( new String[] { "/antlr-p001/src/main/java", //
+            "/antlr-p001/src/test/java", //
+            "org.eclipse.jdt.launching.JRE_CONTAINER/.*", //
+            "org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER", //
+            "/antlr-p001/target/generated-sources/antlr" //
+        }, cp1 );
 
         assertTrue( project1.getFile( "target/generated-sources/antlr/test/SampleParser.java" ).isSynchronized( IResource.DEPTH_ZERO ) );
         assertTrue( project1.getFile( "target/generated-sources/antlr/test/SampleParser.java" ).isAccessible() );
@@ -51,7 +57,12 @@ public class AntlrGenerationTest
         IJavaProject javaProject1 = JavaCore.create( project1 );
         IClasspathEntry[] cp1 = javaProject1.getRawClasspath();
 
-        assertEquals( new Path( "/antlr-v3-p001/target/generated-sources/antlr" ), cp1[3].getPath() );
+        ClasspathHelpers.assertClasspath( new String[] { "/antlr-v3-p001/src/main/java", //
+            "/antlr-v3-p001/src/test/java", //
+            "org.eclipse.jdt.launching.JRE_CONTAINER/.*", //
+            "org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER", //
+            "/antlr-v3-p001/target/generated-sources/antlr" //
+        }, cp1 );
 
         assertTrue( project1.getFile( "target/generated-sources/antlr/test/SampleParser.java" ).isSynchronized( IResource.DEPTH_ZERO ) );
         assertTrue( project1.getFile( "target/generated-sources/antlr/test/SampleParser.java" ).isAccessible() );

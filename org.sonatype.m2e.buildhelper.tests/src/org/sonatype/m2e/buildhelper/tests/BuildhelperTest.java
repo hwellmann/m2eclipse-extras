@@ -4,12 +4,12 @@ import java.io.File;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
+import org.eclipse.m2e.tests.common.ClasspathHelpers;
 
 @SuppressWarnings( "restriction" )
 public class BuildhelperTest
@@ -22,12 +22,12 @@ public class BuildhelperTest
         IJavaProject javaProject = JavaCore.create( project );
         IClasspathEntry[] classpath = javaProject.getRawClasspath();
 
-        assertEquals( 4, classpath.length );
-
-        assertEquals( new Path( "/buildhelper-001/src/main/java" ), classpath[0].getPath() );
-        assertEquals( new Path( "/buildhelper-001/src/custom/java" ), classpath[1].getPath() );
-        assertEquals( "org.eclipse.jdt.launching.JRE_CONTAINER", classpath[2].getPath().segment( 0 ) );
-        assertEquals( new Path( "org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER" ), classpath[3].getPath() );
+        ClasspathHelpers.assertClasspath( new String[] { "/buildhelper-001/src/main/java", //
+            "/buildhelper-001/src/custom/java", //
+            "/buildhelper-001/src/test/java", //
+            "org.eclipse.jdt.launching.JRE_CONTAINER/.*", //
+            "org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER", //
+        }, classpath );
     }
 
     public void test_p002_resources()
@@ -37,15 +37,16 @@ public class BuildhelperTest
         IJavaProject javaProject = JavaCore.create( project );
         IClasspathEntry[] classpath = javaProject.getRawClasspath();
 
-        assertEquals( 8, classpath.length );
-        assertEquals( new Path( "/buildhelper-002/src/main/java" ), classpath[0].getPath() );
-        assertEquals( new Path( "/buildhelper-002/src/custom/main/java" ), classpath[1].getPath() );
-        assertEquals( new Path( "/buildhelper-002/src/main/resources" ), classpath[2].getPath() );
-        assertEquals( new Path( "/buildhelper-002/src/custom/main/resources" ), classpath[3].getPath() );
-        assertEquals( new Path( "/buildhelper-002/src/custom/test/java" ), classpath[4].getPath() );
-        assertEquals( new Path( "/buildhelper-002/src/custom/test/resources" ), classpath[5].getPath() );
-        assertEquals( "org.eclipse.jdt.launching.JRE_CONTAINER", classpath[6].getPath().segment( 0 ) );
-        assertEquals( new Path( "org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER" ), classpath[7].getPath() );
+        ClasspathHelpers.assertClasspath( new String[] { "/buildhelper-002/src/main/java", //
+            "/buildhelper-002/src/custom/main/java", //
+            "/buildhelper-002/src/main/resources", //
+            "/buildhelper-002/src/custom/main/resources", //
+            "/buildhelper-002/src/test/java", //
+            "/buildhelper-002/src/custom/test/java", //
+            "/buildhelper-002/src/custom/test/resources", //
+            "org.eclipse.jdt.launching.JRE_CONTAINER/.*", //
+            "org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER", //
+        }, classpath );
 
         File target = project.findMember( "target" ).getRawLocation().toFile();
         assertTrue( target + " does not exist", target.exists() );
