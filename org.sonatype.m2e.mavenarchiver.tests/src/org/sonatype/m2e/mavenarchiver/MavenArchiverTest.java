@@ -1,12 +1,16 @@
 package org.sonatype.m2e.mavenarchiver;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 import org.codehaus.plexus.util.IOUtil;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -191,6 +195,98 @@ public class MavenArchiverTest
         String manifest =getAsString(generatedManifestFile);
         assertTrue("Implementation-Url is invalid :"+manifest, manifest.contains("Implementation-URL: "+parentUrl));
     }
+    
+	public void testPomPropertiesUnchangedOnResourceChange() throws Exception {
+		IProject project = importProject(
+				"projects/pomproperties/pomproperties-p001/pom.xml",
+				new ResolverConfiguration());
+		waitForJobsToComplete();
+
+		IMavenProjectFacade facade = MavenPlugin.getMavenProjectRegistry()
+				.create(project, monitor);
+		ArtifactKey key = facade.getArtifactKey();
+
+		IFile pom = project.getFile(
+				"target/classes/META-INF/maven/" + key.getGroupId() + "/"
+						+ key.getArtifactId() + "/pom.xml");
+
+		IFile pomProperties = project.getFile(
+				"target/classes/META-INF/maven/" + key.getGroupId() + "/"
+						+ key.getArtifactId() + "/pom.properties");
+		
+		assertTrue(pom + " is not accessible", pom.isAccessible());
+		assertTrue(pomProperties + " is not accessible", pomProperties.isAccessible());
+        project.build( IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor );
+		waitForJobsToComplete();
+
+		long pomTimestamp = pom.getModificationStamp();
+		long pomPropertiesTimestamp = pomProperties.getModificationStamp();
+
+		// create a new resource file
+		IFolder resourceFolder = project.getFolder("src/main/resources");
+		resourceFolder.create(true, true, monitor);
+		IFile textFile = resourceFolder.getFile("hello.txt");
+		ByteArrayInputStream is = new ByteArrayInputStream(
+				"Hello Maven!\n".getBytes());
+		textFile.create(is, true, monitor);
+		is.close();
+
+		// build project
+        project.build( IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor );
+		waitForJobsToComplete();
+
+		// resource must be in target
+		assertTrue("target/classes/hello.txt is not accessible", project.getFile("target/classes/hello.txt").isAccessible());
+
+		// pom.properties and pom.xml under target must be unchanged		
+		assertEquals(pomTimestamp, pom.getModificationStamp());
+		assertEquals(pomPropertiesTimestamp, pomProperties.getModificationStamp());
+	}
+    
+    
+	public void testPomPropertiesUpdatedOnPomChange() throws Exception {
+		IProject project = importProject(
+				"projects/pomproperties/pomproperties-p001/pom.xml",
+				new ResolverConfiguration());
+		waitForJobsToComplete();
+        project.build( IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor );
+		waitForJobsToComplete();
+
+		IMavenProjectFacade facade = MavenPlugin.getMavenProjectRegistry()
+				.create(project, monitor);
+		ArtifactKey key = facade.getArtifactKey();
+
+		IFile pom = project.getFile(
+				"target/classes/META-INF/maven/" + key.getGroupId() + "/"
+						+ key.getArtifactId() + "/pom.xml");
+
+		IFile pomProperties = project.getFile(
+				"target/classes/META-INF/maven/" + key.getGroupId() + "/"
+						+ key.getArtifactId() + "/pom.properties");
+		
+		assertTrue(pom + " is not accessible", pom.isAccessible());
+		assertTrue(pomProperties + " is not accessible", pomProperties.isAccessible());
+
+		long pomTimestamp = pom.getModificationStamp();
+		long pomPropertiesTimestamp = pomProperties.getModificationStamp();
+
+		IFile sourcePom = facade.getPom();
+		String pomContents = getAsString(sourcePom);
+		pomContents = pomContents.replace("0.0.1-SNAPSHOT", "0.0.2-SNAPSHOT");
+		InputStream is = new ByteArrayInputStream(pomContents.getBytes());
+		sourcePom.setContents(is, IResource.FORCE, monitor);
+		is.close();
+				
+        project.build( IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor );
+		waitForJobsToComplete();
+
+		assertFalse("pom.xml is unmodified", pomTimestamp == pom.getModificationStamp());
+		assertFalse("pom.properties is unmodified",pomPropertiesTimestamp == pomProperties.getModificationStamp());
+		
+        Properties properties = loadProperties( pomProperties.getFullPath() );
+        assertEquals( "0.0.2-SNAPSHOT", properties.getProperty( "version" ) );		
+	}
+    
     
     private Properties loadProperties( IPath aPath )
         throws CoreException, IOException
