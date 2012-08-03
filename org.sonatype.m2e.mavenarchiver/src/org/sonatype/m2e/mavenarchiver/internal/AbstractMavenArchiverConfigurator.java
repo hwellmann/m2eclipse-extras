@@ -171,6 +171,15 @@ public abstract class AbstractMavenArchiverConfigurator extends AbstractProjectC
     mavenProjectChanged(newFacade, oldFacade, false, null, monitor);
   }
 
+  
+  /**
+   * Overloaded variant of method (without buildContext) for backward compatibility. 
+   */
+  public void mavenProjectChanged(IMavenProjectFacade newFacade, IMavenProjectFacade oldFacade, boolean forceGeneration, 
+          IProgressMonitor monitor)
+      throws CoreException {
+      mavenProjectChanged(newFacade, oldFacade, forceGeneration, null, monitor);
+  }
  
   public void mavenProjectChanged(IMavenProjectFacade newFacade, IMavenProjectFacade oldFacade, boolean forceGeneration, 
 		  BuildContext buildContext, IProgressMonitor monitor)
