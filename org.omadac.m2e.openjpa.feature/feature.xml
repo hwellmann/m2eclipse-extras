@@ -2,7 +2,7 @@
 <feature
       id="org.omadac.m2e.openjpa.feature"
       label="%featureName"
-      version="0.1.0.qualifier"
+      version="0.2.0.qualifier"
       provider-name="%providerName"
       plugin="org.omadac.m2e.openjpa">
 
