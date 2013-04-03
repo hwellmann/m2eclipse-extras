@@ -65,10 +65,13 @@ http://www.eclipse.org/legal/epl-v10.html
 
     <module>org.sonatype.m2e.site-extras</module>
     <module>org.sonatype.m2e.mavenarchiver.pomproperties</module>
-    <module>
-    	org.sonatype.m2e.mavenarchiver.pomproperties.feature
-    </module>
+    <module>org.sonatype.m2e.mavenarchiver.pomproperties.feature</module>
     <module>org.sonatype.m2e.mavenarchiver.pomproperties.tests</module>
+    
+    <module>org.sonatype.m2e.enforcer</module>
+    <module>org.sonatype.m2e.enforcer.feature</module>
+    <module>org.sonatype.m2e.enforcer.tests</module>
+    
     <module>org.omadac.m2e.depunpack</module>
     <module>org.omadac.m2e.depunpack.feature</module>
   </modules>
